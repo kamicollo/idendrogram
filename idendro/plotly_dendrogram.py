@@ -1,6 +1,3 @@
-from __future__ import absolute_import
-import typing
-
 from plotly.graph_objs import graph_objs
 import numpy as np
 from matplotlib.colors import to_hex
@@ -124,3 +121,7 @@ def get_plotly_traces(xcoords: np.ndarray, ycoords: np.ndarray, link_colors: np.
         trace_list.append(trace)
 
     return trace_list
+
+def get_dendrogram_nodes(icoord, dcoord, colorlist):
+    pass
+    
