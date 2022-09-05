@@ -1,11 +1,16 @@
 import scipy.cluster.hierarchy as sch
 import numpy as np
 
-class ClusterConfig():
+class BaseDendro():
     def __init__(self, linkage_matrix, cluster_assignments, threshold) -> None:
         self.linkage_matrix = linkage_matrix
         self.cluster_assignments = cluster_assignments
         self.threshold = threshold
+
+        self.icoord = None
+        self.dcoord = None
+        self.link_colors = None
+        self.ordered_leaf_labels = None
         self.leaves = None
     
     def show_only_cluster_labels(
@@ -45,13 +50,23 @@ class ClusterConfig():
         self.link_colors = np.array(dendrogram['color_list'])
         self.ordered_leaf_labels = np.array(dendrogram['ivl']) 
         self.leaves = np.array(dendrogram['leaves']) 
+
+    def set_default_dendrogram(self):
+            dd = sch.dendrogram(
+                Z=self.linkage_matrix, 
+                truncate_mode='level', 
+                p=4, 
+                color_threshold=self.threshold, 
+                leaf_label_func= self.show_only_cluster_labels(),
+                no_plot=True
+            )
+            self.set_dendrogram(dd)
     
     def get_point_locations(self):
 
         #instantiate a dendrogram if one is not set yet
-        if self.leaves is None:
-            dd = sch.dendrogram(Z=self.linkage_matrix, truncate_mode='level', p=4, color_threshold=self.threshold, no_plot=True)
-            self.set_dendrogram(dd)
+        if self.icoord is None:
+            self.set_default_dendrogram()
         
         component_ids = zip(self.linkage_matrix[:,0].astype(int), self.linkage_matrix[:, 1].astype(int))
         merged_ids = np.arange(self.linkage_matrix.shape[0] + 1, (self.linkage_matrix.shape[0] + 1) * 2 - 1)
@@ -80,5 +95,3 @@ class ClusterConfig():
         X = self.icoord.flatten()
         Y = self.dcoord.flatten()
         return np.sort(X[Y == 0.0])
-
-        
