@@ -7,7 +7,9 @@ class SciPyFeatures:
     def to_scipy(self, 
         orientation='top',
         show_points = False,
-        point_hover_func = None,
+        point_label_func = 'cluster_labels',
+        point_kwargs = {},
+        label_kwargs = {},
         ax = None,
         no_labels=False,
         leaf_font_size = None,
@@ -30,3 +32,24 @@ class SciPyFeatures:
             contraction_marks=None
         )
 
+        if show_points:
+            used_point_kwargs = {'markersize': 14}
+            used_point_kwargs.update(point_kwargs)
+
+            used_label_kwargs = {'size': 8, 'color': 'white', 'fontweight': 'bold', 'ha': 'center', 'va': 'center'}
+            used_label_kwargs.update(label_kwargs)
+
+            ploton = ax if ax is not None else plt
+            points = self.get_points()
+            if point_label_func == 'cluster_labels':
+                point_label_func = lambda x: "" if x['type'] != 'cluster' else x['cluster_id']
+
+            for (x,y), point in points.items():
+                if orientation in ['left', 'right']:
+                    x,y = y,x
+                facecolor = 'white' if point['type'] in ['leaf', 'subcluster'] else point['color']
+                ploton.plot(x, y, marker='o', markerfacecolor=facecolor, markeredgecolor=point['color'], **used_point_kwargs)
+
+                if point_label_func is not None:
+                    label = point_label_func(point)
+                    ploton.text(x, y, s=label, **used_label_kwargs)
