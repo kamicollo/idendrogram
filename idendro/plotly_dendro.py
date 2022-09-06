@@ -9,7 +9,9 @@ class PlotlyFeatures:
         width=np.inf, height=np.inf, 
         orientation='top',
         show_points = False,
-        point_hover_func = None
+        point_label_func = 'cluster_labels',
+        point_hover_func = None,
+        point_trace_kwargs = {}
         ):
         """Converts a SciPy dendrogram object to a Plotly one (with additional features)
         :param width - width of Plotly chart
@@ -36,10 +38,18 @@ class PlotlyFeatures:
             ycoords = self.icoord
             xcoords = self.dcoord
 
-        traces = self.get_plotly_traces(
+        traces = self.get_link_traces(
             xcoords=xcoords, 
             ycoords=ycoords, 
         )
+
+        if show_points:
+            traces += self.get_point_traces(
+                orientation, 
+                point_trace_kwargs = point_trace_kwargs, 
+                point_label_func = point_label_func,
+                point_hover_func = point_hover_func
+            )
 
         ordered_leaf_positions = self.get_ordered_leaf_positions()
 
@@ -95,7 +105,7 @@ class PlotlyFeatures:
 
         return graph_objs.Figure(data=traces, layout=layout)
 
-    def get_plotly_traces(self, xcoords: np.ndarray, ycoords: np.ndarray):
+    def get_link_traces(self, xcoords: np.ndarray, ycoords: np.ndarray):
         """
         Forms the traces representing the links in a dendrogram.
         """                
@@ -114,3 +124,35 @@ class PlotlyFeatures:
             trace_list.append(trace)
 
         return trace_list    
+    
+    def get_point_traces(self, orientation, point_trace_kwargs, point_label_func, point_hover_func):
+
+        point_traces = []
+        used_point_kwargs = {'markersize': 14}
+        used_point_kwargs.update(point_trace_kwargs)
+
+        points = self.get_points()
+        if point_label_func == 'cluster_labels':
+            point_label_func = lambda x: "" if x['type'] != 'cluster' else str(x['cluster_id'])
+
+        for (x,y), point in points.items():
+            if orientation in ['left', 'right']:
+                x,y = y,x
+            fillcolor = 'white' if point['type'] in ['leaf', 'subcluster'] else point['color']
+            edgecolor = point['color']
+            point = dict(
+                type="scatter",
+                x=[x],
+                y=[y],
+                mode="markers",
+                marker=dict(color=to_hex(fillcolor), size=14, line=dict(width=2, color=to_hex(edgecolor))),
+                text=point_label_func(point) if point_label_func is not None else "",
+                hoverinfo="text",
+                hovertext="Hovertext"
+            )
+            
+            point_traces.append(point)
+        
+        return point_traces
+
+            
