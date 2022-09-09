@@ -1,3 +1,4 @@
+import collections
 from plotly.graph_objs import graph_objs
 import numpy as np
 from matplotlib.colors import to_hex
@@ -91,8 +92,6 @@ class PlotlyFeatures:
             "tickmode": "array",
             "tickvals": ordered_leaf_positions,
         })
-        if label_axis == 'xaxis':
-            layout['xaxis']['tickangle'] = 90
 
         #deal with reversed axis
         if orientation == 'bottom':
@@ -128,29 +127,45 @@ class PlotlyFeatures:
     def get_point_traces(self, orientation, point_trace_kwargs, point_label_func, point_hover_func):
 
         point_traces = []
-        used_point_kwargs = {'markersize': 14}
+        used_point_kwargs = {
+            'type': 'scatter',
+            'mode': 'markers+text',
+            'hoverinfo' : 'text',
+            'textfont_size': 8,
+            'textfont_color': 'white'
+        }
         used_point_kwargs.update(point_trace_kwargs)
 
         points = self.get_points()
         if point_label_func == 'cluster_labels':
-            point_label_func = lambda x: "" if x['type'] != 'cluster' else str(x['cluster_id'])
+            point_label_func = lambda x: "" if x['type'] != 'cluster' else f"<b>{x['cluster_id']}</b>"
 
         for (x,y), point in points.items():
             if orientation in ['left', 'right']:
                 x,y = y,x
             fillcolor = 'white' if point['type'] in ['leaf', 'subcluster'] else point['color']
             edgecolor = point['color']
+
             point = dict(
-                type="scatter",
                 x=[x],
                 y=[y],
-                mode="markers",
-                marker=dict(color=to_hex(fillcolor), size=14, line=dict(width=2, color=to_hex(edgecolor))),
+                marker=dict(
+                    color=to_hex(fillcolor), 
+                    size=14, 
+                    line=dict(
+                        width=2, 
+                        color=to_hex(edgecolor)
+                    )),
                 text=point_label_func(point) if point_label_func is not None else "",
-                hoverinfo="text",
-                hovertext="Hovertext"
+                hovertext= point_hover_func(point) if point_hover_func is not None else "",
             )
-            
+
+            for key,val in used_point_kwargs.items():
+                if isinstance(val, collections.abc.Mapping) and key in point:
+                    point[key].update(val)
+                else:
+                    point[key] = val
+                            
             point_traces.append(point)
         
         return point_traces
