@@ -38,13 +38,11 @@ class BaseDendro():
             self.nodelist = nodelist
         return self.rootnode, self.nodelist
 
-    def show_counts(self) -> callable:
+    def get_counts(self) -> callable:
         _, nodelist = self.get_tree()
         
         def labeller(id):        
-            #grab first real leaf node of the passed id	
-            leaf_nodes = nodelist[id].pre_order(lambda x: x.id if x.is_leaf() else None)	
-            return len(leaf_nodes)
+            return nodelist[id].get_count()
             
         return labeller
 
