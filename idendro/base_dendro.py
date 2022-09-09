@@ -1,4 +1,3 @@
-from platform import node
 import scipy.cluster.hierarchy as sch
 import numpy as np
 
