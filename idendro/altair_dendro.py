@@ -48,7 +48,8 @@ class AltairFeatures:
             alt.X('x', title=None),
             alt.Y('y', title=None, scale=alt.Scale(reverse=True)),
             alt.Color('color', legend=None),
-            alt.Detail('detail')
+            alt.Detail('detail'),
+            alt.Order('order')
         )
 
         if show_points:
@@ -72,10 +73,10 @@ class AltairFeatures:
         trace_list = []
 
         for i, (xs, ys, color) in enumerate(zip(xcoords, ycoords, self.link_colors)):
-            line_segments = zip(xs, ys, [color]*4, [i]*4)
+            line_segments = zip(xs, ys, [color]*4, [i]*4, [1,2,3,4])
             trace_list += line_segments
 
-        trace_df = pd.DataFrame(trace_list, columns = ['x', 'y', 'color', 'detail'])
+        trace_df = pd.DataFrame(trace_list, columns = ['x', 'y', 'color', 'detail', 'order'])
         return trace_df  
     
     def get_point_df(self, orientation, point_trace_kwargs, point_label_func, point_hover_func):
