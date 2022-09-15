@@ -1,0 +1,3 @@
+[submodule "streamlit-comp"]
+	path = streamlit-comp
+	url = git@github.com:streamlit/component-template.git
