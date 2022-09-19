@@ -1,9 +1,46 @@
 import scipy.cluster.hierarchy as sch
 import numpy as np
 import json
+from typing import Type, List, Union
+from dataclasses import dataclass, is_dataclass, asdict
 
 
-class NumpyEncoder(json.JSONEncoder):
+@dataclass
+class ClusterNode:
+    x: float
+    y: float
+    edgecolor: str
+    fillcolor: str
+    label: str
+    hovertext: Union[str, List[dict]]
+    size: float = 14.0
+    labelsize: float = 8.0
+    labelcolor: str = "white"
+
+
+@dataclass
+class ClusterLink:
+    x: List[float]
+    y: List[float]
+    fillcolor: str
+    size: float = 1.0
+
+
+@dataclass
+class AxisLabel:
+    x: float
+    label: str
+    labelsize: float = 8.0
+
+
+@dataclass
+class Dendrogram:
+    axis_labels: List[AxisLabel]
+    links: List[ClusterLink]
+    nodes: List[ClusterNode]
+
+
+class FullJSONEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, np.integer):
             return int(obj)
@@ -11,6 +48,8 @@ class NumpyEncoder(json.JSONEncoder):
             return float(obj)
         if isinstance(obj, np.ndarray):
             return obj.tolist()
+        if is_dataclass(obj):
+                return asdict(obj)
         return json.JSONEncoder.default(self, obj)
 
 
@@ -184,41 +223,49 @@ class BaseDendro:
         Y = self.dcoord.flatten()
         return np.sort(X[Y == 0.0])
 
-    def to_data(
-        self,
-        show_points=False,
-        point_label_func="cluster_labels",
-        point_hover_func=None,
-    ):
+    def get_cluster_links(self) -> List[ClusterLink]:
+        return [
+            ClusterLink(x=x, y=y, fillcolor=color)
+            for x, y, color in zip(self.icoord, self.dcoord, self.link_colors)
+        ]
 
+    def get_axis_labels(self) -> List[AxisLabel]:
+        return [
+            AxisLabel(label =  l, x = x)
+            for x, l in zip(self.get_ordered_leaf_positions(), self.ordered_leaf_labels)
+        ]    
+
+    def initialize(self):
         if self.icoord is None:
             self.set_default_dendrogram()
 
-        links = []
 
-        for x, y, color in zip(self.icoord, self.dcoord, self.link_colors):
-            links.append({"x": x, "y": y, "color": color})
+    def to_data(
+        self,
+        show_nodes=False,
+        node_label_func="cluster_labels",
+        node_hover_func=None,
+    ) -> Dendrogram:
 
-        axis_labels = [
-            {"label": l, "x": x}
-            for x, l in zip(self.get_ordered_leaf_positions(), self.ordered_leaf_labels)
-        ]
+        self.initialize()
 
-        if show_points:
-            points = self.get_point_data(
-                point_label_func=point_label_func, point_hover_func=point_hover_func
+        links = self.get_cluster_links()
+        axis_labels = self.get_axis_labels()
+        nodes = []
+        
+        if show_nodes:
+            nodes = self.get_cluster_nodes(
+                node_label_func=node_label_func, node_hover_func=node_hover_func
             )
-        else:
-            points = []
+            
+        return Dendrogram(links = links, axis_labels = axis_labels, nodes =  nodes)
 
-        return {"links": links, "axis_labels": axis_labels, "points": points}
-
-    def get_point_data(self, point_label_func, point_hover_func):
-        point_traces = []
+    def get_cluster_nodes(self, node_label_func, node_hover_func) -> List[ClusterNode]:
+        node_list = []
 
         points = self.get_points()
-        if point_label_func == "cluster_labels":
-            point_label_func = (
+        if node_label_func == "cluster_labels":
+            node_label_func = (
                 lambda x: "" if x["type"] != "cluster" else x["cluster_id"]
             )
 
@@ -228,32 +275,32 @@ class BaseDendro:
             )
             edgecolor = point["color"]
 
-            p = dict(
+            p = ClusterNode(
                 x=x,
                 y=y,
                 edgecolor=edgecolor,
                 fillcolor=fillcolor,
-                label=point_label_func(point) if point_label_func is not None else "",
-                hovertext=point_hover_func(point)
-                if point_hover_func is not None
+                label=node_label_func(point) if node_label_func is not None else "",
+                hovertext=node_hover_func(point)
+                if node_hover_func is not None
                 else "",
             )
 
-            point_traces.append(p)
+            node_list.append(p)
 
-        return point_traces
+        return node_list
 
     def to_json(
         self,
-        show_points=False,
-        point_label_func="cluster_labels",
-        point_hover_func=None,
+        show_nodes=False,
+        node_label_func="cluster_labels",
+        node_hover_func=None,
     ):
 
-        d_data = self.to_data(
-            show_points=show_points,
-            point_hover_func=point_hover_func,
-            point_label_func=point_label_func,
+        dendrogram = self.to_data(
+            show_nodes=show_nodes,
+            node_hover_func=node_hover_func,
+            node_label_func=node_label_func,
         )
 
-        return json.dumps(d_data, cls=NumpyEncoder)
+        return json.dumps(dendrogram, cls=FullJSONEncoder)
