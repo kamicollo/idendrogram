@@ -258,7 +258,7 @@ class BaseDendro:
                 node_label_func=node_label_func, node_hover_func=node_hover_func
             )
             
-        return Dendrogram(links = links, axis_labels = axis_labels, nodes =  nodes)
+        return Dendrogram(links = links, axis_labels = axis_labels, nodes = nodes)
 
     def get_cluster_nodes(self, node_label_func, node_hover_func) -> List[ClusterNode]:
         node_list = []

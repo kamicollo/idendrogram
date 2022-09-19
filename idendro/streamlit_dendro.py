@@ -1,7 +1,6 @@
 import os
 import streamlit.components.v1 as components
 import json
-from .base_dendro import Dendrogram
 
 
 _RELEASE = False
@@ -36,8 +35,6 @@ class StreamlitFeatures():
             frontend.)
 
         """
-        component_value = _component_func(data=self.Dendrogram, key=key, default=0)
-
-        # We could modify the value returned from the component if we wanted.
-        # There's no need to do this in our simple example - but it's an option.
+        dendrogram = self.to_json()
+        component_value = _component_func(data=dendrogram, key=key, default=0)
         return component_value
