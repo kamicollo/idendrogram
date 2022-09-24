@@ -3,7 +3,7 @@ import numpy as np
 import json
 from typing import Type, List, Union
 from dataclasses import dataclass, is_dataclass, asdict
-
+from matplotlib.colors import to_hex
 
 @dataclass
 class ClusterNode:
@@ -225,7 +225,7 @@ class BaseDendro:
 
     def get_cluster_links(self) -> List[ClusterLink]:
         return [
-            ClusterLink(x=x, y=y, fillcolor=color)
+            ClusterLink(x=x, y=y, fillcolor=to_hex(color))
             for x, y, color in zip(self.icoord, self.dcoord, self.link_colors)
         ]
 
@@ -278,8 +278,8 @@ class BaseDendro:
             p = ClusterNode(
                 x=x,
                 y=y,
-                edgecolor=edgecolor,
-                fillcolor=fillcolor,
+                edgecolor=to_hex(edgecolor),
+                fillcolor=to_hex(fillcolor),
                 label=node_label_func(point) if node_label_func is not None else "",
                 hovertext=node_hover_func(point)
                 if node_hover_func is not None
