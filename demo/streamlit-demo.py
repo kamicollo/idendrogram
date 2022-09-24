@@ -6,6 +6,7 @@ path = Path("./").absolute().parent
 sys.path.insert(1, str(path))
 
 import streamlit as st
+st.set_page_config(layout="wide")
 from demo_func import DemoData
 import numpy as np
 import scipy.cluster.hierarchy as sch
@@ -38,5 +39,9 @@ threshold = 70
 cluster_assignments = sch.fcluster(model, threshold, criterion='distance')
 
 idd = idendro.Idendro(model, cluster_assignments, threshold)
-component_value = idd.to_streamlit(key='o', width=950, height=800)
+idd.dendrogram_kwargs.update({'leaf_label_func': idd.show_only_cluster_labels()})
+
+orientation = st.selectbox('orientation', ['top', 'bottom', 'right', 'left'], index=0)
+component_value = idd.to_streamlit(key='o', width=1000, height=600, orientation=orientation, scale_type='log')
 st.markdown("You've šmiked %s times!" % int(component_value))
+

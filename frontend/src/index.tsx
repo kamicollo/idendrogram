@@ -1,5 +1,6 @@
 import { Streamlit, RenderData } from "streamlit-component-lib"
 import * as d3 from 'd3'
+import * as userfuncs from './userfuncs'
 
 interface AxisLabel {
     x: number
@@ -7,11 +8,17 @@ interface AxisLabel {
     labelsize: number
 }
 
+interface Coord {
+    x: number
+    y: number
+}
+
 interface ClusterLink {
     x: number[]
     y: number[]
     fillcolor: string
     size: number
+    data: Coord[]
 }
 
 interface ClusterNode {
@@ -58,12 +65,18 @@ interface Margin {
     left: number
 }
 
-interface plot extends d3.Selection<SVGGElement, unknown, HTMLElement, any> {
-    
-}
+interface plot extends d3.Selection<SVGGElement, unknown, HTMLElement, any> {}
+
+interface scaleLinear extends d3.ScaleLinear<number, number, never> {}
+
+interface scaleLog extends d3.ScaleSymLog<number, number, number | undefined> {}
 
 function create_container(dimensions: Dimensions): plot {
 
+
+    if (d3.select("#idendro")) {
+        d3.select("#idendro").remove()
+    }
     // append svg element to the body of the page
     // set dimensions and position of the svg element
     let svg = d3
@@ -80,29 +93,115 @@ function create_container(dimensions: Dimensions): plot {
     return plot
 }
 
-function create_axis(plot: plot, dimensions: Dimensions, dendrogram: Dendrogram) {
+function create_axis(plot: plot, dimensions: Dimensions, dendrogram: Dendrogram, scale_type: string) {
 
-    //create X-axis
-    var xScale = d3.scaleLinear()        
-    xScale.domain(dendrogram.x_limits).range([0, dimensions.innerWidth])
-    var xAxis = d3.axisBottom(xScale)
+    let label_limits = dendrogram.x_limits
+    let value_limits = dendrogram.y_limits
+
+    let label_range, value_range = [0, 0]
+    let label_axis_func, value_axis_func: CallableFunction
+    let label_axis_transform = [0, 0]
+    let value_axis_transform = [0, 0]
+
+    //handle orientation impact on scale ranges & positioning
+    if (dimensions.orientation === Orientation.top || dimensions.orientation === Orientation.bottom) {
+        label_range = [0, dimensions.innerWidth]
+        value_axis_func = d3.axisLeft
+        value_axis_transform = [0, 0]
+        if (dimensions.orientation === Orientation.top) {
+            value_range = [dimensions.innerHeight, 0]
+            label_axis_func = d3.axisBottom
+            label_axis_transform = [0, dimensions.innerHeight]
+        } else {
+            value_range = [0, dimensions.innerHeight]
+            label_axis_func = d3.axisTop
+        }
+    } else {
+        value_axis_func = d3.axisBottom
+        label_range = [dimensions.innerHeight, 0]
+        value_axis_transform = [0, dimensions.innerHeight]
+        if (dimensions.orientation === Orientation.left) {
+            value_range = [dimensions.innerWidth, 0]
+            label_axis_func = d3.axisRight
+            label_axis_transform = [dimensions.innerWidth, 0]
+        } else {            
+            value_range = [0, dimensions.innerWidth]
+            label_axis_func = d3.axisLeft            
+        }
+    }
+
+    //get label-axis positions and labels
+    let label_axis_pos = dendrogram.axis_labels.map((x) => x.x)
+    let label_axis_label = dendrogram.axis_labels.map((x) => x.label)
+
+    //create label-axis
+    let labelScale: scaleLinear | scaleLog
+    labelScale = d3.scaleLinear()
+        .domain(label_limits).range(label_range)
+
+    let labelAxisGenerator = label_axis_func(labelScale)
+        .tickValues(label_axis_pos)
+        .tickFormat((d, i) => label_axis_label[i])
+        .tickSize(3)
+
+    plot.append("g")
+        .attr("id", "label-axis")
+        .attr("transform", "translate(" + label_axis_transform[0] + "," + label_axis_transform[1] + ")")
+        .call(labelAxisGenerator)
+
+    //create value-axis
+    let valueScale: scaleLinear | scaleLog
+
+    if (scale_type === 'log') {
+        valueScale = d3.scaleSymlog().constant(1)
+    } else {
+        valueScale = d3.scaleLinear()
+    }
     
-    //create y-axis
-    var yScale = d3.scaleLinear()
-    yScale.domain(dendrogram.y_limits).range([dimensions.innerHeight, 0])
-    var yAxis = d3.axisLeft(yScale)
+    valueScale.domain(value_limits)
+    valueScale.range(value_range)
 
-    //add X-axis to plot
-    let xg = plot.append("g")
-        .attr("id", "x-axis-lines")            
-        .attr("transform", "translate(0," + dimensions.innerHeight + ")")
-        .call(xAxis)
 
-    //add Y-axis to plot
-    let yg = plot.append("g")
-    .attr("id", "y-axis-lines")            
-    //.attr("transform", "translate(" + padding.left + ",0)")
-    .call(yAxis)
+    let valueAxisGenerator = value_axis_func(valueScale)
+
+    plot.append("g")
+        .attr("id", "value-axis")
+        .attr("transform", "translate(" + value_axis_transform[0] + "," + value_axis_transform[1] + ")")
+        .call(valueAxisGenerator)
+    
+    return [labelScale, valueScale]
+}
+
+function draw_links(plot: plot, links: ClusterLink[], xScale: scaleLinear | scaleLog, yScale: scaleLinear | scaleLog) {
+
+    plot.selectAll(".line")
+      .data(links)
+      .enter()
+      .append("path")
+        .attr("fill", "none")
+        .attr("stroke", (d) => d.fillcolor)
+        .attr("stroke-width", 1.5)
+        .attr("d", function(d){
+          return d3.line<Coord>()
+            .x((d) => xScale(d.x) || 0)
+            .y((d) => yScale(d.y) || 0)
+            (d.data)
+        })
+
+}
+
+function draw_nodes(plot: plot, nodes: ClusterNode[], xScale: scaleLinear | scaleLog, yScale: scaleLinear | scaleLog) {
+
+    plot.selectAll(".node")
+      .data(nodes)
+      .enter()
+      .append("circle")
+        .attr("fill", (d) => d.fillcolor)
+        .attr("stroke", (d) => d.edgecolor)
+        .attr("stroke-width", 1.5)
+        .attr("cx", (d) => xScale(d.x) || 0)
+		.attr("cy", (d) => yScale(d.y) || 0)
+        .attr('r', (d) => d.size /2)
 }
 
 /* // Add a click handler to our button. It will send data back to Streamlit.
@@ -125,22 +224,56 @@ function onRender(event: Event): void {
     // Get the RenderData from the event
     const data = (event as CustomEvent<RenderData>).detail
 
-    var dendrogram: Dendrogram = data.args['data']
-    let margin: Margin = { top: 20, right: 10, bottom: 20, left: 50 }    
+    let dendrogram: Dendrogram = data.args['data']
+    let scaleType = data.args['scale_type']
+    console.log(dendrogram)
+    let margin: Margin = { top: 50, right: 50, bottom: 50, left: 50 }
+    let label_margin_size = data.args['label_margin']
     let dimensions: Dimensions = {
-        height:  data.args['height'],
+        height: data.args['height'],
         width: data.args['width'],
         margin: margin,
         innerHeight: 0,
         innerWidth: 0,
         orientation: data.args['orientation']
     }
+
+    let margin_map = { 'top': Orientation.bottom, 'bottom': Orientation.top, 'left': Orientation.right, 'right': Orientation.left }
+    let label_margin: Orientation = margin_map[dimensions.orientation]
+
+    dimensions.margin[label_margin] = label_margin_size
     dimensions.innerHeight = dimensions.height - dimensions.margin.top - dimensions.margin.bottom
     dimensions.innerWidth = dimensions.width - dimensions.margin.left - dimensions.margin.right
-    
-    let plot = create_container(dimensions)
-    create_axis(plot, dimensions, dendrogram)
 
+    let plot = create_container(dimensions)
+    let scales = create_axis(plot, dimensions, dendrogram, scaleType)
+
+    let xScale: scaleLinear | scaleLog
+    let yScale: scaleLinear | scaleLog
+
+    if (dimensions.orientation === Orientation.top || dimensions.orientation === Orientation.bottom) {        
+        xScale = scales[0]
+        yScale = scales[1]
+        dendrogram.links.forEach(link => {
+            link.data = link.x.map(function(x, i) { return {'x': x, 'y': link.y[i]} })
+        });        
+    } else {
+        yScale = scales[0]
+        xScale = scales[1]        
+        dendrogram.links.forEach(link => {
+            link.data = link.x.map(function(x, i) { return {'y': x, 'x': link.y[i]} })            
+        });
+        dendrogram.nodes.forEach(node => {
+            let x = node.x
+            node.x = node.y
+            node.y = x            
+        });
+    }
+    
+    draw_links(plot, dendrogram.links, xScale, yScale)
+    draw_nodes(plot, dendrogram.nodes, xScale, yScale)
+
+    userfuncs.postprocess(d3, dimensions, dendrogram)
     Streamlit.setFrameHeight()
 }
 
