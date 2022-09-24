@@ -1,29 +1,120 @@
 import { Streamlit, RenderData } from "streamlit-component-lib"
+import * as d3 from 'd3'
 
-// Add text and a button to the DOM. (You could also add these directly
-// to index.html.)
-const span = document.body.appendChild(document.createElement("span"))
-const textNode = span.appendChild(document.createTextNode(""))
-const button = span.appendChild(document.createElement("button"))
-button.textContent = "Click Me!"
+interface AxisLabel {
+    x: number
+    label: string
+    labelsize: number
+}
 
-// Add a click handler to our button. It will send data back to Streamlit.
+interface ClusterLink {
+    x: number[]
+    y: number[]
+    fillcolor: string
+    size: number
+}
+
+interface ClusterNode {
+    x: number
+    y: number
+    edgecolor: string
+    fillcolor: string
+    label: string
+    hovertext: Object[] | string
+    size: number
+    labelsize: number
+    labelcolor: string
+
+}
+
+interface Dendrogram {
+    axis_labels: AxisLabel[]
+    links: ClusterLink[]
+    nodes: ClusterNode[]
+    x_limits: [number, number]
+    y_limits: [number, number]
+}
+
+interface Dimensions {
+    margin: Margin
+    height: number
+    width: number
+    innerHeight: number
+    innerWidth: number,
+    orientation: Orientation
+}
+
+enum Orientation {
+    top = "top",
+    bottom = "bottom",
+    right = "right",
+    left = "left"
+}
+
+interface Margin {
+    top: number
+    right: number
+    bottom: number
+    left: number
+}
+
+interface plot extends d3.Selection<SVGGElement, unknown, HTMLElement, any> {
+    
+}
+
+function create_container(dimensions: Dimensions): plot {
+
+    // append svg element to the body of the page
+    // set dimensions and position of the svg element
+    let svg = d3
+        .select("body")
+        .append("svg")
+        .attr("id", "idendro")
+        .attr("width", dimensions.width)
+        .attr("height", dimensions.height)
+
+    let plot = svg.append("g")
+        .attr("transform", "translate(" + dimensions.margin.left + "," + dimensions.margin.top + ")")
+        .attr("id", "idendro-container");
+
+    return plot
+}
+
+function create_axis(plot: plot, dimensions: Dimensions, dendrogram: Dendrogram) {
+
+    //create X-axis
+    var xScale = d3.scaleLinear()        
+    xScale.domain(dendrogram.x_limits).range([0, dimensions.innerWidth])
+    var xAxis = d3.axisBottom(xScale)
+    
+    //create y-axis
+    var yScale = d3.scaleLinear()
+    yScale.domain(dendrogram.y_limits).range([dimensions.innerHeight, 0])
+    var yAxis = d3.axisLeft(yScale)
+
+    //add X-axis to plot
+    let xg = plot.append("g")
+        .attr("id", "x-axis-lines")            
+        .attr("transform", "translate(0," + dimensions.innerHeight + ")")
+        .call(xAxis)
+
+    //add Y-axis to plot
+    let yg = plot.append("g")
+    .attr("id", "y-axis-lines")            
+    //.attr("transform", "translate(" + padding.left + ",0)")
+    .call(yAxis)
+}
+
+/* // Add a click handler to our button. It will send data back to Streamlit.
 let numClicks = 0
-let isFocused = false
+
 button.onclick = function(): void {
   // Increment numClicks, and pass the new value back to
   // Streamlit via `Streamlit.setComponentValue`.
   numClicks += 1
   Streamlit.setComponentValue(numClicks)
-}
+} */
 
-button.onfocus = function(): void {
-  isFocused = true
-}
-
-button.onblur = function(): void {
-  isFocused = false
-}
 
 /**
  * The component's render function. This will be called immediately after
@@ -31,36 +122,26 @@ button.onblur = function(): void {
  * component gets new data from Python.
  */
 function onRender(event: Event): void {
-  // Get the RenderData from the event
-  const data = (event as CustomEvent<RenderData>).detail
+    // Get the RenderData from the event
+    const data = (event as CustomEvent<RenderData>).detail
 
-  // Maintain compatibility with older versions of Streamlit that don't send
-  // a theme object.
-  if (data.theme) {
-    // Use CSS vars to style our button border. Alternatively, the theme style
-    // is defined in the data.theme object.
-    const borderStyling = `1px solid var(${
-      isFocused ? "--primary-color" : "gray"
-    })`
-    button.style.border = borderStyling
-    button.style.outline = borderStyling
-  }
+    var dendrogram: Dendrogram = data.args['data']
+    let margin: Margin = { top: 20, right: 10, bottom: 20, left: 50 }    
+    let dimensions: Dimensions = {
+        height:  data.args['height'],
+        width: data.args['width'],
+        margin: margin,
+        innerHeight: 0,
+        innerWidth: 0,
+        orientation: data.args['orientation']
+    }
+    dimensions.innerHeight = dimensions.height - dimensions.margin.top - dimensions.margin.bottom
+    dimensions.innerWidth = dimensions.width - dimensions.margin.left - dimensions.margin.right
+    
+    let plot = create_container(dimensions)
+    create_axis(plot, dimensions, dendrogram)
 
-  // Disable our button if necessary.
-  button.disabled = data.disabled
-
-  // RenderData.args is the JSON dictionary of arguments sent from the
-  // Python script.
-  let name = data.args["name"]
-
-  // Show "Hello, name!" with a non-breaking space afterwards.
-  textNode.textContent = `Hello, ${name}! ` + String.fromCharCode(160)
-
-  // We tell Streamlit to update our frameHeight after each render event, in
-  // case it has changed. (This isn't strictly necessary for the example
-  // because our height stays fixed, but this is a low-cost function, so
-  // there's no harm in doing it redundantly.)
-  Streamlit.setFrameHeight()
+    Streamlit.setFrameHeight()
 }
 
 // Attach our `onRender` handler to Streamlit's render event.

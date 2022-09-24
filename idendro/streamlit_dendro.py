@@ -1,6 +1,7 @@
 import os
 import streamlit.components.v1 as components
 import json
+import numpy as np
 
 
 _RELEASE = False
@@ -16,8 +17,8 @@ else:
     _component_func = components.declare_component("idendro", path=build_dir)
 
 
-class StreamlitFeatures():
-    def to_streamlit(self, key=None):
+class StreamlitFeatures:
+    def to_streamlit(self, key=None, height=950, width=800, orientation="top"):
         """Create a new instance of "idendro".
 
         Parameters
@@ -35,6 +36,15 @@ class StreamlitFeatures():
             frontend.)
 
         """
-        dendrogram = self.to_json()
-        component_value = _component_func(data=dendrogram, key=key, default=0)
+        dendrogram = json.loads(self.to_json())
+        dendrogram["x_limits"] = (np.min(self.icoord), np.max(self.icoord))
+        dendrogram["y_limits"] = (np.min(self.dcoord), np.max(self.dcoord))
+        component_value = _component_func(
+            data=dendrogram,
+            key=key,
+            height=height,
+            width=width,
+            orientation=orientation,
+            default=0,
+        )
         return component_value

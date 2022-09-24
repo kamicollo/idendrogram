@@ -1,5 +1,6 @@
-import os, sys
+import sys
 from pathlib import Path
+from turtle import width
 
 path = Path("./").absolute().parent
 sys.path.insert(1, str(path))
@@ -8,10 +9,9 @@ import streamlit as st
 from demo_func import DemoData
 import numpy as np
 import scipy.cluster.hierarchy as sch
-
-st.write(str(path))
-import idendro
+import idendro 
 import importlib as imp
+
 
 signals_to_generate = 100
 network_cluster_count = 12
@@ -38,6 +38,5 @@ threshold = 70
 cluster_assignments = sch.fcluster(model, threshold, criterion='distance')
 
 idd = idendro.Idendro(model, cluster_assignments, threshold)
-component_value = idd.to_streamlit()
-component_value = idd.to_streamlit(key='o')
+component_value = idd.to_streamlit(key='o', width=950, height=800)
 st.markdown("You've šmiked %s times!" % int(component_value))
