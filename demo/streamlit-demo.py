@@ -42,6 +42,6 @@ idd = idendro.Idendro(model, cluster_assignments, threshold)
 idd.dendrogram_kwargs.update({'leaf_label_func': idd.show_only_cluster_labels()})
 
 orientation = st.selectbox('orientation', ['top', 'bottom', 'right', 'left'], index=0)
-component_value = idd.to_streamlit(key='o', width=1000, height=600, orientation=orientation, scale_type='log')
+component_value = idd.to_streamlit(key='o', width=1000, height=1000, orientation=orientation, scale_type='log')
 st.markdown("You've šmiked %s times!" % int(component_value))
 

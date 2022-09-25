@@ -28,7 +28,7 @@ interface ClusterNode {
     fillcolor: string
     label: string
     hovertext: Object[] | string
-    size: number
+    radius: number
     labelsize: number
     labelcolor: string
 
@@ -172,15 +172,16 @@ function create_axis(plot: plot, dimensions: Dimensions, dendrogram: Dendrogram,
     return [labelScale, valueScale]
 }
 
-function draw_links(plot: plot, links: ClusterLink[], xScale: scaleLinear | scaleLog, yScale: scaleLinear | scaleLog) {
+function draw_links(link_container: plot, links: ClusterLink[], xScale: scaleLinear | scaleLog, yScale: scaleLinear | scaleLog) {
 
-    plot.selectAll(".line")
+    link_container.selectAll(".link")
       .data(links)
       .enter()
       .append("path")
         .attr("fill", "none")
         .attr("stroke", (d) => d.fillcolor)
         .attr("stroke-width", 1.5)
+        .attr("class", "link")
         .attr("d", function(d){
           return d3.line<Coord>()
             .x((d) => xScale(d.x) || 0)
@@ -190,18 +191,29 @@ function draw_links(plot: plot, links: ClusterLink[], xScale: scaleLinear | scal
 
 }
 
-function draw_nodes(plot: plot, nodes: ClusterNode[], xScale: scaleLinear | scaleLog, yScale: scaleLinear | scaleLog) {
+function draw_nodes(node_container: plot, nodes: ClusterNode[], xScale: scaleLinear | scaleLog, yScale: scaleLinear | scaleLog) {
 
-    plot.selectAll(".node")
-      .data(nodes)
-      .enter()
-      .append("circle")
+    var elem = node_container.selectAll(".node")
+        .data(nodes)
+        .enter()        
+	    .append("g")
+	    .attr("transform", function(d){return "translate("+ xScale(d.x) +"," + yScale(d.y) + ")"})
+        .attr("class", "node")
+    
+    elem.append("circle")
         .attr("fill", (d) => d.fillcolor)
         .attr("stroke", (d) => d.edgecolor)
-        .attr("stroke-width", 1.5)
-        .attr("cx", (d) => xScale(d.x) || 0)
-		.attr("cy", (d) => yScale(d.y) || 0)
-        .attr('r', (d) => d.size /2)
+        .attr("stroke-width", 1.5)        
+        .attr('r', (d) => d.radius)  
+
+    elem.append("text")
+          .attr("dx", (d) => 0)
+          .text((d) => d.label)
+          .attr("fill", (d) => d.labelcolor)
+          .attr("font-size", (d) => d.labelsize)
+          .attr("alignment-baseline", "central")
+          .attr("text-anchor", "middle")
+          .attr("font-weight", "bold")
 }
 
 /* // Add a click handler to our button. It will send data back to Streamlit.
@@ -269,9 +281,12 @@ function onRender(event: Event): void {
             node.y = x            
         });
     }
+
+    let link_container = plot.append('g').attr("class", "link-container")
+    let node_container = plot.append('g').attr("class", "node-container")
     
-    draw_links(plot, dendrogram.links, xScale, yScale)
-    draw_nodes(plot, dendrogram.nodes, xScale, yScale)
+    draw_links(link_container, dendrogram.links, xScale, yScale)
+    draw_nodes(node_container, dendrogram.nodes, xScale, yScale)
 
     userfuncs.postprocess(d3, dimensions, dendrogram)
     Streamlit.setFrameHeight()

@@ -13,8 +13,8 @@ class ClusterNode:
     fillcolor: str
     label: str
     hovertext: Union[str, List[dict]]
-    size: float = 14.0
-    labelsize: float = 8.0
+    radius: float = 7.0
+    labelsize: float = 10.0
     labelcolor: str = "white"
 
 
@@ -271,7 +271,7 @@ class BaseDendro:
 
         for (x, y), point in points.items():
             fillcolor = (
-                "white" if point["type"] in ["leaf", "subcluster"] else point["color"]
+                "#fff" if (point["type"] in ["leaf", "subcluster"]) and (y != 0) else point["color"]
             )
             edgecolor = point["color"]
 
@@ -283,8 +283,11 @@ class BaseDendro:
                 label=node_label_func(point) if node_label_func is not None else "",
                 hovertext=node_hover_func(point)
                 if node_hover_func is not None
-                else "",
+                else "",                
             )
+
+            if y == 0:
+                p.radius = 4
 
             node_list.append(p)
 

@@ -37,7 +37,9 @@ class StreamlitFeatures:
 
         """
         dendrogram = json.loads(self.to_json(show_nodes=True))        
-        dendrogram["x_limits"] = (np.min(self.icoord), np.max(self.icoord))
+        xmin, xmax = np.min(self.icoord), np.max(self.icoord)
+
+        dendrogram["x_limits"] = (xmin - (xmax - xmin) * 0.05, xmax + (xmax - xmin) * 0.05)
         dendrogram["y_limits"] = (np.min(self.dcoord), np.max(self.dcoord))
         component_value = _component_func(
             data=dendrogram,
