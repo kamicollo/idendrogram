@@ -41,7 +41,19 @@ cluster_assignments = sch.fcluster(model, threshold, criterion='distance')
 idd = idendro.Idendro(model, cluster_assignments, threshold)
 idd.dendrogram_kwargs.update({'leaf_label_func': idd.show_only_cluster_labels()})
 
+def hovertext_func(point):
+    _, tree = idd.get_tree()
+
+    count = tree[point['id']].get_count()
+    nodes = tree[point['id']].pre_order(lambda x: x.get_id() if x.is_leaf() else None)  
+    sds = impaired_signals[nodes, :].std(axis=0)       
+    return {
+        "Number of items": count,
+        "Type": point['type'],
+        "Max st dev observed": sds.max().round(2)
+    }
+
 orientation = st.selectbox('orientation', ['top', 'bottom', 'right', 'left'], index=0)
-component_value = idd.to_streamlit(key='o', width=1000, height=1000, orientation=orientation, scale_type='log')
-st.markdown("You've šmiked %s times!" % int(component_value))
+component_value = idd.to_streamlit(key='o', width=1000, height=1000, orientation=orientation, scale_type='log', node_hover_func=hovertext_func)
+st.write(component_value)
 

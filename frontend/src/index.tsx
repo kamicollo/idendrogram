@@ -1,6 +1,7 @@
 import { Streamlit, RenderData } from "streamlit-component-lib"
 import * as d3 from 'd3'
 import * as userfuncs from './userfuncs'
+import './idendro.css'
 
 interface AxisLabel {
     x: number
@@ -27,7 +28,7 @@ interface ClusterNode {
     edgecolor: string
     fillcolor: string
     label: string
-    hovertext: Object[] | string
+    hovertext: Object | string
     radius: number
     labelsize: number
     labelcolor: string
@@ -65,11 +66,11 @@ interface Margin {
     left: number
 }
 
-interface plot extends d3.Selection<SVGGElement, unknown, HTMLElement, any> {}
+interface plot extends d3.Selection<SVGGElement, unknown, HTMLElement, any> { }
 
-interface scaleLinear extends d3.ScaleLinear<number, number, never> {}
+interface scaleLinear extends d3.ScaleLinear<number, number, never> { }
 
-interface scaleLog extends d3.ScaleSymLog<number, number, number | undefined> {}
+interface scaleLog extends d3.ScaleSymLog<number, number, number | undefined> { }
 
 function create_container(dimensions: Dimensions): plot {
 
@@ -124,9 +125,9 @@ function create_axis(plot: plot, dimensions: Dimensions, dendrogram: Dendrogram,
             value_range = [dimensions.innerWidth, 0]
             label_axis_func = d3.axisRight
             label_axis_transform = [dimensions.innerWidth, 0]
-        } else {            
+        } else {
             value_range = [0, dimensions.innerWidth]
-            label_axis_func = d3.axisLeft            
+            label_axis_func = d3.axisLeft
         }
     }
 
@@ -157,7 +158,7 @@ function create_axis(plot: plot, dimensions: Dimensions, dendrogram: Dendrogram,
     } else {
         valueScale = d3.scaleLinear()
     }
-    
+
     valueScale.domain(value_limits)
     valueScale.range(value_range)
 
@@ -168,52 +169,112 @@ function create_axis(plot: plot, dimensions: Dimensions, dendrogram: Dendrogram,
         .attr("id", "value-axis")
         .attr("transform", "translate(" + value_axis_transform[0] + "," + value_axis_transform[1] + ")")
         .call(valueAxisGenerator)
-    
+
     return [labelScale, valueScale]
 }
 
 function draw_links(link_container: plot, links: ClusterLink[], xScale: scaleLinear | scaleLog, yScale: scaleLinear | scaleLog) {
 
     link_container.selectAll(".link")
-      .data(links)
-      .enter()
-      .append("path")
+        .data(links)
+        .enter()
+        .append("path")
         .attr("fill", "none")
-        .attr("stroke", (d) => d.fillcolor)
-        .attr("stroke-width", 1.5)
+        .attr("stroke", (d) => d.fillcolor)        
         .attr("class", "link")
-        .attr("d", function(d){
-          return d3.line<Coord>()
-            .x((d) => xScale(d.x) || 0)
-            .y((d) => yScale(d.y) || 0)
-            (d.data)
+        .attr("d", function (d) {
+            return d3.line<Coord>()
+                .x((d) => xScale(d.x) || 0)
+                .y((d) => yScale(d.y) || 0)
+                (d.data)
         })
 
 }
 
 function draw_nodes(node_container: plot, nodes: ClusterNode[], xScale: scaleLinear | scaleLog, yScale: scaleLinear | scaleLog) {
 
-    var elem = node_container.selectAll(".node")
+    let elem = node_container.selectAll(".node")
         .data(nodes)
-        .enter()        
-	    .append("g")
-	    .attr("transform", function(d){return "translate("+ xScale(d.x) +"," + yScale(d.y) + ")"})
+        .enter()
+        .append("g")
+        .attr("transform", function (d) { return "translate(" + xScale(d.x) + "," + yScale(d.y) + ")" })
         .attr("class", "node")
-    
+
+    let tooltip = d3.select("body")
+        .append("div")
+        .style("opacity", 0)
+        .attr("class", "idendro-tooltip")        
+    .on("mouseover", function(this: HTMLElement, e: MouseEvent, d) {        
+        if (e.target) { 
+            d3.select(this).style("opacity", 1) 
+        }            
+    })
+    .on("mouseleave", function(this: HTMLElement, e: MouseEvent, d) {
+        if (e.target) { 
+            d3.select(this).style("opacity", 0) 
+            d3.select(this).style("display", "none") 
+        }
+    })
+
+    let mouseover = function (this: SVGCircleElement | SVGTextElement, e: MouseEvent, d: ClusterNode) {
+        tooltip.style("opacity", 1)
+        tooltip.style("display", "initial")
+
+        if (typeof(d.hovertext) === 'string') {
+            tooltip.html(d.hovertext)
+        } else {
+            let hovertext: string = ""
+            for (const [key, value] of Object.entries(d.hovertext)) {
+                hovertext += "<strong>"+ key + "</strong>: " + value + "<br>"
+            }
+            tooltip.html(hovertext)                        
+        }
+        
+        if (this.nodeName === 'circle') {
+            d3.select(this).attr("r", d.radius * 1.5)
+        }
+    }
+
+    let mousemove = function (this: SVGCircleElement | SVGTextElement, e: MouseEvent, d: ClusterNode) {
+        tooltip            
+            .style("left", e.x + "px")
+            .style("top", e.y + "px")
+        if (this.nodeName === 'circle') {
+            d3.select(this).attr("r", d.radius * 1.5)
+        }
+    }
+
+
+    let mouseleave = function (this: SVGCircleElement | SVGTextElement, e: MouseEvent, d: ClusterNode) {
+        tooltip
+            .style("opacity", 0)
+        if (this.nodeName === 'circle') {
+            d3.select(this).attr("r", d.radius)
+        }
+    }
+
+    let click = function (this: SVGCircleElement | SVGTextElement, e: MouseEvent, d: ClusterNode) {
+        Streamlit.setComponentValue(d)
+    }
+
     elem.append("circle")
         .attr("fill", (d) => d.fillcolor)
-        .attr("stroke", (d) => d.edgecolor)
-        .attr("stroke-width", 1.5)        
-        .attr('r', (d) => d.radius)  
+        .attr("stroke", (d) => d.edgecolor)        
+        .attr('r', (d) => d.radius)
+        .on("mouseover", mouseover)
+        .on("mouseleave", mouseleave)
+        .on("mousemove", mousemove)
+        .on("click", click)
 
-    elem.append("text")
-          .attr("dx", (d) => 0)
-          .text((d) => d.label)
-          .attr("fill", (d) => d.labelcolor)
-          .attr("font-size", (d) => d.labelsize)
-          .attr("alignment-baseline", "central")
-          .attr("text-anchor", "middle")
-          .attr("font-weight", "bold")
+
+    elem.append("text")        
+        .text((d) => d.label)
+        .attr("fill", (d) => d.labelcolor)
+        .attr("font-size", (d) => d.labelsize)        
+        .on("mouseover", mouseover)
+        .on("mouseleave", mouseleave)
+        .on("mousemove", mousemove)
+        .on("click", click)
 }
 
 /* // Add a click handler to our button. It will send data back to Streamlit.
@@ -263,28 +324,28 @@ function onRender(event: Event): void {
     let xScale: scaleLinear | scaleLog
     let yScale: scaleLinear | scaleLog
 
-    if (dimensions.orientation === Orientation.top || dimensions.orientation === Orientation.bottom) {        
+    if (dimensions.orientation === Orientation.top || dimensions.orientation === Orientation.bottom) {
         xScale = scales[0]
         yScale = scales[1]
         dendrogram.links.forEach(link => {
-            link.data = link.x.map(function(x, i) { return {'x': x, 'y': link.y[i]} })
-        });        
+            link.data = link.x.map(function (x, i) { return { 'x': x, 'y': link.y[i] } })
+        });
     } else {
         yScale = scales[0]
-        xScale = scales[1]        
+        xScale = scales[1]
         dendrogram.links.forEach(link => {
-            link.data = link.x.map(function(x, i) { return {'y': x, 'x': link.y[i]} })            
+            link.data = link.x.map(function (x, i) { return { 'y': x, 'x': link.y[i] } })
         });
         dendrogram.nodes.forEach(node => {
             let x = node.x
             node.x = node.y
-            node.y = x            
+            node.y = x
         });
     }
 
     let link_container = plot.append('g').attr("class", "link-container")
     let node_container = plot.append('g').attr("class", "node-container")
-    
+
     draw_links(link_container, dendrogram.links, xScale, yScale)
     draw_nodes(node_container, dendrogram.nodes, xScale, yScale)
 

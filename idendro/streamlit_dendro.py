@@ -18,7 +18,7 @@ else:
 
 
 class StreamlitFeatures:
-    def to_streamlit(self, key=None, height=950, width=800, orientation="top", label_margin=150, scale_type='linear'):
+    def to_streamlit(self, key=None, height=950, width=800, orientation="top", label_margin=150, scale_type='linear', node_hover_func=None, node_label_func='cluster_labels'):
         """Create a new instance of "idendro".
 
         Parameters
@@ -36,7 +36,7 @@ class StreamlitFeatures:
             frontend.)
 
         """
-        dendrogram = json.loads(self.to_json(show_nodes=True))        
+        dendrogram = json.loads(self.to_json(show_nodes=True, node_hover_func=node_hover_func, node_label_func=node_label_func))
         xmin, xmax = np.min(self.icoord), np.max(self.icoord)
 
         dendrogram["x_limits"] = (xmin - (xmax - xmin) * 0.05, xmax + (xmax - xmin) * 0.05)
