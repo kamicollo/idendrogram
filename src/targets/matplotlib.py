@@ -2,6 +2,9 @@ from scipy.cluster.hierarchy import _plot_dendrogram
 import numpy as np
 import matplotlib.pyplot as plt
 
+class matplotlibConverter():
+    pass
+
 class SciPyFeatures:
 
     def to_scipy(self, 
