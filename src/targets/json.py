@@ -1,7 +1,7 @@
 import json
 from dataclasses import is_dataclass, asdict
 import numpy as np
-from .. import types_classes
+from .. import base_dendro
 
 class FullJSONEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -16,10 +16,14 @@ class FullJSONEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 
-class JSON:
-    def to_json(
-        self: types_classes.BaseProtocol,
-    ) -> str:
-        """ Returns Dendrogram object as JSON string"""
-        dendrogram = self.to_data()
-        return json.dumps(dendrogram, cls=FullJSONEncoder)
+class JSONConverter:
+    def convert(self, d: base_dendro.Dendrogram) -> str:
+        """Returns a JSON form of the dendrogram
+
+        Args:
+            d (base_dendro.Dendrogram): Dendrogram object
+
+        Returns:
+            str: JSON string
+        """
+        return json.dumps(d, cls=FullJSONEncoder)

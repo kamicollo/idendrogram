@@ -1,5 +1,15 @@
 from dataclasses import dataclass, field
-from typing import List, TypedDict, Protocol, Dict, Union
+from typing import List, TypedDict, Dict, Union
+
+@dataclass
+class ScipyDendrogram(TypedDict):
+    color_list: List[str]
+    icoord: List[List[float]]
+    dcoord: List[List[float]]
+    ivl: List[str]
+    leaves: List[int]
+    leaves_color_list: List[str]
+
 
 @dataclass
 class ClusterNode:
@@ -39,19 +49,14 @@ class Dendrogram:
     links: List[ClusterLink]
     nodes: List[ClusterNode]
 
+    def to_json(self) -> str:
+        """Returns a JSON form of the dendrogram
 
-class ScipyDendrogram(TypedDict):
-    color_list: List[str]
-    icoord: List[List[float]]
-    dcoord: List[List[float]]
-    ivl: List[str]
-    leaves: List[int]
-    leaves_color_list: List[str]
+        Returns:
+            str: JSON string
+        """
+        from .targets.json import JSONConverter
+        
+        return JSONConverter().convert(self)
 
-
-
-
-class BaseProtocol(Protocol):
-    def to_data(self) -> Dendrogram:
-        pass
     
