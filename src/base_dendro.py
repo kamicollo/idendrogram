@@ -23,10 +23,16 @@ class BaseDendro:
     leaves_color_list: List[str] = []
     node_dict: Dict[Tuple[float, float], ClusterNode] = {}
     color_scheme: Dict[str, str] = {}
+    link_factory: Callable[[Dict], ClusterLink]
+    node_factory: Callable[[Dict], ClusterNode]
+    axis_label_factory: Callable[[Dict], AxisLabel]
 
     def __init__(
         self,
         color_scheme: Dict[str, str] = None,
+        link_factory: Callable[[Dict], ClusterLink] = lambda x: ClusterLink(**x),
+        node_factory: Callable[[Dict], ClusterNode] = lambda x: ClusterNode(**x),
+        axis_label_factory: Callable[[Dict], AxisLabel] = lambda x: AxisLabel(**x)
     ) -> None:
         if color_scheme is None:            
             self.color_scheme = {
@@ -43,6 +49,10 @@ class BaseDendro:
             }
         else:
             self.color_scheme = color_scheme
+        
+        self.link_factory = link_factory
+        self.node_factory = node_factory
+        self.axis_label_factory = axis_label_factory
 
 
     def convert_scipy_dendrogram(
@@ -212,6 +222,7 @@ class BaseDendro:
 
         
         nodes = self._nodes(
+            links=links,
             node_label_func=node_label_func, node_hover_func=node_hover_func
         ) if compute_nodes else []
         
@@ -219,18 +230,19 @@ class BaseDendro:
 
     def _links(self) -> List[ClusterLink]:
         return [
-            ClusterLink(x=x, y=y, fillcolor=self.color_scheme[color])
+            self.link_factory(dict(x=x, y=y, fillcolor=self.color_scheme[color]))
             for x, y, color in zip(self.icoord, self.dcoord, self.link_colors)
         ]
 
     def _axis_labels(self) -> List[AxisLabel]:
         return [
-            AxisLabel(label=l, x=x)
+            self.axis_label_factory(dict(label=l, x=x))
             for x, l in zip(self.leaf_positions, self.leaf_labels)
         ]
 
     def _nodes(
         self, 
+        links: List[ClusterLink],
         node_label_func: Callable[[ClusteringData, ClusterNode], str] = None,
         node_hover_func: Callable[[ClusteringData, ClusterNode], Dict[str, str]] = None
     ) -> List[ClusterNode]:
@@ -248,7 +260,7 @@ class BaseDendro:
                 self.leaf_positions, self.leaves, self.leaves_color_list
             ):
 
-                p = ClusterNode(
+                p = self.node_factory(dict(
                     x=xcoord,
                     y=0,
                     edgecolor=self.color_scheme[color],
@@ -257,7 +269,7 @@ class BaseDendro:
                     type="leaf",
                     cluster_id=None,
                     id=leaf_id
-                )
+                ))
 
                 p.label = node_label_func(self.cluster_data, p) if node_label_func is not None else ""
                 p.hovertext = node_hover_func(self.cluster_data, p) if node_hover_func is not None else {}
@@ -270,9 +282,9 @@ class BaseDendro:
             merge_map = self.cluster_data.get_merge_map()
             leaders, flat_cluster_ids = self.cluster_data.get_leaders()
 
-            for x, y, color in zip(self.icoord, self.dcoord, self.link_colors):
-                left_coords = (x[0], y[0])
-                right_coords = (x[3], y[3])
+            for link in links:
+                left_coords = (link.x[0], link.y[0])
+                right_coords = (link.x[3], link.y[3])
                 right_leaf = self.node_dict[right_coords]
                 left_leaf = self.node_dict[left_coords]
                 merged_id = merge_map[(left_leaf.id, right_leaf.id)]
@@ -286,22 +298,28 @@ class BaseDendro:
                 else:
                     node_type = "supercluster"
 
-                merged_coords = (x[1] + (x[2] - x[1]) / 2.0, y[2])
+                merged_coords = (link.x[1] + (link.x[2] - link.x[1]) / 2.0, link.y[2])
 
-                p = ClusterNode(
+                p = self.node_factory(dict(
                     x=merged_coords[0],
                     y=merged_coords[1],
-                    edgecolor=self.color_scheme[color],                    
+                    edgecolor=link.fillcolor,                    
                     type=node_type,
                     cluster_id=cluster_id,
                     id=merged_id
-                )
+                ))
 
                 if node_type != 'subcluster':
-                    p.fillcolor = self.color_scheme[color]
+                    p.fillcolor = link.fillcolor
 
                 p.label = node_label_func(self.cluster_data, p) if node_label_func is not None else ""
                 p.hovertext = node_hover_func(self.cluster_data, p) if node_hover_func is not None else {}
+
+                #update link with info
+                link.id = merged_id
+                link.cluster_id = cluster_id
+                link.children_id = (left_leaf.id, right_leaf.id)
+                
 
                 self.node_dict[merged_coords] = p        
 
