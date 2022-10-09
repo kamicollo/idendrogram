@@ -1,7 +1,7 @@
 import json
 from dataclasses import is_dataclass, asdict
 import numpy as np
-from ..types_classes import Dendrogram
+from ..containers import Dendrogram
 
 class FullJSONEncoder(json.JSONEncoder):
     def default(self, obj):

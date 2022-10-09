@@ -3,8 +3,8 @@ import numpy as np
 import numpy.typing as npt
 
 from typing import Callable, Dict, List, Tuple, Union
-from .cluster_info import ClusteringData
-from .types_classes import (
+from .clustering_data import ClusteringData
+from .containers import (
     ClusterLink,
     ClusterNode,
     Dendrogram,
@@ -12,7 +12,7 @@ from .types_classes import (
     AxisLabel,
 )
 
-class BaseDendro:
+class IDendro:
     cluster_data: Union[ClusteringData, None]
     icoord: npt.NDArray[np.float32] = np.ndarray(0)
     dcoord: npt.NDArray[np.float32] = np.ndarray(0)
@@ -231,7 +231,7 @@ class BaseDendro:
     def _links(self) -> List[ClusterLink]:
         return [
             self.link_factory(dict(x=x, y=y, fillcolor=self.color_scheme[color]))
-            for x, y, color in zip(self.icoord, self.dcoord, self.link_colors)
+            for x, y, color in zip(self.icoord.tolist(), self.dcoord.tolist(), self.link_colors)
         ]
 
     def _axis_labels(self) -> List[AxisLabel]:
@@ -287,18 +287,18 @@ class BaseDendro:
                 right_coords = (link.x[3], link.y[3])
                 right_leaf = self.node_dict[right_coords]
                 left_leaf = self.node_dict[left_coords]
-                merged_id = merge_map[(left_leaf.id, right_leaf.id)]
+                merged_id = int(merge_map[(left_leaf.id, right_leaf.id)])
 
                 cluster_id = None
                 if merged_id in leaders:
                     node_type = "cluster"
-                    cluster_id = flat_cluster_ids[leaders == merged_id][0]
+                    cluster_id = int(flat_cluster_ids[leaders == merged_id][0])
                 elif right_leaf.type in ["leaf", "subcluster"] and left_leaf.type in ["leaf", "subcluster"]:
                     node_type = "subcluster"
                 else:
                     node_type = "supercluster"
 
-                merged_coords = (link.x[1] + (link.x[2] - link.x[1]) / 2.0, link.y[2])
+                merged_coords = (float(link.x[1] + (link.x[2] - link.x[1]) / 2.0), float(link.y[2]))
 
                 p = self.node_factory(dict(
                     x=merged_coords[0],
