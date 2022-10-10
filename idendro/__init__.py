@@ -32,6 +32,6 @@ if DEV:
     imp.reload(base)
 
 
-from .base import Idendro
+from .base import IDendro
 from .containers import Dendrogram, ClusterLink, ClusterNode, AxisLabel
 from .clustering_data import ClusteringData
