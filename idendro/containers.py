@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import List, Tuple, TypedDict, Dict, Union
+from typing import Any, List, Tuple, TypedDict, Dict, Union
 
 
 class ScipyDendrogram(TypedDict):
@@ -21,10 +21,11 @@ class ClusterNode:
     edgecolor: str
     label: str = ""
     hovertext: Dict[str, str] = field(default_factory=dict)
-    fillcolor: str = "fff"    
+    fillcolor: str = "#fff"    
     radius: float = 7.0
+    opacity: float = 1.0
     labelsize: float = 10.0
-    labelcolor: str = "fff"
+    labelcolor: str = "#fff"
     
 
 
@@ -37,7 +38,7 @@ class ClusterLink:
     children_id: Union[Tuple[int, int], None] = None
     cluster_id: Union[int, None] = None
     strokewidth: float = 1.0
-    strokedash: List = field(default_factory=lambda: [1,1])
+    strokedash: List = field(default_factory=lambda: [1,0])
     strokeopacity: float = 1.0
     _order_helper: List = field(default_factory=lambda : [0,1,2,3])
 
@@ -54,6 +55,7 @@ class Dendrogram:
     axis_labels: List[AxisLabel]
     links: List[ClusterLink]
     nodes: List[ClusterNode]
+    computed_nodes: bool = True
 
     def to_json(self) -> str:
         """Returns a JSON form of the dendrogram
@@ -67,11 +69,11 @@ class Dendrogram:
 
     def to_altair(self, 
         orientation: str = "top",
-        show_points: bool = True
-    ):
-        
-        from .targets.altair import AltairConverter
-        
-        return AltairConverter().convert(self, orientation, show_points)
+        show_nodes: bool = True,
+        height: float = 400,
+        width: float = 400,
+    ) -> Any:            
+        from .targets.altair import AltairConverter        
+        return AltairConverter().convert(self, orientation=orientation, show_nodes=show_nodes, height=height, width=width)
 
     
