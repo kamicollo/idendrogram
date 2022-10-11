@@ -226,13 +226,25 @@ class IDendro:
         links = self._links()
         axis_labels = self._axis_labels()
 
+        X_domain, Y_domain = self._domain_ranges()
+
         
         nodes = self._nodes(
             links=links,
             node_label_func=node_label_func, node_hover_func=node_hover_func
         ) if compute_nodes else []
         
-        return Dendrogram(links=links, axis_labels=axis_labels, nodes=nodes, computed_nodes=compute_nodes)
+        return Dendrogram(
+            links=links, axis_labels=axis_labels, 
+            nodes=nodes, computed_nodes=compute_nodes,
+            x_domain = X_domain, y_domain = Y_domain
+        )
+
+    def _domain_ranges(self) -> Tuple[Tuple[float, float], Tuple[float, float]]:
+        return (
+            (self.icoord.flatten().min(), self.icoord.flatten().max()),
+            (self.dcoord.flatten().min(), self.dcoord.flatten().max())
+        )
 
     def _links(self) -> List[ClusterLink]:
         return [

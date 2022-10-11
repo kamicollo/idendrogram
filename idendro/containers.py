@@ -47,8 +47,6 @@ class ClusterLink:
 class AxisLabel:
     x: float
     label: str
-    labelsize: float = 8.0
-
 
 @dataclass
 class Dendrogram:
@@ -56,6 +54,9 @@ class Dendrogram:
     links: List[ClusterLink]
     nodes: List[ClusterNode]
     computed_nodes: bool = True
+    x_domain: Tuple[float, float] = (0,0)
+    y_domain: Tuple[float, float] = (0,0)
+
 
     def to_json(self) -> str:
         """Returns a JSON form of the dendrogram
@@ -75,5 +76,14 @@ class Dendrogram:
     ) -> Any:            
         from .targets.altair import AltairConverter        
         return AltairConverter().convert(self, orientation=orientation, show_nodes=show_nodes, height=height, width=width)
+
+    def to_plotly(self, 
+        orientation: str = "top",
+        show_nodes: bool = True,
+        height: float = 400,
+        width: float = 400,
+    ) -> Any:            
+        from .targets.plotly import PlotlyConverter        
+        return PlotlyConverter().convert(self, orientation=orientation, show_nodes=show_nodes, height=height, width=width)
 
     
