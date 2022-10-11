@@ -1,17 +1,10 @@
 import json
 from dataclasses import is_dataclass, asdict
 from typing import Any
-import numpy as np
 from ..containers import Dendrogram
 
 class FullJSONEncoder(json.JSONEncoder):
-    def default(self, obj: Any) -> Any:
-        if isinstance(obj, np.integer):
-            return int(obj)
-        if isinstance(obj, np.floating):
-            return float(obj)
-        if isinstance(obj, np.ndarray):
-            return obj.tolist()
+    def default(self, obj: Any) -> Any:    
         if is_dataclass(obj):
             return asdict(obj)
         return json.JSONEncoder.default(self, obj)
