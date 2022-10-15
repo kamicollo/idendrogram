@@ -26,6 +26,7 @@ class ClusterNode:
     opacity: float = 1.0
     labelsize: float = 10.0
     labelcolor: str = "#fff"
+    _default_leaf_radius: float = 4.
     
 
 
@@ -85,5 +86,14 @@ class Dendrogram:
     ) -> Any:            
         from .targets.plotly import PlotlyConverter        
         return PlotlyConverter().convert(self, orientation=orientation, show_nodes=show_nodes, height=height, width=width)
+
+    def to_matplotlib(self, 
+        orientation: str = "top",
+        show_nodes: bool = True,
+        height: float = 400,
+        width: float = 400,
+    ) -> Any:            
+        from .targets.matplotlib import matplotlibConverter        
+        return matplotlibConverter().convert(self, orientation=orientation, show_nodes=show_nodes, height=height, width=width)
 
     

@@ -282,13 +282,13 @@ class IDendro:
                     x=xcoord,
                     y=0,
                     edgecolor=color,
-                    fillcolor=color,
-                    radius=4.,
+                    fillcolor=color,                    
                     type="leaf",
                     cluster_id=None,
                     id=leaf_id
                 ))
 
+                p.radius = p._default_leaf_radius
                 p.label = node_label_func(self.cluster_data, p.id)
                 p.hovertext = node_hover_func(self.cluster_data, p.id)
 

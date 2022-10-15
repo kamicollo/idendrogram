@@ -1,58 +1,130 @@
-from scipy.cluster.hierarchy import _plot_dendrogram
-import numpy as np
+import math
 import matplotlib.pyplot as plt
+from ..containers import ClusterLink, ClusterNode, Dendrogram
+from matplotlib.axes import Axes
+from typing import List
 
 class matplotlibConverter():
-    pass
+    def convert(
+        self,
+        dendrogram: Dendrogram,
+        orientation: str,
+        show_nodes: bool,
+        width: float,
+        height: float,
+    ) -> list:
 
-class SciPyFeatures:
+        ax = self.setup_layout(orientation=orientation, width=width, height=height, dendrogram=dendrogram)
+        
+        if orientation in ["top", "bottom"]:
+            x = "x" 
+            y = 'y'
+        else:
+            x = "y" 
+            y = 'x'
 
-    def to_scipy(self, 
-        orientation='top',
-        show_points = False,
-        point_label_func = 'cluster_labels',
-        point_kwargs = {},
-        label_kwargs = {},
-        ax = None,
-        no_labels=False,
-        leaf_font_size = None,
-        leaf_rotation = None,
-        above_threshold_color = 'C0'
-    ):
+        self.plot_links(ax, x, y, dendrogram.links)  
 
-        #instantiate a dendrogram if one is not set yet
-        if self.icoord is None:
-            self.set_default_dendrogram()
+        if show_nodes:
+            if not dendrogram.computed_nodes:
+                raise RuntimeError("Nodes were not computed in create_dendrogram() step, cannot show them")
+            self.plot_nodes(ax, x, y, dendrogram.nodes)                        
 
-        mh = np.max(self.linkage_matrix[:, 2])
+    def setup_layout(self, orientation: str, width: float, height: float, dendrogram: Dendrogram) -> Axes:
+        
+        fig = plt.gcf()
+        fig.set_size_inches(width, height)
 
-        _plot_dendrogram(
-            icoords=self.icoord, dcoords=self.dcoord, ivl=self.ordered_leaf_labels, 
-            p=None, n=None, mh=mh, orientation=orientation,
-            no_labels=no_labels, color_list=self.link_colors, leaf_font_size=leaf_font_size,
-            leaf_rotation=leaf_rotation, 
-            ax=ax, above_threshold_color=above_threshold_color,
-            contraction_marks=None
+        ax = plt.gca()
+
+        min_y, max_y = dendrogram.y_domain
+        range_y = max_y - min_y
+        min_x, max_x = dendrogram.x_domain
+        range_x = max_x - min_x
+
+
+        labels, positions = zip(*[(l.label, l.x) for l in dendrogram.axis_labels])
+
+        if orientation in ['top', 'bottom']:
+            label_axis = ax.xaxis
+            ax.set_ylim(min_y, max_y + range_y * 0.05)
+        else:
+            label_axis = ax.yaxis
+            ax.set_xlim(min_y, max_y + range_y * 0.05)
+
+        if orientation == 'bottom':
+            ax.yaxis.set_inverted(True)
+        elif orientation == 'left':
+            ax.xaxis.set_inverted(True)
+
+        #set up label axis 
+        position_map = {
+            'top': 'bottom',
+            'bottom': 'top',
+            'left': 'right',
+            'right': 'left'
+        }
+
+        label_position_side = position_map[orientation]
+        label_axis.set_ticks(positions, labels=labels)
+        label_axis.set_ticks_position(label_position_side)
+        label_axis.limit_range_for_scale(
+            min_x - range_x * 0.05,
+            max_x + range_x * 0.05
         )
 
-        if show_points:
-            used_point_kwargs = {'markersize': 14}
-            used_point_kwargs.update(point_kwargs)
 
-            used_label_kwargs = {'size': 8, 'color': 'white', 'fontweight': 'bold', 'ha': 'center', 'va': 'center'}
-            used_label_kwargs.update(label_kwargs)
+        return ax
 
-            ploton = ax if ax is not None else plt
-            points = self.get_points()
-            if point_label_func == 'cluster_labels':
-                point_label_func = lambda x: "" if x['type'] != 'cluster' else x['cluster_id']
+    def plot_links(self, ax: Axes, x: str, y: str, links: List[ClusterLink]):        
 
-            for (x,y), point in points.items():
-                if orientation in ['left', 'right']:
-                    x,y = y,x
-                facecolor = 'white' if point['type'] in ['leaf', 'subcluster'] else point['color']
-                ploton.plot(x, y, marker='o', markerfacecolor=facecolor, markeredgecolor=point['color'], **used_point_kwargs)
+        for link in links: 
+            if len(link.strokedash) > 1:
+                dash = (link.strokedash[0], link.strokedash[1:]) 
+            else:
+                dash = link.strokedash          
+            plt.plot(
+                link.__getattribute__(x), 
+                link.__getattribute__(y), 
+                color=link.fillcolor,
+                linestyle=tuple(dash),
+                linewidth = link.strokewidth,
+                alpha=link.strokeopacity
+            )
 
-                if point_label_func is not None:
-                    label = point_label_func(point)
-                    ploton.text(x, y, s=label, **used_label_kwargs)
+
+    def plot_nodes(self, ax: Axes, x: str, y: str, nodes: List[ClusterNode]):
+        
+        for node in nodes:
+            
+            # circle = Circle(
+            #     (node.__getattribute__(x), node.__getattribute__(y)),
+            #     facecolor = node.fillcolor,                
+            #     linewidth = 2,
+            #     alpha = node.opacity,
+            #     radius = node.radius,
+            #     edgecolor = node.edgecolor
+            # )
+
+            # ax.add_patch(circle)
+
+            plt.plot(
+                node.__getattribute__(x), node.__getattribute__(y),
+                markerfacecolor = node.fillcolor,                
+                linewidth = 2,
+                alpha = node.opacity,
+                markersize = node.radius * math.pi,
+                markeredgecolor = node.edgecolor,
+                marker='o'
+            )
+                
+            plt.text(
+                node.__getattribute__(x), 
+                node.__getattribute__(y), 
+                s = node.label, 
+                fontsize = node.labelsize, 
+                color = node.labelcolor,
+                ha = 'center', 
+                va = 'center',
+                fontweight = 'bold'
+            )
