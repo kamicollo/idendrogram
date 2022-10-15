@@ -13,7 +13,7 @@ class PlotlyConverter:
         show_nodes: bool,
         height: float,
         width: float,
-    ) -> graph_objs._figure.Figure:
+    ) -> graph_objs.Figure:
 
         layout = self.setup_layout(orientation=orientation, width=width, height=height, dendrogram=dendrogram)
 
