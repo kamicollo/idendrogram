@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Any, List, Tuple, TypedDict, Dict, Union
+from typing import Any, List, Optional, Tuple, TypedDict, Dict, Union
 
 
 class ScipyDendrogram(TypedDict):
@@ -96,5 +96,14 @@ class Dendrogram:
     ) -> Any:            
         from .targets.matplotlib import matplotlibConverter        
         return matplotlibConverter().convert(self, orientation=orientation, show_nodes=show_nodes, height=height, width=width)
+
+    def to_streamlit(self, 
+        orientation: str = "top",
+        show_nodes: bool = True,
+        height: float = 400,
+        width: float = 400,
+        key: str = None) -> Optional[float]:
+        from .targets.streamlit import StreamlitConverter
+        return StreamlitConverter().convert(self, orientation=orientation, show_nodes=show_nodes, height=height, width=width, key=key)
 
     

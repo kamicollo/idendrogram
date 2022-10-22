@@ -5,8 +5,8 @@ import './idendro.css'
 
 interface AxisLabel {
     x: number
-    label: string
-    labelsize: number
+    label: string    
+    labelAngle: number
 }
 
 interface Coord {
@@ -18,29 +18,37 @@ interface ClusterLink {
     x: number[]
     y: number[]
     fillcolor: string
-    size: number
+    id: number
+    children_id: number[]
+    cluster_id: number
+    strokewidth: number
+    strokedash: number[]
+    strokeopacity: number    
     data: Coord[]
 }
 
 interface ClusterNode {
     x: number
     y: number
+    type: string
+    id: number
+    cluster_id: number | null
     edgecolor: string
-    fillcolor: string
     label: string
-    hovertext: Object | string
+    hovertext: Object
+    fillcolor: string
     radius: number
+    opacity: number
     labelsize: number
     labelcolor: string
-
 }
 
 interface Dendrogram {
     axis_labels: AxisLabel[]
     links: ClusterLink[]
     nodes: ClusterNode[]
-    x_limits: [number, number]
-    y_limits: [number, number]
+    x_domain: [number, number]
+    y_domain: [number, number]
 }
 
 interface Dimensions {
@@ -96,8 +104,8 @@ function create_container(dimensions: Dimensions): plot {
 
 function create_axis(plot: plot, dimensions: Dimensions, dendrogram: Dendrogram, scale_type: string) {
 
-    let label_limits = dendrogram.x_limits
-    let value_limits = dendrogram.y_limits
+    let label_limits = dendrogram.x_domain
+    let value_limits = dendrogram.y_domain
 
     let label_range, value_range = [0, 0]
     let label_axis_func, value_axis_func: CallableFunction
@@ -297,11 +305,11 @@ function onRender(event: Event): void {
     // Get the RenderData from the event
     const data = (event as CustomEvent<RenderData>).detail
 
-    let dendrogram: Dendrogram = data.args['data']
-    let scaleType = data.args['scale_type']
+    let dendrogram: Dendrogram = data.args['dendrogram']
+    let scaleType = 'log'
     console.log(dendrogram)
     let margin: Margin = { top: 50, right: 50, bottom: 50, left: 50 }
-    let label_margin_size = data.args['label_margin']
+    let label_margin_size = 200
     let dimensions: Dimensions = {
         height: data.args['height'],
         width: data.args['width'],
