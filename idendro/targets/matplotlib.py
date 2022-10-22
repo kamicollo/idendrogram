@@ -44,6 +44,7 @@ class matplotlibConverter():
 
 
         labels, positions = zip(*[(l.label, l.x) for l in dendrogram.axis_labels])
+        rotation = dendrogram.axis_labels[0].labelAngle
 
         if orientation in ['top', 'bottom']:
             label_axis = ax.xaxis
@@ -66,12 +67,12 @@ class matplotlibConverter():
         }
 
         label_position_side = position_map[orientation]
-        label_axis.set_ticks(positions, labels=labels)
+        label_axis.set_ticks(positions, labels=labels, rotation=rotation)
         label_axis.set_ticks_position(label_position_side)
         label_axis.limit_range_for_scale(
             min_x - range_x * 0.05,
             max_x + range_x * 0.05
-        )
+        )        
 
 
         return ax

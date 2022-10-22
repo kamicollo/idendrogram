@@ -60,6 +60,7 @@ class AltairConverter:
                 orient=label_pos,
                 grid=False,
                 labelPadding=10,
+                labelAngle=dendrogram.axis_labels[0].labelAngle
             ),
         )
         reversed_axis = orientation in ["bottom", "left"]

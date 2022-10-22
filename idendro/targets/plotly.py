@@ -73,6 +73,7 @@ class PlotlyConverter:
         label_axis['ticktext'] = [label.label for label in dendrogram.axis_labels]
         label_axis['tickvals'] = [label.x for label in dendrogram.axis_labels]
         label_axis['tickmode'] = 'array'
+        label_axis['tickangle'] = dendrogram.axis_labels[0].labelAngle
         label_axis['side'] = label_position_side
 
         # give a bit more range to x-axis for aesthetics

@@ -48,6 +48,7 @@ class ClusterLink:
 class AxisLabel:
     x: float
     label: str
+    labelAngle: float = 0
 
 @dataclass
 class Dendrogram:
