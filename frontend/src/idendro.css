@@ -2,10 +2,6 @@
     stroke-width: 1.5;
 }
 
-.link {
-    stroke-width: 1.5;
-}
-
 .idendro-tooltip {
     position: absolute;
     border: solid;
@@ -22,7 +18,7 @@
 }
 
 .node text {
-    alignment-baseline: central;
+    dominant-baseline: central;
     text-anchor: middle;
     font-weight: bold;
 }

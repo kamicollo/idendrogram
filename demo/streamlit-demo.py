@@ -50,8 +50,8 @@ class MyAxisLabel(idendro.AxisLabel):
 
 @dataclass
 class MyLink(idendro.ClusterLink):
-    strokewidth: float = 1
-    strokedash: List = field(default_factory= lambda: [1, 5, 1])
+    strokewidth: float = 2
+    strokedash: List = field(default_factory= lambda: [10, 5, 10, 10])
     strokeopacity: float = 0.5
 
 @dataclass

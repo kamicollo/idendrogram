@@ -1,6 +1,5 @@
 import { Streamlit, RenderData } from "streamlit-component-lib"
 import * as d3 from 'd3'
-import * as userfuncs from './userfuncs'
 import './idendro.css'
 
 interface AxisLabel {
@@ -151,12 +150,27 @@ function create_axis(plot: plot, dimensions: Dimensions, dendrogram: Dendrogram,
     let labelAxisGenerator = label_axis_func(labelScale)
         .tickValues(label_axis_pos)
         .tickFormat((d, i) => label_axis_label[i])
-        .tickSize(3)
+        .tickSize(3)        
 
+    let labelAngle = dendrogram.axis_labels[0].labelAngle
+    let anchor = 'start'
+    let sign = 1
+    if (labelAngle < 0) {
+        anchor = 'end'
+        sign = -1
+    }
     plot.append("g")
         .attr("id", "label-axis")
-        .attr("transform", "translate(" + label_axis_transform[0] + "," + label_axis_transform[1] + ")")
+        .attr("transform", "translate(" + label_axis_transform[0] + "," + label_axis_transform[1] + ")")        
         .call(labelAxisGenerator)
+        .selectAll("text")
+        .attr("transform", "rotate(" + labelAngle + ")")
+        .attr("y", Math.abs(sign * 90 - labelAngle) / 7)
+        .attr("x", labelAngle / 5)
+        .attr("dy", ".5em")
+        .style("text-anchor", anchor);
+
+    
 
     //create value-axis
     let valueScale: scaleLinear | scaleLog
@@ -178,6 +192,7 @@ function create_axis(plot: plot, dimensions: Dimensions, dendrogram: Dendrogram,
         .attr("transform", "translate(" + value_axis_transform[0] + "," + value_axis_transform[1] + ")")
         .call(valueAxisGenerator)
 
+
     return [labelScale, valueScale]
 }
 
@@ -188,7 +203,10 @@ function draw_links(link_container: plot, links: ClusterLink[], xScale: scaleLin
         .enter()
         .append("path")
         .attr("fill", "none")
-        .attr("stroke", (d) => d.fillcolor)        
+        .attr("stroke", (d) => d.fillcolor) 
+        .attr("stroke-width", (d) => d.strokewidth)  
+        .attr("stroke-opacity", (d) => d.strokeopacity)
+        .attr("stroke-dasharray", (d) => d.strokedash)     
         .attr("class", "link")
         .attr("d", function (d) {
             return d3.line<Coord>()
@@ -269,6 +287,7 @@ function draw_nodes(node_container: plot, nodes: ClusterNode[], xScale: scaleLin
         .attr("fill", (d) => d.fillcolor)
         .attr("stroke", (d) => d.edgecolor)        
         .attr('r', (d) => d.radius)
+        .attr("opacity", (d) => d.opacity)
         .on("mouseover", mouseover)
         .on("mouseleave", mouseleave)
         .on("mousemove", mousemove)
@@ -279,6 +298,7 @@ function draw_nodes(node_container: plot, nodes: ClusterNode[], xScale: scaleLin
         .text((d) => d.label)
         .attr("fill", (d) => d.labelcolor)
         .attr("font-size", (d) => d.labelsize)        
+        .attr("opacity", (d) => d.opacity)
         .on("mouseover", mouseover)
         .on("mouseleave", mouseleave)
         .on("mousemove", mousemove)
@@ -356,8 +376,7 @@ function onRender(event: Event): void {
 
     draw_links(link_container, dendrogram.links, xScale, yScale)
     draw_nodes(node_container, dendrogram.nodes, xScale, yScale)
-
-    userfuncs.postprocess(d3, dimensions, dendrogram)
+    
     Streamlit.setFrameHeight()
 }
 
