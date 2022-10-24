@@ -14,7 +14,9 @@ class matplotlibConverter():
         height: float,
         scale: str
     ) -> Axes:
+        """Converts dendrogram object to matplotlib chart"""
 
+        #setup axes
         ax = self.setup_layout(orientation=orientation, width=width, height=height, dendrogram=dendrogram, scale=scale)
         
         if orientation in ["top", "bottom"]:
@@ -24,21 +26,23 @@ class matplotlibConverter():
             x = "y" 
             y = 'x'
 
+        #plot links
         self.plot_links(ax, x, y, dendrogram.links)  
 
-        if show_nodes:
-            if not dendrogram.computed_nodes:
-                raise RuntimeError("Nodes were not computed in create_dendrogram() step, cannot show them")
+        #plot nodes
+        if show_nodes:            
             self.plot_nodes(ax, x, y, dendrogram.nodes)    
 
         return ax                    
 
     def setup_layout(self, orientation: str, width: float, height: float, dendrogram: Dendrogram, scale: str) -> Axes:
+        """Setup axes"""
         
+        #use existing axes/figure if any
         fig = plt.gcf()
+        ax = plt.gca()
         fig.set_size_inches(width, height)
 
-        ax = plt.gca()
 
         min_y, max_y = dendrogram.y_domain
         range_y = max_y - min_y
@@ -85,13 +89,14 @@ class matplotlibConverter():
         return ax
 
     def plot_links(self, ax: Axes, x: str, y: str, links: List[ClusterLink]) -> None:        
+        """Plotting the links"""
 
         for link in links: 
             if len(link.strokedash) > 1:
                 dash = (link.strokedash[0], link.strokedash[1:]) 
             else:
                 dash = link.strokedash #type: ignore   
-            plt.plot(
+            ax.plot(
                 link.__getattribute__(x), 
                 link.__getattribute__(y), 
                 color=link.fillcolor,
@@ -102,10 +107,10 @@ class matplotlibConverter():
 
 
     def plot_nodes(self, ax: Axes, x: str, y: str, nodes: List[ClusterNode]) -> None:
-        
+        """Plotting the nodes"""
         for node in nodes:
 
-            plt.plot(
+            ax.plot(
                 node.__getattribute__(x), node.__getattribute__(y),
                 markerfacecolor = node.fillcolor,                
                 linewidth = 2,
@@ -115,7 +120,7 @@ class matplotlibConverter():
                 marker='o'
             )
                 
-            plt.text(
+            ax.text(
                 node.__getattribute__(x), 
                 node.__getattribute__(y), 
                 s = node.label, 
