@@ -4,14 +4,11 @@ from typing import Optional
 import streamlit.components.v1 as components
 from idendro.containers import ClusterNode, Dendrogram
 
-
-_RELEASE = False
-
-
 class StreamlitConverter:
-    def __init__(self) -> None:
+    def __init__(self, release = False) -> None:
+        """Upon initialization, setup appropriate Streamlit component"""
 
-        if not _RELEASE:
+        if not release:
             _component_func = components.declare_component(
                 "idendro",
                 url="http://localhost:3001",
@@ -31,14 +28,12 @@ class StreamlitConverter:
         width: float,
         height: float,
         scale: str,
-        key: str,
+        key: Optional[str],
     ) -> Optional[ClusterNode]:
-        if show_nodes and not dendrogram.computed_nodes:
-            raise RuntimeError(
-                "Nodes were not computed in create_dendrogram() step, cannot show them"
-            )
+        """Renders the Streamlit component"""
 
-        dendrogram = json.loads(dendrogram.to_json())
+        #ugly way to deal with streamlit not knowing how to serialize dataclasses
+        dendrogram = json.loads(dendrogram.to_json()) 
 
         returned = self.component_func(
             dendrogram=dendrogram,
@@ -52,3 +47,5 @@ class StreamlitConverter:
         )
         if returned is not None:
             return ClusterNode(**returned)
+        else:
+            return None
