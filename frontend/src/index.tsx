@@ -152,8 +152,14 @@ function create_axis(plot: plot, dimensions: Dimensions, dendrogram: Dendrogram,
     let labelAxisGenerator = label_axis_func(labelScale)
         .tickValues(label_axis_pos)
         .tickFormat((d, i) => label_axis_label[i])
-        .tickSize(3)        
+        .tickSize(3)      
+        
+    let label_axis  = plot.append("g")
+    .attr("id", "label-axis")
+    .attr("transform", "translate(" + label_axis_transform[0] + "," + label_axis_transform[1] + ")")        
+    .call(labelAxisGenerator)
 
+    //handle label position angles
     let labelAngle = dendrogram.axis_labels[0].labelAngle
     let anchor = 'start'
     let sign = 1
@@ -161,18 +167,13 @@ function create_axis(plot: plot, dimensions: Dimensions, dendrogram: Dendrogram,
         anchor = 'end'
         sign = -1
     }
-    plot.append("g")
-        .attr("id", "label-axis")
-        .attr("transform", "translate(" + label_axis_transform[0] + "," + label_axis_transform[1] + ")")        
-        .call(labelAxisGenerator)
-        .selectAll("text")
+    
+    label_axis.selectAll("text")
         .attr("transform", "rotate(" + labelAngle + ")")
         .attr("y", Math.abs(sign * 90 - labelAngle) / 7)
         .attr("x", labelAngle / 5)
         .attr("dy", ".5em")
         .style("text-anchor", anchor);
-
-    
 
     //create value-axis
     let valueScale: scaleLinear | scaleLog | scaleSymLog
@@ -318,9 +319,10 @@ function onRender(event: Event): void {
     // Get the RenderData from the event
     const data = (event as CustomEvent<RenderData>).detail
 
+    //initialize variables as appropriate
     let dendrogram: Dendrogram = data.args['dendrogram']
-    let scaleType = data.args['scale']
-    console.log(dendrogram)
+    let scaleType: string = data.args['scale']
+    let show_nodes: Boolean = data.args['show_nodes']    
     let margin: Margin = { top: 50, right: 50, bottom: 50, left: 50 }
     let label_margin_size = 200
     let dimensions: Dimensions = {
@@ -339,12 +341,14 @@ function onRender(event: Event): void {
     dimensions.innerHeight = dimensions.height - dimensions.margin.top - dimensions.margin.bottom
     dimensions.innerWidth = dimensions.width - dimensions.margin.left - dimensions.margin.right
 
+    //create the plot container and the axes
     let plot = create_container(dimensions)
     let scales = create_axis(plot, dimensions, dendrogram, scaleType)
 
     let xScale: scaleLinear | scaleLog | scaleSymLog
     let yScale: scaleLinear | scaleLog | scaleSymLog
 
+    //depending on the orientation, remap X and Y values
     if (dimensions.orientation === Orientation.top || dimensions.orientation === Orientation.bottom) {
         xScale = scales[0]
         yScale = scales[1]
@@ -364,11 +368,16 @@ function onRender(event: Event): void {
         });
     }
 
+    //draw links
     let link_container = plot.append('g').attr("class", "link-container")
-    let node_container = plot.append('g').attr("class", "node-container")
-
     draw_links(link_container, dendrogram.links, xScale, yScale)
-    draw_nodes(node_container, dendrogram.nodes, xScale, yScale)
+
+    //draw nodes
+    if (show_nodes) {
+        let node_container = plot.append('g').attr("class", "node-container")
+        draw_nodes(node_container, dendrogram.nodes, xScale, yScale)
+    }
+    
     
     Streamlit.setFrameHeight()
 }
