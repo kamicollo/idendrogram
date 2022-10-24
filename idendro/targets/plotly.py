@@ -1,4 +1,4 @@
-from math import log, pi
+from math import log
 from typing import Dict, List
 from plotly.graph_objs import graph_objs # type: ignore
 
@@ -15,7 +15,9 @@ class PlotlyConverter:
         width: float,
         scale: str
     ) -> graph_objs.Figure:
+        """Converts the dendrogram into a Plotly Figure"""
 
+        #first, let's setup layout and axis
         layout = self.setup_layout(orientation=orientation, width=width, height=height, dendrogram=dendrogram, scale=scale)
 
         if orientation in ["top", "bottom"]:
@@ -25,16 +27,18 @@ class PlotlyConverter:
             x = "y" 
             y = 'x'
 
+        #then, get the link traces
         traces = self.link_traces(x, y, dendrogram.links)  
 
-        if show_nodes:
-            if not dendrogram.computed_nodes:
-                raise RuntimeError("Nodes were not computed in create_dendrogram() step, cannot show them")
+        #then, get the node traces if requested
+        if show_nodes:        
             traces += self.node_traces(x, y, dendrogram.nodes)
         
+        #return the plotly Figure
         return graph_objs.Figure(data=traces, layout=layout)
 
     def setup_layout(self, orientation: str, width: float, height: float, dendrogram: Dendrogram, scale: str) -> Dict:
+        """Setups plotly layout and initializes value/label axes as appropriate"""
 
         layout = {
             "showlegend": False,
@@ -92,13 +96,15 @@ class PlotlyConverter:
         min_y, max_y = dendrogram.y_domain
         range_y = max_y - min_y
         if orientation in ["bottom", "left"]:
-            value_axis["range"] = (max_y + range_y * 0.05, min_y)
+            v_range = [max_y + range_y * 0.05, min_y]
         else:
-            value_axis["range"] = (min_y, max_y + range_y * 0.05)
+            v_range = [min_y, max_y + range_y * 0.05]
         
         #if non-linear scale, update range
         if scale == 'log':            
-            value_axis["range"] = [log(v, 10) if v != 0 else 0 for v in value_axis['range']]
+            value_axis["range"] = [log(v, 10) if v != 0 else 0 for v in v_range]
+        else:
+            value_axis["range"] = v_range
 
 
         if orientation in ["top", "bottom"]:
@@ -136,6 +142,7 @@ class PlotlyConverter:
         return trace_list
 
     def node_traces(self, x: str, y: str, nodes: List[ClusterNode]) -> List[Dict]:
+        """Forms the traces representing the nodes"""
 
         node_traces = []
 
