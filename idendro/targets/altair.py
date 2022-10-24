@@ -16,9 +16,10 @@ class AltairConverter:
         show_nodes: bool,
         height: float,
         width: float,
+        scale: str
     ) -> alt.LayerChart:
 
-        X, Y = self.create_axis(dendrogram=dendrogram, orientation=orientation)
+        X, Y = self.create_axis(dendrogram=dendrogram, orientation=orientation, scale=scale)
 
         link_chart = self.draw_links(dendrogram, X, Y)
         if show_nodes:
@@ -30,7 +31,7 @@ class AltairConverter:
 
         return alt.layer(link_chart, node_chart).properties(width=width, height=height)        
 
-    def create_axis(self, dendrogram: Dendrogram, orientation: str) -> Tuple[Union[alt.X, alt.Y], Union[alt.X, alt.Y]]:
+    def create_axis(self, dendrogram: Dendrogram, orientation: str, scale: str) -> Tuple[Union[alt.X, alt.Y], Union[alt.X, alt.Y]]:
 
         if orientation in ["top", "bottom"]:
             label_axis = alt.X
@@ -68,7 +69,7 @@ class AltairConverter:
         Y = value_axis(
             "y",
             title=None,
-            scale=alt.Scale(reverse=reversed_axis),
+            scale=alt.Scale(reverse=reversed_axis, type=scale),
             axis=alt.Axis(grid=False),
         )
 

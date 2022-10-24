@@ -12,9 +12,10 @@ class matplotlibConverter():
         show_nodes: bool,
         width: float,
         height: float,
+        scale: str
     ) -> Axes:
 
-        ax = self.setup_layout(orientation=orientation, width=width, height=height, dendrogram=dendrogram)
+        ax = self.setup_layout(orientation=orientation, width=width, height=height, dendrogram=dendrogram, scale=scale)
         
         if orientation in ["top", "bottom"]:
             x = "x" 
@@ -32,7 +33,7 @@ class matplotlibConverter():
 
         return ax                    
 
-    def setup_layout(self, orientation: str, width: float, height: float, dendrogram: Dendrogram) -> Axes:
+    def setup_layout(self, orientation: str, width: float, height: float, dendrogram: Dendrogram, scale: str) -> Axes:
         
         fig = plt.gcf()
         fig.set_size_inches(width, height)
@@ -50,9 +51,11 @@ class matplotlibConverter():
 
         if orientation in ['top', 'bottom']:
             label_axis = ax.xaxis
+            value_axis = ax.set_yscale
             ax.set_ylim(min_y, max_y + range_y * 0.05)
         else:
             label_axis = ax.yaxis
+            value_axis = ax.set_xscale
             ax.set_xlim(min_y, max_y + range_y * 0.05)
 
         if orientation == 'bottom':
@@ -76,6 +79,8 @@ class matplotlibConverter():
             max_x + range_x * 0.05
         )        
 
+        value_axis(scale)
+
 
         return ax
 
@@ -86,7 +91,7 @@ class matplotlibConverter():
                 dash = (link.strokedash[0], link.strokedash[1:]) 
             else:
                 dash = link.strokedash #type: ignore   
-            ax.plot(
+            plt.plot(
                 link.__getattribute__(x), 
                 link.__getattribute__(y), 
                 color=link.fillcolor,
@@ -100,7 +105,7 @@ class matplotlibConverter():
         
         for node in nodes:
 
-            ax.plot(
+            plt.plot(
                 node.__getattribute__(x), node.__getattribute__(y),
                 markerfacecolor = node.fillcolor,                
                 linewidth = 2,
@@ -110,7 +115,7 @@ class matplotlibConverter():
                 marker='o'
             )
                 
-            ax.text(
+            plt.text(
                 node.__getattribute__(x), 
                 node.__getattribute__(y), 
                 s = node.label, 

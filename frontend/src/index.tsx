@@ -77,7 +77,9 @@ interface plot extends d3.Selection<SVGGElement, unknown, HTMLElement, any> { }
 
 interface scaleLinear extends d3.ScaleLinear<number, number, never> { }
 
-interface scaleLog extends d3.ScaleSymLog<number, number, number | undefined> { }
+interface scaleSymLog extends d3.ScaleSymLog<number, number, number | undefined> { }
+
+interface scaleLog extends d3.ScaleLogarithmic<number, number, never> {}
 
 function create_container(dimensions: Dimensions): plot {
 
@@ -143,7 +145,7 @@ function create_axis(plot: plot, dimensions: Dimensions, dendrogram: Dendrogram,
     let label_axis_label = dendrogram.axis_labels.map((x) => x.label)
 
     //create label-axis
-    let labelScale: scaleLinear | scaleLog
+    let labelScale: scaleLinear | scaleLog | scaleSymLog
     labelScale = d3.scaleLinear()
         .domain(label_limits).range(label_range)
 
@@ -173,10 +175,12 @@ function create_axis(plot: plot, dimensions: Dimensions, dendrogram: Dendrogram,
     
 
     //create value-axis
-    let valueScale: scaleLinear | scaleLog
+    let valueScale: scaleLinear | scaleLog | scaleSymLog
 
-    if (scale_type === 'log') {
+    if (scale_type === 'symlog') {
         valueScale = d3.scaleSymlog().constant(1)
+    } else if (scale_type === 'log') {
+        valueScale = d3.scaleLog()
     } else {
         valueScale = d3.scaleLinear()
     }
@@ -196,7 +200,7 @@ function create_axis(plot: plot, dimensions: Dimensions, dendrogram: Dendrogram,
     return [labelScale, valueScale]
 }
 
-function draw_links(link_container: plot, links: ClusterLink[], xScale: scaleLinear | scaleLog, yScale: scaleLinear | scaleLog) {
+function draw_links(link_container: plot, links: ClusterLink[], xScale: scaleLinear | scaleLog | scaleSymLog, yScale: scaleLinear | scaleLog | scaleSymLog) {
 
     link_container.selectAll(".link")
         .data(links)
@@ -217,7 +221,7 @@ function draw_links(link_container: plot, links: ClusterLink[], xScale: scaleLin
 
 }
 
-function draw_nodes(node_container: plot, nodes: ClusterNode[], xScale: scaleLinear | scaleLog, yScale: scaleLinear | scaleLog) {
+function draw_nodes(node_container: plot, nodes: ClusterNode[], xScale: scaleLinear | scaleLog | scaleSymLog, yScale: scaleLinear | scaleLog | scaleSymLog) {
 
     let elem = node_container.selectAll(".node")
         .data(nodes)
@@ -305,17 +309,6 @@ function draw_nodes(node_container: plot, nodes: ClusterNode[], xScale: scaleLin
         .on("click", click)
 }
 
-/* // Add a click handler to our button. It will send data back to Streamlit.
-let numClicks = 0
-
-button.onclick = function(): void {
-  // Increment numClicks, and pass the new value back to
-  // Streamlit via `Streamlit.setComponentValue`.
-  numClicks += 1
-  Streamlit.setComponentValue(numClicks)
-} */
-
-
 /**
  * The component's render function. This will be called immediately after
  * the component is initially loaded, and then again every time the
@@ -326,7 +319,7 @@ function onRender(event: Event): void {
     const data = (event as CustomEvent<RenderData>).detail
 
     let dendrogram: Dendrogram = data.args['dendrogram']
-    let scaleType = 'log'
+    let scaleType = data.args['scale']
     console.log(dendrogram)
     let margin: Margin = { top: 50, right: 50, bottom: 50, left: 50 }
     let label_margin_size = 200
@@ -349,8 +342,8 @@ function onRender(event: Event): void {
     let plot = create_container(dimensions)
     let scales = create_axis(plot, dimensions, dendrogram, scaleType)
 
-    let xScale: scaleLinear | scaleLog
-    let yScale: scaleLinear | scaleLog
+    let xScale: scaleLinear | scaleLog | scaleSymLog
+    let yScale: scaleLinear | scaleLog | scaleSymLog
 
     if (dimensions.orientation === Orientation.top || dimensions.orientation === Orientation.bottom) {
         xScale = scales[0]

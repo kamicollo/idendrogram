@@ -7,9 +7,10 @@ from idendro.containers import ClusterNode, Dendrogram
 
 _RELEASE = False
 
+
 class StreamlitConverter:
     def __init__(self) -> None:
-    
+
         if not _RELEASE:
             _component_func = components.declare_component(
                 "idendro",
@@ -22,18 +23,32 @@ class StreamlitConverter:
 
         self.component_func = _component_func
 
-    def convert(self,
+    def convert(
+        self,
         dendrogram: Dendrogram,
         orientation: str,
         show_nodes: bool,
         width: float,
         height: float,
-        key: str = None) -> Optional[ClusterNode]:
+        scale: str,
+        key: str,
+    ) -> Optional[ClusterNode]:
         if show_nodes and not dendrogram.computed_nodes:
-                raise RuntimeError("Nodes were not computed in create_dendrogram() step, cannot show them")  
+            raise RuntimeError(
+                "Nodes were not computed in create_dendrogram() step, cannot show them"
+            )
 
         dendrogram = json.loads(dendrogram.to_json())
-        
-        returned = self.component_func(dendrogram=dendrogram, orientation=orientation, show_nodes=show_nodes, width=width, height=height, key=key, default=None)
+
+        returned = self.component_func(
+            dendrogram=dendrogram,
+            orientation=orientation,
+            show_nodes=show_nodes,
+            width=width,
+            height=height,
+            key=key,
+            default=None,
+            scale=scale,
+        )
         if returned is not None:
             return ClusterNode(**returned)

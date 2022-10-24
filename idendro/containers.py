@@ -75,35 +75,39 @@ class Dendrogram:
         show_nodes: bool = True,
         height: float = 400,
         width: float = 400,
+        scale = 'linear'
     ) -> Any:            
         from .targets.altair import AltairConverter        
-        return AltairConverter().convert(self, orientation=orientation, show_nodes=show_nodes, height=height, width=width)
+        return AltairConverter().convert(self, orientation=orientation, show_nodes=show_nodes, height=height, width=width, scale=scale)
 
     def to_plotly(self, 
         orientation: str = "top",
         show_nodes: bool = True,
         height: float = 400,
         width: float = 400,
+        scale = 'linear'
     ) -> Any:            
         from .targets.plotly import PlotlyConverter        
-        return PlotlyConverter().convert(self, orientation=orientation, show_nodes=show_nodes, height=height, width=width)
+        return PlotlyConverter().convert(self, orientation=orientation, show_nodes=show_nodes, height=height, width=width, scale=scale)
 
     def to_matplotlib(self, 
         orientation: str = "top",
         show_nodes: bool = True,
         height: float = 400,
         width: float = 400,
+        scale= 'linear'
     ) -> Any:            
         from .targets.matplotlib import matplotlibConverter        
-        return matplotlibConverter().convert(self, orientation=orientation, show_nodes=show_nodes, height=height, width=width)
+        return matplotlibConverter().convert(self, orientation=orientation, show_nodes=show_nodes, height=height, width=width, scale=scale)
 
     def to_streamlit(self, 
         orientation: str = "top",
         show_nodes: bool = True,
         height: float = 400,
         width: float = 400,
+        scale = 'linear',
         key: str = None) -> Optional[float]:
         from .targets.streamlit import StreamlitConverter
-        return StreamlitConverter().convert(self, orientation=orientation, show_nodes=show_nodes, height=height, width=width, key=key)
+        return StreamlitConverter().convert(self, orientation=orientation, show_nodes=show_nodes, height=height, width=width, key=key, scale=scale)
 
     

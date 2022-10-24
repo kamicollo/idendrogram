@@ -1,4 +1,4 @@
-from math import pi
+from math import log, pi
 from typing import Dict, List
 from plotly.graph_objs import graph_objs # type: ignore
 
@@ -13,9 +13,10 @@ class PlotlyConverter:
         show_nodes: bool,
         height: float,
         width: float,
+        scale: str
     ) -> graph_objs.Figure:
 
-        layout = self.setup_layout(orientation=orientation, width=width, height=height, dendrogram=dendrogram)
+        layout = self.setup_layout(orientation=orientation, width=width, height=height, dendrogram=dendrogram, scale=scale)
 
         if orientation in ["top", "bottom"]:
             x = "x" 
@@ -33,7 +34,7 @@ class PlotlyConverter:
         
         return graph_objs.Figure(data=traces, layout=layout)
 
-    def setup_layout(self, orientation: str, width: float, height: float, dendrogram: Dendrogram) -> Dict:
+    def setup_layout(self, orientation: str, width: float, height: float, dendrogram: Dendrogram, scale: str) -> Dict:
 
         layout = {
             "showlegend": False,
@@ -57,6 +58,9 @@ class PlotlyConverter:
         }
         value_axis = axis_defaults.copy()
         label_axis = axis_defaults.copy()
+
+        #set value axis scale
+        value_axis['type'] = scale
 
 
         #control label position
@@ -91,6 +95,10 @@ class PlotlyConverter:
             value_axis["range"] = (max_y + range_y * 0.05, min_y)
         else:
             value_axis["range"] = (min_y, max_y + range_y * 0.05)
+        
+        #if non-linear scale, update range
+        if scale == 'log':            
+            value_axis["range"] = [log(v, 10) if v != 0 else 0 for v in value_axis['range']]
 
 
         if orientation in ["top", "bottom"]:
