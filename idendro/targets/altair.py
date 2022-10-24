@@ -18,20 +18,25 @@ class AltairConverter:
         width: float,
         scale: str
     ) -> alt.LayerChart:
+        """Converts dendrogram object into an Altair chart"""
 
+        #first, initialize axes
         X, Y = self.create_axis(dendrogram=dendrogram, orientation=orientation, scale=scale)
 
+        #draw links
         link_chart = self.draw_links(dendrogram, X, Y)
-        if show_nodes:
-            if not dendrogram.computed_nodes:
-                raise RuntimeError("Nodes were not computed in create_dendrogram() step, cannot show them")
+
+        #draw nodes if requested
+        if show_nodes:            
             node_chart = self.draw_nodes(dendrogram, X, Y)
         else:
             node_chart = alt.Chart(pd.DataFrame()).mark_point()
 
+        #return layered object
         return alt.layer(link_chart, node_chart).properties(width=width, height=height)        
 
     def create_axis(self, dendrogram: Dendrogram, orientation: str, scale: str) -> Tuple[Union[alt.X, alt.Y], Union[alt.X, alt.Y]]:
+        """Create appropriate altair axis objects"""
 
         if orientation in ["top", "bottom"]:
             label_axis = alt.X
@@ -40,6 +45,7 @@ class AltairConverter:
             label_axis = alt.Y
             value_axis = alt.X
 
+        #there's no nice way to do custom tick labels in Altair, so we use vegalite JS conditions...
         expr = [f"datum.value == {x.x} ? '{x.label}'" for x in dendrogram.axis_labels]
         expr.append("''")  # else condition
         label_expr_conditions = " : ".join(expr)
@@ -108,6 +114,8 @@ class AltairConverter:
     def draw_nodes(
         self, dendrogram: Dendrogram, X: Union[alt.X, alt.Y], Y: Union[alt.X, alt.Y]
     ) -> alt.LayerChart:
+        """Forms the traces representing the nodes"""
+
         node_df = pd.DataFrame(dendrogram.nodes)
         node_df['size'] = node_df['radius'] ** 2 * np.pi #altair uses size for area, not radius
 
