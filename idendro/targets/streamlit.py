@@ -5,7 +5,7 @@ import streamlit.components.v1 as components
 from idendro.containers import ClusterNode, Dendrogram
 
 class StreamlitConverter:
-    def __init__(self, release = False) -> None:
+    def __init__(self, release: bool = False) -> None:
         """Upon initialization, setup appropriate Streamlit component"""
 
         if not release:
