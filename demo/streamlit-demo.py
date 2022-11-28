@@ -72,7 +72,7 @@ dendrogram = dd.create_dendrogram(
     leaf_label_func= cluster_labeller()
 )
 
-sel_value = dendrogram.to_streamlit(orientation='top', height=800, width=1200, show_nodes=True)
+sel_value = dendrogram.to_streamlit(orientation='top', height=800, width=1200, show_nodes=True, scale='linear')
 st.write(sel_value)
 
 

@@ -1,0 +1,2 @@
+mypy idendro --disallow-untyped-defs
+mkdocs serve

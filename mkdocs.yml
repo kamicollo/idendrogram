@@ -1,0 +1,26 @@
+site_name: IDendro
+theme:
+  name: "material"
+  highlightjs: true
+  icon:
+    admonition:
+      tip: octicons/squirrel-16
+  hljs_languages:
+    - python
+
+plugins:
+  - mkdocstrings
+
+nav:
+  - Calculation Docs: index.md
+  - tutorials.md
+  - How-To Guides: how-to-guides.md
+  - Reference:
+    - IDendro: reference.md
+    - Dendrogram plotting: dendrogram.md
+    - Clustering Info Container: cluster-info-container.md
+    - Data Containers: data_containers.md
+    - Callback functions: callbacks.md
+
+watch:
+  - idendro
