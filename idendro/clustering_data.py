@@ -3,16 +3,17 @@ import numpy as np
 from scipy.cluster.hierarchy import leaders, to_tree, ClusterNode as CNode  # type: ignore
 
 
-class ClusteringData:
-    linkage_matrix: np.ndarray
-    cluster_assignments: np.ndarray
-    threshold: float
+class ClusteringData:    
     have_leaders: bool = False
     leaders: np.ndarray
     flat_cluster_ids: np.ndarray
     have_tree: bool = False
-    rootnode: CNode
-    nodelist: List[CNode]
+    rootnode: CNode  
+    threshold: float    
+    nodelist: List[CNode]    
+    linkage_matrix: np.ndarray     
+    cluster_assignments: np.ndarray
+
 
     def __init__(
         self,
@@ -27,11 +28,29 @@ class ClusteringData:
 
         Args:
             linkage_matrix (np.ndarray): Linkage matrix as produced by scipy.cluster.hierarchy.linkage or equivalent
-            cluster_assignments (np.ndarray): A one dimensional array of length N that contains flat cluster assignments for each observation. Produced by scipy.cluster.hierarchy.fcluster or equivalent.
+            cluster_assignments (np.ndarray): A one dimensional array of length N that contains flat cluster assignments for each observation. Produced by `scipy.cluster.hierarchy.fcluster` or equivalent.
             threshold (float): Cut-off threshold used to form flat clusters in the hierarchical clustering process or equivalent.
-            leaders (Tuple[np.ndarray, np.ndarray], optional): Root nodes of the clustering produced by scipy.cluster.hierarchy.leaders(). 
-            rootnode (CNode, optional): rootnode produced by scipy.cluster.hierarchy.to_tree(*, rd=True). 
-            nodelist (List[CNode], optional): nodelist produced by scipy.cluster.hierarchy.to_tree(*, rd=True)
+            leaders (Tuple[np.ndarray, np.ndarray], optional): Root nodes of the clustering produced by `scipy.cluster.hierarchy.leaders()`. 
+            rootnode (CNode, optional): rootnode produced by `scipy.cluster.hierarchy.to_tree(..., rd=True)`. 
+            nodelist (List[CNode], optional): nodelist produced by `scipy.cluster.hierarchy.to_tree(..., rd=True)`
+
+        Example:
+
+            ```
+            #your clustering workflow
+            Z = scipy.cluster.hierarchy.linkage(...)
+            threshold = 42
+            cluster_assignments =  scipy.cluster.hierarchy.fcluster(Z, threshold=threshold, ...)        
+
+            #dendrogram creation
+            dd = idendro.IDendro()
+            cdata = idendro.ClusteringData(
+                linkage_matrix=Z, 
+                cluster_assignments=cluster_assignments, 
+                threshold=threshold 
+            )
+            dd.set_cluster_info(cdata)
+            ```        
         """
         self.linkage_matrix = linkage_matrix
         self.cluster_assignments = cluster_assignments
@@ -46,10 +65,10 @@ class ClusteringData:
             self.nodelist = nodelist
 
     def get_leaders(self) -> Tuple[np.ndarray, np.ndarray]:
-        """A wrapper for scipy.cluster.hierarchy.leaders()
+        """A wrapper for [scipy.cluster.hierarchy.leaders](https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.leaders.html). Returns the root nodes in a hierarchical clustering.
 
         Returns:
-            Tuple[np.ndarray, np.ndarray]: [L, M]
+            (Tuple[np.ndarray, np.ndarray]):  [L, M] (see SciPy's documentation for details)
         """
         if not self.have_leaders:
             L, M = leaders(
@@ -60,11 +79,34 @@ class ClusteringData:
             self.have_leaders = True
         return self.leaders, self.flat_cluster_ids
 
-    def get_tree(self) -> Tuple[CNode, List[CNode]]:
-        """A wrapper for scipy.cluster.hierarchy.to_tree()
+    def get_linkage_matrix(self) -> np.ndarray:
+        """Returns stored linkage matrix.
+        Returns:
+            linkage_matrix (np.ndarray): Linkage matrix as produced by scipy.cluster.hierarchy.linkage or equivalent
+        """
+        return self.linkage_matrix
+
+    def get_threshold(self) -> float:
+        """Returns stored clustering threshold
 
         Returns:
-            Tuple[CNode, List[CNode]]: [rootnode, nodelist]
+            threshold (float): Cut-off threshold used to form flat clusters in the hierarchical clustering process or equivalent.
+        """
+        return self.threshold
+
+    def get_cluster_assignments(self) -> np.ndarray:
+        """Returns flat cluster assignment array
+
+        Returns:
+            cluster_assignments (np.ndarray): A one dimensional array of length N that contains flat cluster assignments for each observation. Produced by `scipy.cluster.hierarchy.fcluster` or equivalent.
+        """
+        return self.cluster_assignments
+
+    def get_tree(self) -> Tuple[CNode, List[CNode]]:
+        """A wrapper for [scipy.cluster.hierarchy.to_tree](https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.to_tree.html). Converts a linkage matrix into an easy-to-use tree object.
+
+        Returns:
+            Tuple[CNode, List[CNode]]: [rootnode, nodelist] (see SciPy's documentation for details)
         """
         if not self.have_tree:
             rootnode, nodelist = to_tree(self.linkage_matrix, rd=True)
@@ -74,10 +116,10 @@ class ClusteringData:
         return self.rootnode, self.nodelist
 
     def get_merge_map(self) -> dict:
-        """Returns a dictionary that maps pairs of linkage matrix IDs (two clusters) to the linkage matrix ID (one cluster) they get merged into
+        """Returns a dictionary that maps pairs of linkage matrix IDs to the linkage matrix ID they get merged into.
 
         Returns:
-            dict: Dictionary tuple(ID, ID): merged_ID
+            dict: Dictionary tuple(ID, ID) -> merged_ID
         """
 
         #create keys that are represented by the pairs of cluster_ids to be merged 

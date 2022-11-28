@@ -11,7 +11,8 @@ from .containers import (
     ScipyDendrogram,
     AxisLabel,
 )
-from .callbacks import cluster_assignments, counts, default_hover, link_painter
+
+import callbacks
 
 class IDendro:
     cluster_data: Union[ClusteringData, None]
@@ -33,50 +34,48 @@ class IDendro:
         node_factory: Callable[[Dict], ClusterNode] = lambda x: ClusterNode(**x),
         axis_label_factory: Callable[[Dict], AxisLabel] = lambda x: AxisLabel(**x)
     ) -> None:
-        """Main IDendro class
+        """
+        Initializes the idendro object, optionally with different formatting defaults.
 
-        ## Arguments:
+        Args:
 
-        `link_factory (Callable[[Dict], ClusterLink], optional)`: Optional `idendro.ClusterLink` factory used to change link formatting defaults. 
-        Should accept a dictionary and return `ClusterLink` (child) class initialized with the dictionary.
+            link_factory (Callable[[Dict], ClusterLink]): [idendro.ClusterLink][] factory that can be used to override link formatting defaults.                 
 
-        `node_factory (Callable[[Dict], ClusterNode], optional)`: Optional `idendro.ClusterNode` factory used to change node formatting defaults. 
-        Should accept a dictionary and return `ClusterNode` (child) class initialized with the dictionary.
+            node_factory (Callable[[Dict], ClusterNode]): ClusterNode factory that can be used to override node formatting defaults.                 
 
-        `axis_label_factory (Callable[[Dict], AxisLabel], optional)`: Optional `idendro.AxisLabel` factory used to change axis label formatting defaults. 
-        Should accept a dictionary and return `AxisLabel` (child) class initialized with the dictionary.
+            axis_label_factory (Callable[[Dict], AxisLabel]): AxisLabel factory that can be used to override axis label formatting defaults.                 
 
-        ## Example: 
+        Example:
         
-        Customizing the Dendrogram to show smaller nodes and dashed link lines:
+            Customizing the Dendrogram to show smaller nodes and dashed link lines:
 
-        ```
-        #define a subclass of `ClusterNode` and redefine radius and text label sizes
-        @dataclass
-        SmallClusterNode(ClusterNode):
-            radius: 3
-            labelsize: 3
+            ```
+            #define a subclass of `ClusterNode` and redefine radius and text label sizes
+            @dataclass
+            SmallClusterNode(ClusterNode):
+                radius: 3
+                labelsize: 3
 
-        #define a subclass of `ClusterLink` and redefine stroke dash pattern
-        @dataclass
-        DashedLink(ClusterLink):
-            strokedash: List = field(default_factory= lambda: [1, 5, 5, 1])
+            #define a subclass of `ClusterLink` and redefine stroke dash pattern
+            @dataclass
+            DashedLink(ClusterLink):
+                strokedash: List = field(default_factory= lambda: [1, 5, 5, 1])
 
-        #instantiate the idendro object with the factories for links and nodes
-        dd = idendro.IDendro(
-            link_factory=lambda x: DashedLink(**x), 
-            node_factory=lambda x: SmallClusterNode(**x)
-        )
+            #instantiate the idendro object with the factories for links and nodes
+            dd = idendro.IDendro(
+                link_factory=lambda x: DashedLink(**x), 
+                node_factory=lambda x: SmallClusterNode(**x)
+            )
 
-        #proceed as usual
-        cdata = idendro.ClusteringData(
-            linkage_matrix=model, 
-            cluster_assignments=cluster_assignments, 
-            threshold=threshold
-        )
-        dd.set_cluster_info(cdata)
-        dendrogram = dd.create_dendrogram().to_altair()
-        ```
+            #proceed as usual
+            cdata = idendro.ClusteringData(
+                linkage_matrix=model, 
+                cluster_assignments=cluster_assignments, 
+                threshold=threshold
+            )
+            dd.set_cluster_info(cdata)
+            dendrogram = dd.create_dendrogram().to_altair()
+            ```
         """
         
         self.link_factory = link_factory
@@ -110,26 +109,26 @@ class IDendro:
     def set_cluster_info(self, cluster_data: ClusteringData) -> None:
         """Sets the clustering data (linkage matrix and other parameters) that are required for some of the dendrogram generation features.
 
-        ## Arguments:
-            cluster_data (ClusteringData): instance of `idendro.ClusteringData()`
+        Args:
+            cluster_data (ClusteringData): instance of [idendro.ClusteringData][]
 
-        ## Typical usage:
+        Example:
 
-        ```
-        #your clustering workflow
-        Z = scipy.cluster.hierarchy.linkage(...)
-        threshold = 42
-        cluster_assignments =  scipy.cluster.hierarchy.fcluster(Z, threshold=threshold, ...)        
+            ```
+            #your clustering workflow
+            Z = scipy.cluster.hierarchy.linkage(...)
+            threshold = 42
+            cluster_assignments =  scipy.cluster.hierarchy.fcluster(Z, threshold=threshold, ...)        
 
-        #dendrogram creation
-        dd = idendro.IDendro()
-        cdata = idendro.ClusteringData(
-            linkage_matrix=Z, 
-            cluster_assignments=cluster_assignments, 
-            threshold=threshold 
-        )
-        dd.set_cluster_info(cdata)
-        ```
+            #dendrogram creation
+            dd = idendro.IDendro()
+            cdata = idendro.ClusteringData(
+                linkage_matrix=Z, 
+                cluster_assignments=cluster_assignments, 
+                threshold=threshold 
+            )
+            dd.set_cluster_info(cdata)
+            ```
         """
         self.cluster_data = cluster_data
     
@@ -139,57 +138,51 @@ class IDendro:
         p: int = 4,
         sort_criteria: str = "distance",
         sort_descending: bool = False,
-        link_color_func: Callable[[ClusteringData, int], str] = link_painter(),
-        leaf_label_func: Callable[[ClusteringData, int], str] = counts,
+        link_color_func: Callable[[ClusteringData, int], str] = callbacks.link_painter(),
+        leaf_label_func: Callable[[ClusteringData, int], str] = callbacks.counts,
         compute_nodes: bool = True,
-        node_label_func: Callable[[ClusteringData, int], str] = cluster_assignments,
-        node_hover_func: Callable[[ClusteringData, int], Dict[str, str]] = default_hover,
+        node_label_func: Callable[[ClusteringData, int], str] = callbacks.cluster_assignments,
+        node_hover_func: Callable[[ClusteringData, int], Dict[str, str]] = callbacks.default_hover,
         
     ) -> Dendrogram:
         """Creates an idendro dendrogram object.
 
-        ## Arguments:
+        Args:
 
-        `truncate_mode ('level' | 'lastp' | None, optional)`: Truncation mode used to condense the dendrogram. 
-        See scipy.cluster.hierachy.dendrogram for details. Defaults to "level".
+            truncate_mode ('level' | 'lastp' | None): Truncation mode used to condense the dendrogram. 
+                See [scipy's dendrogram()](https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.dendrogram.html) for details. 
 
-        `p` (int, optional): p parameter for truncate_mode 
-        See scipy.cluster.hierachy.dendrogram for details. Defaults to 4.
+            p (int): truncate_mode parameter.
+                See [scipy's dendrogram()](https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.dendrogram.html) for details. 
 
-        `sort_criteria ('count' | 'distance', optional)`: Determines how the nodes are ordered 
-        (by number of original observations - if 'count' is used or by distance between direct descendents if 'distance' is used). 
-        Defaults to "distance".
+            sort_criteria ('count' | 'distance'): Node order criteria. `count` sorts by number of original observations in the node, 
+                `distance` by the distance between direct descendents of the node).             
 
-        `sort_descending` (bool, optional)`: 
-        Accompanying parameter to sort_criteria to indicate if sorting should be descending. 
-        Defaults to False.
+            sort_descending (bool): Accompanying parameter to sort_criteria to indicate whether sorting should be descending. 
+            
 
-        `link_color_func (Callable[[ClusteringData, int], str], optional)`: 
-        A callable function that determines colors of nodes and links. See below for details. 
+            link_color_func (Callable[[ClusteringData, int], str]): A callable function that determines colors of nodes and links. See below for details. 
 
-        `leaf_label_func (Callable[[ClusteringData, int], str], optional)`: 
-        A callable function that determines leaf node labels. See below for details. 
+            leaf_label_func (Callable[[ClusteringData, int], str]): A callable function that determines leaf node labels. See below for details. 
 
-        `compute_nodes (bool, optional)`: 
-        Whether nodes should be computed (can be computationally expensive on large datasets). 
-        Defaults to True.
+            compute_nodes (bool): Whether nodes should be computed (can be computationally expensive on large datasets). 
 
-        `node_label_func (Callable[[ClusteringData, int], str], optional)`: 
-        A callable function that determines node text labels. 
-        See below for details. 
+            node_label_func (Callable[[ClusteringData, int], str]): A callable function that determines node text labels. See below for details. 
 
-        `node_hover_func (Callable[[ClusteringData, int], Dict[str, str]], optional)`: 
-        A callable function that determines node hover text. 
-        See below for details. 
+            node_hover_func (Callable[[ClusteringData, int], Dict[str, str]], optional): A callable function that determines node hover text. See below for details. 
 
-        ## Returns:
-            Dendrogram: Dendrogram object
+        Returns:
+            [idendro.Dendrogram][]: Dendrogram object
 
-        ## Usage:
+        
+        ### Usage notes
 
-        ### scipy.cluster.hierarchy.dendrogram() parameters 
+        For how-to examples, see [How-to Guide](how-to-guides).
+    
 
-        In a nutshell, parameters `truncate_mode`, `p`, `sort_criteria`, `sort_descending`, `link_color_func` and `leaf_label_func` are all passed to `scipy.cluster.hierarchy.dendrogram()`:
+        #### SciPy's dendrogram parameters 
+
+        IDendro uses SciPy to generate the initial dendrogram structure and passes a few parameters directly to `scipy.cluster.hierarchy.dendrogram`:
 
         - `truncate_mode` and `p` are passed without modifications
         - `sort_criteria` and `sort_descending` map to `count_sort` and `distance_sort`
@@ -197,46 +190,24 @@ class IDendro:
 
         To fully understand these parameters, it is easiest to explore [scipy's documentation directly](https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.dendrogram.html).
 
-        ### Details on callback functions
-        All callback functions will be called with 2 parameters: 
+        #### Callback functions
+        IDendro uses callbacks to allow customizing link/node colors (`link_color_func`), leaf axis labels (`leaf_label_func`), 
+            node labels (`node_label_func`) and tooltips (`node_hover_func`). All callback functions will be called with 2 parameters: 
 
-        - an instance of `ClusteringData` object that provides access to linkage matrix and other associated data (see `idendro.ClusteringData` for details)
+        - an instance of [idendro.ClusteringData][] object that provides access to linkage matrix and other clustering information.
         - linkage ID (integer)
 
-        This setup allows nearly endless customization but getting used to working with linkage matrix may be confusing at first. 
-        When developing own customization functions, it may help to look at `idendro.callbacks` source code to gain some intuition.
+        The return types should be: 
 
-        #### link_color_func (Customizing colors)
-        
-        `link_color_func` should return the color for the link/node represented by the linkage ID. 
-        A convenience function `idendro.callbacks.link_painter()` returns a basic callable that returns 
-        a distinct color for all items below the cut-off threshold.
-        See `idendro.callbacks.link_painter()` for details on how to use custom color schemes with it.
+        - `link_color_func` should return the color for the link/node represented by the linkage ID. 
+        - `leaf_label_func` should return the text label to be used for the axis label of the leaf node represented by the linkage ID.
+        - `node_label_func` should return the text label to be used for the node represented by the linkage ID. 
+        - `node_hover_func` should return a dictionary of key:value pairs that will be displayed in a tooltip of the node represented by the linkage ID.
 
-        #### leaf_label_func (Customizing leaf axis labels)
-
-        `leaf_label_func` should return the leaf label of the linkage ID to be used for the axis labels.
-        Two convenience implementations are provided:
-
-        - `idendro.callbacks.counts` is a callable that will return counts of observations represented by the linkage ID 
-        (axis labels will display these counts). This is the default. 
-        - `idendro.callbacks.cluster_labeller(fmt_string=[..])` returns a callable that will return label only for the first leaf in the cluster, 
-        leaving other labels empty. See idendro.callbacks.cluster_labeller for details.
-
-        #### node_label_func (Customizing node text labels)
-        
-        `node_label_func` should return the label to be used for the nodes displayed. 
-        The default used is `idendro.callbacks.cluster_assignments` which returns flat cluster ID 
-        if the linkage ID corresponds to the flat cluster and empty label otherwise.
-
-        #### node_hover_func (Customizing tooltips)
-        
-        `node_hover_func` should return a dictionary of key:value pairs that will be displayed in a tooltip.
-        The default used is `idendro.callbacks.default_hover` that displays the linkage ID and the # of observations associated with this linkage ID
+        This setup allows nearly endless customization - examples are provided in [How-to Guide](how-to-guides).
 
         """
 
-        
         R = self._create_scipy_dendrogram(
             truncate_mode=truncate_mode,
             p=p,
@@ -260,42 +231,39 @@ class IDendro:
         self,
         R: ScipyDendrogram,
         compute_nodes: bool = True,
-        node_label_func: Callable[[ClusteringData, int], str] = cluster_assignments,
-        node_hover_func: Callable[[ClusteringData, int], Dict[str, str]] = default_hover,
+        node_label_func: Callable[[ClusteringData, int], str] = callbacks.cluster_assignments,
+        node_hover_func: Callable[[ClusteringData, int], Dict[str, str]] = callbacks.default_hover,
     ) -> Dendrogram:
-        """Converts a dictionary representing a dendrogram generated by SciPy to Idendro dendrogram object.
+        """Converts a dictionary representing a dendrogram generated by SciPy to [idendro.Dendrogram][] object.
 
-        ## Arguments
+        Args:
 
-        `R (ScipyDendrogram)`: Dictionary as generated by `scipy.cluster.hierarchy.dendrogram(*, no_plot=True)` or equivalent
+            R (ScipyDendrogram): Dictionary as generated by SciPy's `dendrogram(..., no_plot=True)` or equivalent
 
-        `compute_nodes`: Whether to compute nodes (requires ClusteringData() to be set and can be computationally expensive on large datasets).
-        Defaults to true.
+            compute_nodes: Whether to compute nodes (requires ClusteringData() to be set and can be computationally expensive on large datasets).            
 
-        `node_label_func (Callable[[], str], optional)`: 
-        Callback function to generate dendrogram node labels. See `create_dendrogram()` for usage details.
+            node_label_func (Callable[[], str], optional): Callback function to generate dendrogram node labels. See `create_dendrogram()` for usage details.
 
-        `node_hover_func (Callable[[], Union[Dict, str]], optional)`: 
-        Callback function to generate dendrogram hover text labels. See `create_dendrogram()` for usage details.
+            node_hover_func (Callable[[], Union[Dict, str]], optional): Callback function to generate dendrogram hover text labels. See `create_dendrogram()` for usage details.
 
-        ## Returns
-            Dendrogram: Idendro dendrogram object
+        Returns:
+            Dendrogram: [idendro.Dendrogram][] object
 
-        ## Example usage
+        Example:
 
-        ```
-        #your clustering workflow
-        Z = scipy.cluster.hierarchy.linkage(*)
-        threshold = 42
-        cluster_assignments =  scipy.cluster.hierarchy.fcluster(Z, threshold=threshold, *)
-        R = scipy.cluster.hierarchy.dendrogram(Z, no_plot=True, get_leaves=True, *)        
+            ```
+            #your clustering workflow
+            Z = scipy.cluster.hierarchy.linkage(*)
+            threshold = 42
+            cluster_assignments =  scipy.cluster.hierarchy.fcluster(Z, threshold=threshold, *)
+            R = scipy.cluster.hierarchy.dendrogram(Z, no_plot=True, get_leaves=True, *)        
 
-        #Render scipy's dendrogram in plotly without any modifications
-        dd = idendro.IDendro()        
-        dendrogram = dd.convert_scipy_dendrogram(R, compute_nodes = False)
-        dendrogram.to_plotly()
+            #Render scipy's dendrogram in plotly without any additional modifications
+            dd = idendro.IDendro()        
+            dendrogram = dd.convert_scipy_dendrogram(R, compute_nodes = False)
+            dendrogram.to_plotly()
 
-        ```
+            ```
 
         """
         R["color_list"] = [self._convert_matplotlib_color(c) for c in R["color_list"]]
