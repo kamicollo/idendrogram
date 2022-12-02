@@ -12,15 +12,18 @@ plugins:
   - mkdocstrings
 
 nav:
-  - Calculation Docs: index.md
-  - tutorials.md
-  - How-To Guides: how-to-guides.md
+  - Home page: index.md  
+  - How-To Guides:
+    - Getting started: getting-started.md
+    - Customizing looks: customizing-looks.md
+    - Using in Streamlit: streamlit.md
   - Reference:
-    - IDendro: reference.md
-    - Dendrogram plotting: dendrogram.md
+    - Creating dendrogram objects: reference.md
+    - Plotting dendrograms: dendrogram.md
+    - Callback functions for formatting: callbacks.md
     - Clustering Info Container: cluster-info-container.md
     - Data Containers: data_containers.md
-    - Callback functions: callbacks.md
+    
 
 watch:
   - idendro
