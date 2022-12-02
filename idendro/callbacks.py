@@ -91,7 +91,7 @@ def cluster_assignments(data: ClusteringData, linkage_id: int) -> str:
 
 
 def link_painter(
-    colors: Dict[int, str] = None,
+    colors: Dict[int, str] = dict(),
     above_threshold: str = "#1f77b4",
 ) -> Callable[[ClusteringData, int], str]:
     """Creates a callable compatible with `link_color_func` argument of [idendro.IDendro][] 
@@ -135,18 +135,18 @@ def link_painter(
             dd.create_dendrogram(link_color_func = painter).to_plotly()
         ```
     """
-    if colors is None:
+    if len(colors) == 0:
         colors = {
-        1: "#ff7f0e",
-        2: "#2ca02c",
-        3: "#d62728",
-        4: "#9467bd",
-        5: "#8c564b",
-        6: "#e377c2",
-        7: "#7f7f7f",
-        8: "#bcbd22",
-        9: "#17becf",
-    }
+            1: "#ff7f0e",
+            2: "#2ca02c",
+            3: "#d62728",
+            4: "#9467bd",
+            5: "#8c564b",
+            6: "#e377c2",
+            7: "#7f7f7f",
+            8: "#bcbd22",
+            9: "#17becf",
+        }
     def _get_color(cluster_assignment: int) -> str:
         if cluster_assignment in colors.keys():
             color = colors[cluster_assignment]
