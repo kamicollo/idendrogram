@@ -1,8 +1,44 @@
 from math import log
-from typing import Dict, List
+from typing import Dict, List, Any
 from plotly.graph_objs import graph_objs # type: ignore
 
 from ..containers import ClusterLink, ClusterNode, Dendrogram
+from .common import _check_nodes, _check_orientation, _check_scale
+
+
+def to_plotly(
+        dendrogram: Dendrogram,
+        orientation: str = "top",
+        show_nodes: bool = True,
+        height: float = 400,
+        width: float = 400,
+        scale: str = "linear",
+    ) -> Any:
+        """Converts a dendrogram object into Plotly chart
+
+        Args:
+            dendrogram (Dendrogram): IDendro dendrogram object
+            orientation (str, optional): Position of dendrogram's root node. One of "top", "bottom", "left", "right". Defaults to "top".
+            show_nodes (bool, optional): Whether to draw nodes. Defaults to True.
+            height (float, optional): Height of the dendrogram. Defaults to 400.
+            width (float, optional): Width of the dendrogram. Defaults to 400.
+            scale (str, optional): Scale used for the value axis. One of "linear", "log". "symlog" is not supported by Plotly. Defaults to 'linear'.
+
+        Returns:
+            plotly.graph_objs.Figure: Plotly figure object
+        """
+        _check_orientation(dendrogram, orientation)
+        _check_scale(dendrogram, scale, supported=["linear", "log"])
+        _check_nodes(dendrogram, show_nodes)
+
+        return PlotlyConverter().convert(
+            dendrogram=dendrogram,
+            orientation=orientation,
+            show_nodes=show_nodes,
+            height=height,
+            width=width,
+            scale=scale,
+        )
 
 
 class PlotlyConverter:

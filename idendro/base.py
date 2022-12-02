@@ -160,7 +160,6 @@ class IDendro:
 
             sort_descending (bool): Accompanying parameter to sort_criteria to indicate whether sorting should be descending. 
             
-
             link_color_func (Callable[[ClusteringData, int], str]): A callable function that determines colors of nodes and links. See below for details. 
 
             leaf_label_func (Callable[[ClusteringData, int], str]): A callable function that determines leaf node labels. See below for details. 

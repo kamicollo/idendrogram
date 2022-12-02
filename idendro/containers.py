@@ -3,7 +3,7 @@ from typing import Any, List, Optional, Tuple, TypedDict, Dict, Union
 
 
 class ScipyDendrogram(TypedDict):
-    """Data class storing data produced by scipy's dendrogram function"""
+    """Data class storing data produced by scipy's dendrogram function."""
 
     color_list: List[str]
     """List of link colors"""
@@ -21,6 +21,7 @@ class ScipyDendrogram(TypedDict):
 
 @dataclass
 class ClusterNode:
+    """Data class storing node-level information."""
 
     x: float
     """X-coordinate of the node"""
@@ -54,35 +55,32 @@ class ClusterNode:
 
 @dataclass
 class ClusterLink:
-    """Dataclass storing information about links
-
-    x: 4 coordinates on the x-axis
-    y: 4 coordinates on the y-axis
-    id: the linkage ID represented by the link
-    children_id: a tuple of 2 linkage IDs representing the 2 immediate clusters that got merged into this cluster
-    cluster_id: flat cluster assignment ID if this link represents a flat cluster; otherwise empty
-    fillcolor: line color used for the link
-    strokewidth: the line width of the link
-    strokedash: the dash pattern used for the link
-    strokeopacity: the opacity level used for the link
-
-    """
+    """Dataclass storing information about links."""
 
     x: List[float]
+    """x: 4 coordinates of the link on the x-axis"""
     y: List[float]
+    """y: 4 coordinates of the link on the y-axis"""
     fillcolor: str
+    """fillcolor: line color used for the link"""
     id: Union[int, None] = None
+    """id: the linkage ID represented by the link"""
     children_id: Union[Tuple[int, int], None] = None
+    """children_id: a tuple of 2 linkage IDs representing the 2 immediate clusters that got merged into this cluster"""
     cluster_id: Union[int, None] = None
+    """cluster_id: flat cluster assignment ID if this link represents a flat cluster; otherwise empty"""
     strokewidth: float = 1.0
+    """strokewidth: the line width of the link"""
     strokedash: List = field(default_factory=lambda: [1, 0])
+    """strokedash: the dash pattern used for the link"""
     strokeopacity: float = 1.0
+    """strokeopacity: the opacity level used for the link"""
     _order_helper: List = field(default_factory=lambda: [0, 1, 2, 3])
 
 
 @dataclass
 class AxisLabel:
-    """Dataclass storing information on axis labels"""
+    """Dataclass storing information on axis labels."""
 
     x: float
     """x-coordinate of the label"""
@@ -93,7 +91,7 @@ class AxisLabel:
 
 @dataclass
 class Dendrogram:
-    """Dataclass representing the idendro dendrogram object
+    """Dataclass representing the idendro dendrogram object.
     """
 
     axis_labels: List[AxisLabel]
@@ -109,179 +107,59 @@ class Dendrogram:
     y_domain: Tuple[float, float] = (0, 0)
     """y_domain: the value domain of the value axis"""
 
-    def to_json(self) -> str:
-        """Returns the dendrogram object represented as a JSON string
-
-        Returns:
-            str: JSON string
-        """
-        from .targets.json import JSONConverter
-
-        return JSONConverter().convert(self)
-
-    def check_orientation(
-        self, orientation: str, supported: List = ["top", "bottom", "left", "right"]
-    ) -> None:
-        """Checks validity of orientation value provided"""
-        if orientation not in supported:
-            raise ValueError(
-                f"""Orientation should be one of '{"', '".join(supported)}'. Provided: '{orientation}'"""
-            )
-
-    def check_scale(
-        self, scale: str, supported: List[str] = ["linear", "log", "symlog"]
-    ) -> None:
-        """Checks validity of scale value provided"""
-        if scale not in supported:
-            raise ValueError(
-                f"""Scale should be one of '{"', '".join(supported)}'. Provided: '{scale}'"""
-            )
-
-    def check_nodes(self, show_nodes: bool) -> None:
-        """Checks if nodes were not computed but are requested to be drawn"""
-        if show_nodes and not self.computed_nodes:
-            raise RuntimeError(
-                "Nodes were not computed in create_dendrogram() step, cannot show them"
-            )
-
-    def to_altair(
+    def plot(
         self,
+        backend: str = "altair",
         orientation: str = "top",
         show_nodes: bool = True,
         height: float = 400,
         width: float = 400,
         scale: str = "linear",
     ) -> Any:
-        """Converts a dendrogram object into Altair chart
+        """Plot the dendrogram using one of the supported backends. This is a convenience function,
+            you can also use `to_*()` functions from appropriate target backends at `idendro.targets.[backend].to_[backend]()`.
 
         Args:
-            orientation (str, optional): Position of dendrogram's root node. One of "top", "bottom", "left", "right". Defaults to "top".
-            show_nodes (bool, optional): Whether to draw nodes. Defaults to True.
-            height (float, optional): Height of the dendrogram. Defaults to 400.
-            width (float, optional): Width of the dendrogram. Defaults to 400.
-            scale (str, optional): Scale used for the value axis. One of "linear", "symlog", "log". Defaults to 'linear'.
+            backend (str, optional): Backend to use, one of 'altair', 'streamlit', 'plotly', 'matplotlib'. 
+            orientation (str, optional): Position of dendrogram's root node. One of "top", "bottom", "left", "right". 
+            show_nodes (bool, optional): Whether to draw nodes. 
+            height (float, optional): Height of the dendrogram. 
+            width (float, optional): Width of the dendrogram. 
+            scale (str, optional): Scale used for the value axis. One of "linear", "symlog", "log". 
+
+        Raises:
+            ValueError: Parameters supplied did not comform to allowed values.  
 
         Returns:
-            altair.LayeredChart: Altair chart object
+            Any: 
+
+                Varies by backend: 
+                
+                - Altair: `altair.Layered` chart object
+                - Plotly: `plotly.graph_objs.Figure` figure object
+                - Matplotlib: `matplotlib.pyplot.ax` axes object
+                - Streamlit: [idendro.ClusterNode][] object that was clicked on (None if no clicks took place)
         """
-        self.check_orientation(orientation)
-        self.check_scale(scale)
-        self.check_nodes(show_nodes)
+        if backend == 'altair':
+            from .targets.altair import to_altair
+            return to_altair(self, orientation=orientation, show_nodes=show_nodes, height=height, width=width, scale=scale)
+        elif backend == 'matplotlib':
+            from .targets.matplotlib import to_matplotlib
+            return to_matplotlib(self, orientation=orientation, show_nodes=show_nodes, height=height, width=width, scale=scale)
+        elif backend == 'plotly':
+            from .targets.plotly import to_plotly
+            return to_plotly(self, orientation=orientation, show_nodes=show_nodes, height=height, width=width, scale=scale)
+        elif backend == 'streamlit':
+            from .targets.streamlit import to_streamlit
+            return to_streamlit(self, orientation=orientation, show_nodes=show_nodes, height=height, width=width, scale=scale)
+        else:
+            raise ValueError(f"Unsupported backend '{backend}', should be one of 'plotly', 'matplotlib', 'altair', 'streamlit'")
 
-        from .targets.altair import AltairConverter
-
-        return AltairConverter().convert(
-            self,
-            orientation=orientation,
-            show_nodes=show_nodes,
-            height=height,
-            width=width,
-            scale=scale,
-        )
-
-    def to_plotly(
-        self,
-        orientation: str = "top",
-        show_nodes: bool = True,
-        height: float = 400,
-        width: float = 400,
-        scale: str = "linear",
-    ) -> Any:
-        """Converts a dendrogram object into Plotly chart
-
-        Args:
-            orientation (str, optional): Position of dendrogram's root node. One of "top", "bottom", "left", "right". Defaults to "top".
-            show_nodes (bool, optional): Whether to draw nodes. Defaults to True.
-            height (float, optional): Height of the dendrogram. Defaults to 400.
-            width (float, optional): Width of the dendrogram. Defaults to 400.
-            scale (str, optional): Scale used for the value axis. One of "linear", "log". "symlog" is not supported by Plotly. Defaults to 'linear'.
+    def to_json(self):
+        """Converts dendrogram to JSON representation.
 
         Returns:
-            plotly.graph_objs.Figure: Plotly figure object
+            str: JSON-formatted dendrogram
         """
-        self.check_orientation(orientation)
-        self.check_scale(scale, supported=["linear", "log"])
-        self.check_nodes(show_nodes)
-
-        from .targets.plotly import PlotlyConverter
-
-        return PlotlyConverter().convert(
-            self,
-            orientation=orientation,
-            show_nodes=show_nodes,
-            height=height,
-            width=width,
-            scale=scale,
-        )
-
-    def to_matplotlib(
-        self,
-        orientation: str = "top",
-        show_nodes: bool = True,
-        height: float = 6,
-        width: float = 6,
-        scale: str = "linear",
-    ) -> Any:
-        """Converts a dendrogram object into matplotlib chart
-
-        Args:
-            orientation (str, optional): Position of dendrogram's root node. One of "top", "bottom", "left", "right". Defaults to "top".
-            show_nodes (bool, optional): Whether to draw nodes. Defaults to True.
-            height (float, optional): Height of the dendrogram. Defaults to 400.
-            width (float, optional): Width of the dendrogram. Defaults to 400.
-            scale (str, optional): Scale used for the value axis. One of "linear", "symlog", "log". Defaults to 'linear'.
-
-        Returns:
-            matplotlib.pyplot.ax: matplotlib axes object
-        """
-        self.check_orientation(orientation)
-        self.check_scale(scale)
-        self.check_nodes(show_nodes)
-
-        from .targets.matplotlib import matplotlibConverter
-
-        return matplotlibConverter().convert(
-            self,
-            orientation=orientation,
-            show_nodes=show_nodes,
-            height=height,
-            width=width,
-            scale=scale,
-        )
-
-    def to_streamlit(
-        self,
-        orientation: str = "top",
-        show_nodes: bool = True,
-        height: float = 400,
-        width: float = 400,
-        scale: str = "linear",
-    ) -> Optional[ClusterNode]:
-        """Renders dendrogram object as a custom bi-directional Streamlit component
-
-        Args:
-            orientation (str, optional): Position of dendrogram's root node. One of "top", "bottom", "left", "right". Defaults to "top".
-            show_nodes (bool, optional): Whether to draw nodes. Defaults to True.
-            height (float, optional): Height of the dendrogram. Defaults to 400.
-            width (float, optional): Width of the dendrogram. Defaults to 400.
-            scale (str, optional): Scale used for the value axis. One of "linear", "symlog", "log". Defaults to 'linear'.
-
-        Returns:
-            Optional[ClusterNode]: A ClusterNode object that was clicked on (None if no clicks took place)
-        """
-
-        self.check_orientation(orientation)
-        self.check_scale(scale)
-        self.check_nodes(show_nodes)
-
-        from .targets.streamlit import StreamlitConverter
-
-        return StreamlitConverter().convert(
-            self,
-            orientation=orientation,
-            show_nodes=show_nodes,
-            height=height,
-            width=width,
-            key="idendro",
-            scale=scale,
-        )
+        from .targets.json import to_json
+        return to_json(self)

@@ -3,7 +3,29 @@ import numpy as np
 from scipy.cluster.hierarchy import leaders, to_tree, ClusterNode as CNode  # type: ignore
 
 
-class ClusteringData:    
+class ClusteringData:
+    """This class is used as a container to store underlying clustering data which may be used by callback functions 
+        in generating the dendrogram. Ensures expensive operations are calculated only once.  
+
+        Example:
+
+            ```
+            #your clustering workflow
+            Z = scipy.cluster.hierarchy.linkage(...)
+            threshold = 42
+            cluster_assignments =  scipy.cluster.hierarchy.fcluster(Z, threshold=threshold, ...)        
+
+            #dendrogram creation
+            dd = idendro.IDendro()
+            cdata = idendro.ClusteringData(
+                linkage_matrix=Z, 
+                cluster_assignments=cluster_assignments, 
+                threshold=threshold 
+            )
+            dd.set_cluster_info(cdata)
+            ```        
+        """
+
     have_leaders: bool = False
     leaders: np.ndarray
     flat_cluster_ids: np.ndarray
@@ -82,12 +104,12 @@ class ClusteringData:
     def get_linkage_matrix(self) -> np.ndarray:
         """Returns stored linkage matrix.
         Returns:
-            linkage_matrix (np.ndarray): Linkage matrix as produced by scipy.cluster.hierarchy.linkage or equivalent
+            linkage_matrix (np.ndarray): Linkage matrix as produced by scipy.cluster.hierarchy.linkage or equivalent.
         """
         return self.linkage_matrix
 
     def get_threshold(self) -> float:
-        """Returns stored clustering threshold
+        """Returns stored clustering threshold.
 
         Returns:
             threshold (float): Cut-off threshold used to form flat clusters in the hierarchical clustering process or equivalent.
@@ -95,7 +117,7 @@ class ClusteringData:
         return self.threshold
 
     def get_cluster_assignments(self) -> np.ndarray:
-        """Returns flat cluster assignment array
+        """Returns flat cluster assignment array.
 
         Returns:
             cluster_assignments (np.ndarray): A one dimensional array of length N that contains flat cluster assignments for each observation. Produced by `scipy.cluster.hierarchy.fcluster` or equivalent.

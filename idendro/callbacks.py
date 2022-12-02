@@ -6,7 +6,7 @@ def counts(data: ClusteringData, linkage_id: int) -> str:
     """Returns the number of original observations associated with the linkage ID. Used as the default for axis label callback.
 
     Args:
-        data (ClusteringData): [idendro.CLusteringData][] object
+        data (ClusteringData): [idendro.ClusteringData][] object
         linkage_id (int): linkage ID
 
     Returns:
@@ -21,7 +21,7 @@ def default_hover(data: ClusteringData, linkage_id: int) -> Dict:
 
 
     Args:
-        data (ClusteringData): [idendro.CLusteringData][] object
+        data (ClusteringData): [idendro.ClusteringData][] object
         linkage_id (int): linkage ID
 
     Returns:
@@ -77,11 +77,11 @@ def cluster_assignments(data: ClusteringData, linkage_id: int) -> str:
     """Returns cluster ID if a node belongs to one cluster, otherwise an empty string.
 
     Args:
-        data (ClusteringData): [idendro.CLusteringData][] object
+        data (ClusteringData): [idendro.ClusteringData][] object
         linkage_id (int): linkage ID
 
     Returns:
-        str: CLuster ID or empty string.
+        str: Cluster ID or empty string.
     """
     L, M = data.get_leaders()
     if linkage_id in L:

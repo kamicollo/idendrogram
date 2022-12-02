@@ -3,6 +3,20 @@ from dataclasses import is_dataclass, asdict
 from typing import Any
 from ..containers import Dendrogram
 
+
+def to_json(dendrogram: Dendrogram) -> str:
+    """Returns the dendrogram object represented as a JSON string
+
+    Args:
+        dendrogram (Dendrogram): IDendro dendrogram object
+
+    Returns:
+        str: JSON string
+    """    
+
+    return JSONConverter().convert(dendrogram)
+
+
 class FullJSONEncoder(json.JSONEncoder):
     def default(self, obj: Any) -> Any:    
         if is_dataclass(obj):
