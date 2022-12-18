@@ -51,6 +51,9 @@ class ClusterNode:
     """color of the text label displayed"""
     _default_leaf_radius: float = 4.0
     """size of the radius of the leaf nodes"""
+    _default_leaf_radius_if_cluster: float = 7.0
+    """size of the radius of the leaf nodes"""
+
 
 
 @dataclass
