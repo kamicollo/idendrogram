@@ -155,7 +155,7 @@ class Dendrogram:
         else:
             raise ValueError(f"Unsupported backend '{backend}', should be one of 'plotly', 'matplotlib', 'altair', 'streamlit'")
 
-    def to_json(self):
+    def to_json(self) -> str:
         """Converts dendrogram to JSON representation.
 
         Returns:
