@@ -388,8 +388,7 @@ class IDendro:
         links = self._links()
         axis_labels = self._axis_labels()
 
-        X_domain, Y_domain = self._domain_ranges()
-
+        X_domain, Y_domain = self._domain_ranges()        
         
         nodes = self._nodes(
             links=links,
@@ -455,81 +454,81 @@ class IDendro:
             List[ClusterNode]: List of cluster node objects
         """
 
-        if not self.node_dict:
+        self.node_dict = {}
 
-            if self.cluster_data is None:
-                raise RuntimeError(
-                    "Clustering data was not provided (idendro.set_cluster_info()), cannot compute nodes."
-                )
+        if self.cluster_data is None:
+            raise RuntimeError(
+                "Clustering data was not provided (idendro.set_cluster_info()), cannot compute nodes."
+            )
 
+        merge_map = self.cluster_data.get_merge_map()
+        leaders, flat_cluster_ids = self.cluster_data.get_leaders()
 
-            #first, create node objects for each leaf
-            for xcoord, leaf_id, color in zip(
-                self.leaf_positions, self.leaves, self.leaves_color_list
-            ):
+        #first, create node objects for each leaf
+        for xcoord, leaf_id, color in zip(
+            self.leaf_positions, self.leaves, self.leaves_color_list
+        ):
 
-                p = self.node_factory(dict(
-                    x=xcoord,
-                    y=0,
-                    edgecolor=color,
-                    fillcolor=color,                    
-                    type="leaf",
-                    cluster_id=None,
-                    id=leaf_id
-                ))
+            p = self.node_factory(dict(
+                x=xcoord,
+                y=0,
+                edgecolor=color,
+                fillcolor=color,                    
+                type="leaf" if leaf_id not in leaders else 'leaf-cluster',
+                cluster_id= int(flat_cluster_ids[leaders == leaf_id][0]) if leaf_id in leaders else None,
+                id=leaf_id
+            ))
 
-                p.radius = p._default_leaf_radius
-                p.label = node_label_func(self.cluster_data, p.id)
-                p.hovertext = node_hover_func(self.cluster_data, p.id)
+            p.radius = p._default_leaf_radius if p.type == 'leaf' else p._default_leaf_radius_if_cluster
+            p.label = node_label_func(self.cluster_data, p.id)
+            p.hovertext = node_hover_func(self.cluster_data, p.id)
 
-                self.node_dict[(xcoord, 0)] = p
+            self.node_dict[(xcoord, 0)] = p
 
-            #then, we traverse all the other links and associate them with leaves
-            # this approach works because links in a scipy.dendrogram are generated in the same order as leaves and sequentially
-            # so we can be always sure that a link has its "leafs" are present in our dictionary
-            merge_map = self.cluster_data.get_merge_map()
-            leaders, flat_cluster_ids = self.cluster_data.get_leaders()
+        #then, we traverse all the other links and associate them with leaves
+        # this approach works because links in a scipy.dendrogram are generated in the same order as leaves and sequentially
+        # so we can be always sure that a link has its "leafs" are present in our dictionary            
 
-            for link in links:
-                left_coords = (link.x[0], link.y[0])
-                right_coords = (link.x[3], link.y[3])
-                right_leaf = self.node_dict[right_coords]
-                left_leaf = self.node_dict[left_coords]
-                merged_id = int(merge_map[(left_leaf.id, right_leaf.id)])
+        for link in links:
+            left_coords = (link.x[0], link.y[0])
+            right_coords = (link.x[3], link.y[3])
+            right_leaf = self.node_dict[right_coords]
+            left_leaf = self.node_dict[left_coords]
+            merged_id = int(merge_map[(left_leaf.id, right_leaf.id)])
 
-                cluster_id = None
-                if merged_id in leaders:
-                    node_type = "cluster"
-                    cluster_id = int(flat_cluster_ids[leaders == merged_id][0])
-                elif right_leaf.type in ["leaf", "subcluster"] and left_leaf.type in ["leaf", "subcluster"]:
-                    node_type = "subcluster"
-                else:
-                    node_type = "supercluster"
+            cluster_id = None
+            if merged_id in leaders:
+                node_type = "cluster"
+                cluster_id = int(flat_cluster_ids[leaders == merged_id][0])
+            elif right_leaf.type in ["leaf", "subcluster"] and left_leaf.type in ["leaf", "subcluster"]:
+                node_type = "subcluster"
+            else:
+                node_type = "supercluster"
 
-                merged_coords = (float(link.x[1] + (link.x[2] - link.x[1]) / 2.0), float(link.y[2]))
+            merged_coords = (float(link.x[1] + (link.x[2] - link.x[1]) / 2.0), float(link.y[2]))
 
-                p = self.node_factory(dict(
-                    x=merged_coords[0],
-                    y=merged_coords[1],
-                    edgecolor=link.fillcolor,                    
-                    type=node_type,
-                    cluster_id=cluster_id,
-                    id=merged_id
-                ))
+            p = self.node_factory(dict(
+                x=merged_coords[0],
+                y=merged_coords[1],
+                edgecolor=link.fillcolor,                    
+                type=node_type,
+                cluster_id=cluster_id,
+                id=merged_id
+            ))
 
-                if node_type != 'subcluster':
-                    p.fillcolor = link.fillcolor
+            if node_type != 'subcluster':
+                p.fillcolor = link.fillcolor
 
-                p.label = node_label_func(self.cluster_data, p.id)
-                p.hovertext = node_hover_func(self.cluster_data, p.id)
+            p.label = node_label_func(self.cluster_data, p.id)
+            p.hovertext = node_hover_func(self.cluster_data, p.id)
 
-                #update link with info
-                link.id = merged_id
-                link.cluster_id = cluster_id
-                link.children_id = (left_leaf.id, right_leaf.id)
-                
+            #update link with info
+            link.id = merged_id
+            link.cluster_id = cluster_id
+            link.children_id = (left_leaf.id, right_leaf.id)
+            
 
-                self.node_dict[merged_coords] = p        
+            self.node_dict[merged_coords] = p        
 
         return list(self.node_dict.values())
 
