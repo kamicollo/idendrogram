@@ -14,7 +14,7 @@ def to_matplotlib(
         height: float = 6,
         width: float = 6,
         scale: str = "linear",
-    ) -> plt.ax:
+    ) -> Axes:
         """Converts a dendrogram object into matplotlib chart
 
         Args:
