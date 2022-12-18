@@ -1,7 +1,8 @@
 site_name: IDendro
 theme:
-  name: "material"
+  name: "readthedocs"
   highlightjs: true
+  pygments: true
   icon:
     admonition:
       tip: octicons/squirrel-16

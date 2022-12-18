@@ -49,7 +49,7 @@ class IDendro:
         
             Customizing the Dendrogram to show smaller nodes and dashed link lines:
 
-            ```
+            ```python
             #define a subclass of `ClusterNode` and redefine radius and text label sizes
             @dataclass
             SmallClusterNode(ClusterNode):
@@ -222,6 +222,7 @@ class IDendro:
             compute_nodes=compute_nodes,
             node_label_func=node_label_func,
             node_hover_func=node_hover_func,
+            link_color_func=link_color_func,
         )
 
         return dendrogram
@@ -380,7 +381,8 @@ class IDendro:
         self,      
         compute_nodes: bool,  
         node_label_func: Callable[[ClusteringData, int], str],
-        node_hover_func: Callable[[ClusteringData, int], Dict[str, str]]
+        node_hover_func: Callable[[ClusteringData, int], Dict[str, str]],
+        link_color_func
     ) -> Dendrogram:
         """Used internally to generate the dendrogram by calling internal functions. See create_dendrogram() for details
         """
@@ -392,7 +394,9 @@ class IDendro:
         
         nodes = self._nodes(
             links=links,
-            node_label_func=node_label_func, node_hover_func=node_hover_func
+            node_label_func=node_label_func, 
+            node_hover_func=node_hover_func,
+            link_color_func = link_color_func
         ) if compute_nodes else []
         
         return Dendrogram(
@@ -438,7 +442,8 @@ class IDendro:
         self, 
         links: List[ClusterLink],
         node_label_func: Callable[[ClusteringData, int], str],
-        node_hover_func: Callable[[ClusteringData, int], Dict[str, str]]
+        node_hover_func: Callable[[ClusteringData, int], Dict[str, str]],
+        link_color_func
     ) -> List[ClusterNode]:
         """Used internally to generate node objects, apply node label and node hover functions
 
@@ -472,8 +477,8 @@ class IDendro:
             p = self.node_factory(dict(
                 x=xcoord,
                 y=0,
-                edgecolor=color,
-                fillcolor=color,                    
+                edgecolor=color if leaf_id not in leaders else link_color_func(self.cluster_data, leaf_id),
+                fillcolor=color if leaf_id not in leaders else link_color_func(self.cluster_data, leaf_id),
                 type="leaf" if leaf_id not in leaders else 'leaf-cluster',
                 cluster_id= int(flat_cluster_ids[leaders == leaf_id][0]) if leaf_id in leaders else None,
                 id=leaf_id
