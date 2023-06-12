@@ -7,27 +7,45 @@ Backends currently supported: Altair, Plotly, Streamlit (with a custom D3 compon
 
 ## IDendro 101 
 
-### Cluster iris dataset with SciPy
-
 ```python
+#import idendro library
+import idendro
+
+#import a sample dataset for illustration purposes
 from sklearn.datasets import load_iris
 data = load_iris(as_frame=True)
+```
 
+### Mapping clustering outputs to idendro data format
+
+#### SciPy Hierarchical clustering
+
+```python
 import scipy.cluster.hierarchy as sch
+
+#cluster the data
 linkage_matrix = sch.linkage(data['data'], method='single', metric='euclidean')
 threshold = 0.6
 flat_clusters = sch.fcluster(linkage_matrix, t=threshold, criterion='distance')
-```
-### Visualize with IDendro
 
-```python
-import idendro
 #wrap clustering outputs / parameters into a container
 cl_data = idendro.ClusteringData(
     linkage_matrix = linkage_matrix, 
     cluster_assignments = flat_clusters, 
     threshold = threshold
 )
+```
+
+#### Scikit-learn Agglomerative clustering
+
+#### HDBSCAN
+
+
+### Visualizing with IDendro
+
+```python
+
+
 
 #instantiate idendro object with default formatting
 idd = idendro.IDendro()
@@ -40,6 +58,13 @@ dendrogram = idd.create_dendrogram(truncate_mode='level', p=10)
 
 #plot in Altair
 from idendro.targets.altair import to_altair
-
 to_altair(dendrogram=dendrogram, height=300, width=700)
 ```
+
+### Scikit-learn Agglomerative Clustering
+
+@TODO - see https://scikit-learn.org/stable/auto_examples/cluster/plot_agglomerative_dendrogram.html
+
+### HBDSCAN 
+
+@TODO - see https://hdbscan.readthedocs.io/en/latest/advanced_hdbscan.html

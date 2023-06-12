@@ -1,6 +1,6 @@
 site_name: IDendro
 theme:
-  name: "readthedocs"
+  name: "material"
   highlightjs: true
   pygments: true
   icon:
@@ -11,12 +11,22 @@ theme:
 
 plugins:
   - mkdocstrings
+  - mkdocs-jupyter:     
+      execute: true
+      remove_tag_config:
+        remove_input_tags:
+          - remove
+
 
 nav:
   - Home page: index.md  
   - How-To Guides:
     - Getting started: getting-started.md
-    - Customizing looks: customizing-looks.md
+    - Customizing looks:
+      - custom-colors.ipynb
+      - custom-labels.ipynb
+      - custom-attributes.ipynb
+      - rotating.ipynb
     - Using in Streamlit: streamlit.md
   - Reference:
     - Creating dendrogram objects: reference.md
