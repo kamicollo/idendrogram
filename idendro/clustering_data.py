@@ -1,6 +1,7 @@
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 import numpy as np
-from scipy.cluster.hierarchy import leaders, to_tree, ClusterNode as CNode  # type: ignore
+import scipy.cluster.hierarchy as sch # type: ignore
+import scipy # type: ignore
 
 
 class ClusteringData:
@@ -19,8 +20,7 @@ class ClusteringData:
             dd = idendro.IDendro()
             cdata = idendro.ClusteringData(
                 linkage_matrix=Z, 
-                cluster_assignments=cluster_assignments, 
-                threshold=threshold 
+                cluster_assignments=cluster_assignments                
             )
             dd.set_cluster_info(cdata)
             ```        
@@ -30,9 +30,8 @@ class ClusteringData:
     leaders: np.ndarray
     flat_cluster_ids: np.ndarray
     have_tree: bool = False
-    rootnode: CNode  
-    threshold: float    
-    nodelist: List[CNode]    
+    rootnode: sch.ClusterNode      
+    nodelist: List[sch.ClusterNode]    
     linkage_matrix: np.ndarray     
     cluster_assignments: np.ndarray
 
@@ -40,21 +39,20 @@ class ClusteringData:
     def __init__(
         self,
         linkage_matrix: np.ndarray,
-        cluster_assignments: np.ndarray,
-        threshold: float,
+        cluster_assignments: np.ndarray,        
         leaders: Tuple[np.ndarray, np.ndarray] = None,
-        rootnode: CNode = None,
-        nodelist: List[CNode] = None,
+        rootnode: sch.ClusterNode = None,
+        nodelist: List[sch.ClusterNode] = None,
     ) -> None:
         """Set underlying clustering data that may be used by callback functions in generating the dendrogram. Ensures expensive operations are calculated only once.
 
         Args:
-            linkage_matrix (np.ndarray): Linkage matrix as produced by scipy.cluster.hierarchy.linkage or equivalent
-            cluster_assignments (np.ndarray): A one dimensional array of length N that contains flat cluster assignments for each observation. Produced by `scipy.cluster.hierarchy.fcluster` or equivalent.
-            threshold (float): Cut-off threshold used to form flat clusters in the hierarchical clustering process or equivalent.
+            linkage_matrix (np.ndarray): Linkage matrix as produced by 
+                `scipy.cluster.hierarchy.linkage` or equivalent
+            cluster_assignments (np.ndarray): A one dimensional array of length N that contains flat cluster assignments for each observation. Produced by `scipy.cluster.hierarchy.fcluster` or equivalent.            
             leaders (Tuple[np.ndarray, np.ndarray], optional): Root nodes of the clustering produced by `scipy.cluster.hierarchy.leaders()`. 
-            rootnode (CNode, optional): rootnode produced by `scipy.cluster.hierarchy.to_tree(..., rd=True)`. 
-            nodelist (List[CNode], optional): nodelist produced by `scipy.cluster.hierarchy.to_tree(..., rd=True)`
+            rootnode (sch.ClusterNode, optional): rootnode produced by `scipy.cluster.hierarchy.to_tree(..., rd=True)`. 
+            nodelist (List[sch.ClusterNode], optional): nodelist produced by `scipy.cluster.hierarchy.to_tree(..., rd=True)`
 
         Example:
 
@@ -68,15 +66,13 @@ class ClusteringData:
             dd = idendro.IDendro()
             cdata = idendro.ClusteringData(
                 linkage_matrix=Z, 
-                cluster_assignments=cluster_assignments, 
-                threshold=threshold 
+                cluster_assignments=cluster_assignments,                 
             )
             dd.set_cluster_info(cdata)
-            ```        
+            ```            
         """
         self.linkage_matrix = linkage_matrix
-        self.cluster_assignments = cluster_assignments
-        self.threshold = threshold
+        self.cluster_assignments = cluster_assignments        
         if leaders is not None:
             self.have_leaders = True
             self.leaders = leaders[0]
@@ -93,7 +89,7 @@ class ClusteringData:
             (Tuple[np.ndarray, np.ndarray]):  [L, M] (see SciPy's documentation for details)
         """
         if not self.have_leaders:
-            L, M = leaders(
+            L, M = sch.leaders(
                 self.linkage_matrix, self.cluster_assignments
             )
             self.leaders = L
@@ -106,15 +102,7 @@ class ClusteringData:
         Returns:
             linkage_matrix (np.ndarray): Linkage matrix as produced by scipy.cluster.hierarchy.linkage or equivalent.
         """
-        return self.linkage_matrix
-
-    def get_threshold(self) -> float:
-        """Returns stored clustering threshold.
-
-        Returns:
-            threshold (float): Cut-off threshold used to form flat clusters in the hierarchical clustering process or equivalent.
-        """
-        return self.threshold
+        return self.linkage_matrix    
 
     def get_cluster_assignments(self) -> np.ndarray:
         """Returns flat cluster assignment array.
@@ -123,15 +111,44 @@ class ClusteringData:
             cluster_assignments (np.ndarray): A one dimensional array of length N that contains flat cluster assignments for each observation. Produced by `scipy.cluster.hierarchy.fcluster` or equivalent.
         """
         return self.cluster_assignments
+    
+    def get_cluster_id(self, linkage_id: int) -> Optional[int]:
+        """Returns flat cluster ID for a given linkage ID
 
-    def get_tree(self) -> Tuple[CNode, List[CNode]]:
+        Args:
+            linkage_id (int): Node linkage ID
+
+        Returns:
+            Optional[int]: CLuster ID if a node is within one cluster; None otherwise.
+        """
+        L, M = self.get_leaders()
+
+        # check if we are above leaders already
+        if linkage_id > L.max():
+            return None
+
+    # check if this is a leader node
+        if linkage_id in L:
+            return M[L == linkage_id][0]
+
+        _, nodelist = self.get_tree()
+        # Finally, if not grab first real leaf node of the passed id
+        leaf_nodes = nodelist[linkage_id].pre_order(
+            lambda x: x.id if x.is_leaf() else None
+        )
+        lf_node = leaf_nodes[0]
+        # get its cluster assignment
+        cluster = self.cluster_assignments[lf_node]
+        return cluster
+
+    def get_tree(self) -> Tuple[sch.ClusterNode, List[sch.ClusterNode]]:
         """A wrapper for [scipy.cluster.hierarchy.to_tree](https://docs.scipy.org/doc/scipy/reference/generated/scipy.cluster.hierarchy.to_tree.html). Converts a linkage matrix into an easy-to-use tree object.
 
         Returns:
-            Tuple[CNode, List[CNode]]: [rootnode, nodelist] (see SciPy's documentation for details)
+            Tuple[scipy.cluster.hierarchy.ClusterNode, List[scipy.cluster.hierarchy.ClusterNode]]: [rootnode, nodelist] (see SciPy's documentation for details)
         """
         if not self.have_tree:
-            rootnode, nodelist = to_tree(self.linkage_matrix, rd=True)
+            rootnode, nodelist = sch.to_tree(self.linkage_matrix, rd=True)
             self.rootnode = rootnode
             self.nodelist = nodelist
             self.have_tree = True

@@ -119,7 +119,8 @@ class Dendrogram:
         width: float = 400,
         scale: str = "linear",
     ) -> Any:
-        """Plot the dendrogram using one of the supported backends. This is a convenience function,
+        """
+        Plot the dendrogram using one of the supported backends. This is a convenience function,
             you can also use `to_*()` functions from appropriate target backends at `idendro.targets.[backend].to_[backend]()`.
 
         Args:

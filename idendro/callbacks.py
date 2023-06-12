@@ -73,7 +73,7 @@ def cluster_labeller(
     return labeller
 
 
-def cluster_assignments(data: ClusteringData, linkage_id: int) -> str:
+def cluster_id_if_cluster(data: ClusteringData, linkage_id: int) -> str:
     """Returns cluster ID if a node belongs to one cluster, otherwise an empty string.
 
     Args:
@@ -158,24 +158,17 @@ def link_painter(
 
     def link_colors(data: ClusteringData, linkage_id: int) -> str:
 
-        L, M = data.get_leaders()
-
-        # check if we are above leaders already
-        if linkage_id > L.max():
+        cluster_id = data.get_cluster_id(linkage_id=linkage_id)
+        if cluster_id is None:
             return above_threshold
-
-        # check if this is a leader node
-        if linkage_id in L:
-            return _get_color(M[L == linkage_id][0])
-
-        _, nodelist = data.get_tree()
-        # Finally, if not grab first real leaf node of the passed id
-        leaf_nodes = nodelist[linkage_id].pre_order(
-            lambda x: x.id if x.is_leaf() else None
-        )
-        lf_node = leaf_nodes[0]
-        # get its cluster assignment
-        cluster = data.cluster_assignments[lf_node]
-        return _get_color(cluster)
+        else:
+            return _get_color(cluster_id)
 
     return link_colors
+
+def cluster_assignments(data: ClusteringData, linkage_id: int) -> str:
+    cluster_id = data.get_cluster_id(linkage_id=linkage_id)
+    if cluster_id is None:
+        return "multiple clusters"
+    else:
+        return f"Cluster {cluster_id}"
