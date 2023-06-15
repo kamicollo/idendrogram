@@ -19,21 +19,25 @@ plugins:
 
 
 nav:
-  - Home page: index.md  
-  - How-To Guides:
-    - Getting started: getting-started.md
+  - Home page: index.ipynb  
+  - How-to:
+    - Getting started: 
+      - guides/integration-with-clusters.ipynb
+      - guides/integration-with-frontends.ipynb
     - Customizing looks:
-      - custom-colors.ipynb
-      - custom-labels.ipynb
-      - custom-attributes.ipynb
-      - rotating.ipynb
+      - guides/custom-colors.ipynb
+      - guides/custom-labels.ipynb
+      - guides/custom-attributes.ipynb
+      - guides/rotating.ipynb
     - Using in Streamlit: streamlit.md
-  - Reference:
-    - Creating dendrogram objects: reference.md
-    - Plotting dendrograms: dendrogram.md
-    - Callback functions for formatting: callbacks.md
-    - Clustering Info Container: cluster-info-container.md
-    - Data Containers: data_containers.md
+  - API Reference:
+    - Creating dendrogram objects: reference/reference.md
+    - Plotting dendrograms: reference/dendrogram.md
+    - Callback functions for formatting: reference/callbacks.md
+    - Clustering Info Container: reference/cluster-info-container.md
+    - Data Containers: reference/data_containers.md
+  - Case studies:
+    - Signal anomaly detection: case-studies/signal-demo.ipynb
     
 
 watch:
