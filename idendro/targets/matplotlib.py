@@ -1,4 +1,3 @@
-import math
 import matplotlib.pyplot as plt # type: ignore
 from ..containers import ClusterLink, ClusterNode, Dendrogram
 from matplotlib.axes import Axes # type: ignore
@@ -11,8 +10,8 @@ def to_matplotlib(
         dendrogram: Dendrogram,
         orientation: str = "top",
         show_nodes: bool = True,
-        height: float = 6,
-        width: float = 6,
+        height: float = 400,
+        width: float = 400,
         scale: str = "linear",
     ) -> Axes:
         """Converts a dendrogram object into matplotlib chart
@@ -53,9 +52,8 @@ class matplotlibConverter():
     ) -> Axes:
         """Converts dendrogram object to matplotlib chart"""
 
-        #setup axes
-        ax = self.setup_layout(orientation=orientation, width=width, height=height, dendrogram=dendrogram, scale=scale)
-        
+        #setup axes        
+        ax = self.setup_layout(orientation=orientation, width=width, height=height, dendrogram=dendrogram, scale=scale)        
         if orientation in ["top", "bottom"]:
             x = "x" 
             y = 'y'
@@ -63,23 +61,21 @@ class matplotlibConverter():
             x = "y" 
             y = 'x'
 
-        #plot links
-        self.plot_links(ax, x, y, dendrogram.links)  
+        #plot links        
+        self.plot_links(ax, x, y, dendrogram.links)          
 
         #plot nodes
         if show_nodes:            
-            self.plot_nodes(ax, x, y, dendrogram.nodes)    
-
+            self.plot_nodes(ax, x, y, dendrogram.nodes)            
         return ax                    
 
     def setup_layout(self, orientation: str, width: float, height: float, dendrogram: Dendrogram, scale: str) -> Axes:
         """Setup axes"""
         
-        #use existing axes/figure if any
+        #use existing axes/figure if any        
         fig = plt.gcf()
         ax = plt.gca()
-        fig.set_size_inches(width, height)
-
+        fig.set_size_inches(width / fig.dpi, height / fig.dpi)        
 
         min_y, max_y = dendrogram.y_domain
         range_y = max_y - min_y
@@ -128,16 +124,12 @@ class matplotlibConverter():
     def plot_links(self, ax: Axes, x: str, y: str, links: List[ClusterLink]) -> None:        
         """Plotting the links"""
 
-        for link in links: 
-            if len(link.strokedash) > 1:
-                dash = (link.strokedash[0], link.strokedash[1:]) 
-            else:
-                dash = link.strokedash #type: ignore   
+        for link in links:                         
             ax.plot(
                 link.__getattribute__(x), 
                 link.__getattribute__(y), 
                 color=link.fillcolor,
-                linestyle=tuple(dash),
+                linestyle = (0, link.strokedash),
                 linewidth = link.strokewidth,
                 alpha=link.strokeopacity
             )
@@ -152,7 +144,7 @@ class matplotlibConverter():
                 markerfacecolor = node.fillcolor,                
                 linewidth = 2,
                 alpha = node.opacity,
-                markersize = node.radius * math.pi,
+                markersize = node.radius * (ax.figure.dpi / 72),
                 markeredgecolor = node.edgecolor,
                 marker='o'
             )
@@ -161,7 +153,7 @@ class matplotlibConverter():
                 node.__getattribute__(x), 
                 node.__getattribute__(y), 
                 s = node.label, 
-                fontsize = node.labelsize, 
+                fontsize = node.labelsize / (ax.figure.dpi / 72), 
                 color = node.labelcolor,
                 ha = 'center', 
                 va = 'center',
