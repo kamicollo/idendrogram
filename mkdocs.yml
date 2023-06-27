@@ -1,6 +1,7 @@
 site_name: IDendro
 theme:
   name: "material"
+  custom_dir: docs/overrides
   highlightjs: true
   pygments: true
   icon:
@@ -44,3 +45,6 @@ watch:
 
 extra_css:
   - css/custom.css
+
+hooks:
+  - docs/plotly_fix.py
