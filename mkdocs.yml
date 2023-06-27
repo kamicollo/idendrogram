@@ -22,7 +22,7 @@ nav:
   - Home page: index.ipynb  
   - How-to:
     - Getting started: 
-      - guides/integration-with-clusters.ipynb
+      - guides/clustering-library-integration.ipynb
       - guides/integration-with-frontends.ipynb
     - Customizing looks:
       - guides/custom-colors.ipynb
