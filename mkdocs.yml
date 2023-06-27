@@ -20,10 +20,9 @@ plugins:
 
 
 nav:
-  - Home page: index.ipynb    
-  - Getting started: 
-    - guides/clustering-library-integration.ipynb
-    - guides/visualization-library-integration.ipynb
+  - Home page: index.ipynb      
+  - Clustering library integration: guides/clustering-library-integration.ipynb
+  - Visualization library integration: guides/visualization-library-integration.ipynb
   - Customizing looks:
     - guides/custom-colors.ipynb
     - guides/custom-labels.ipynb
