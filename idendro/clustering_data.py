@@ -1,7 +1,14 @@
+from __future__ import annotations
 from typing import List, Tuple, Optional
 import numpy as np
 import scipy.cluster.hierarchy as sch # type: ignore
 import scipy # type: ignore
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    import sklearn #type: ignore
+    import hdbscan #type: ignore
 
 
 class ClusteringData:
@@ -177,3 +184,48 @@ class ClusteringData:
         #create a dictionary that allows to look up a ID resulting from a merge
         merge_map = dict(zip(component_ids, merged_ids))
         return merge_map
+    
+class ScikitLearnClusteringData(ClusteringData):
+
+    model: sklearn.cluster.AgglomerativeClustering
+
+    def __init__(self, model: sklearn.cluster.AgglomerativeClustering) -> None:
+
+        self.model = model
+
+        # create the counts of samples under each node
+        counts = np.zeros(model.children_.shape[0])
+        n_samples = len(model.labels_)
+
+        for i, merge in enumerate(model.children_):
+            current_count = 0
+            for child_idx in merge:
+                if child_idx < n_samples:
+                    current_count += 1  # leaf node
+                else:
+                    current_count += counts[child_idx - n_samples]
+            counts[i] = current_count
+
+        linkage_matrix = np.column_stack(
+            [model.children_, model.distances_, counts]
+        ).astype(float)
+
+        super().__init__(linkage_matrix, model.labels_.astype('int32'))
+
+    def get_model(self):
+        return self.model
+
+class HDBSCANClusteringData(ClusteringData):
+
+    model: hdbscan.HDBSCAN
+
+    def __init__(self, model: hdbscan.HDBSCAN) -> None:
+
+        linkage_matrix = model.single_linkage_tree_.to_numpy()
+        flat_clusters = model.labels_.astype('int32')
+        self.model = model
+
+        super().__init__(linkage_matrix=linkage_matrix, cluster_assignments=flat_clusters)
+
+    def get_model(self):
+        return self.model

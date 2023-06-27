@@ -34,4 +34,4 @@ if DEV:
 
 from .base import IDendro
 from .containers import Dendrogram, ClusterLink, ClusterNode, AxisLabel
-from .clustering_data import ClusteringData
+from .clustering_data import ClusteringData, HDBSCANClusteringData, ScikitLearnClusteringData
