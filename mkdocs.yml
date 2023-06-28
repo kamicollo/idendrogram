@@ -9,9 +9,20 @@ theme:
       tip: octicons/squirrel-16
   hljs_languages:
     - python
+  features:
+    - content.action.edit
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+
+repo_url: https://github.com/kamicollo/idendro
+edit_uri: edit/main/docs/
+repo_name: kamicollo/idendro
 
 plugins:
   - mkdocstrings
+  - search:
+      separator: '[\s\-,:!=\[\]()"/]+|(?!\b)(?=[A-Z][a-z])|\.(?!\d)|&[lg]t;'
   - mkdocs-jupyter:     
       execute: true      
       remove_tag_config:
@@ -20,9 +31,10 @@ plugins:
 
 
 nav:
-  - Home page: index.ipynb      
-  - Clustering library integration: guides/clustering-library-integration.ipynb
-  - Visualization library integration: guides/visualization-library-integration.ipynb
+  - Getting Started: 
+    - IDendro 101: index.ipynb      
+    - Clustering library integration: guides/clustering-library-integration.ipynb
+    - Visualization library integration: guides/visualization-library-integration.ipynb
   - Customizing looks:
     - guides/custom-colors.ipynb
     - guides/custom-labels.ipynb
@@ -42,8 +54,10 @@ nav:
 watch:
   - idendro
 
-extra_css:
-  - css/custom.css
-
 hooks:
   - docs/plotly_fix.py
+
+extra:
+  social:
+    - icon: fontawesome/solid/signature
+      link: https://aurimas.eu

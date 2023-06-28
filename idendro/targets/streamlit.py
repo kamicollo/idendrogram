@@ -34,7 +34,7 @@ def to_streamlit(
     _check_scale(dendrogram, scale)
     _check_nodes(dendrogram, show_nodes)
 
-    return StreamlitConverter().convert(
+    return StreamlitConverter(release=False).convert(
         dendrogram=dendrogram,
         orientation=orientation,
         show_nodes=show_nodes,
@@ -46,7 +46,7 @@ def to_streamlit(
 
 
 class StreamlitConverter:
-    def __init__(self, release: bool = False) -> None:
+    def __init__(self, release: bool = True) -> None:
         """Upon initialization, setup appropriate Streamlit component"""
 
         if not release:
@@ -56,7 +56,7 @@ class StreamlitConverter:
             )
         else:
             parent_dir = os.path.dirname(os.path.abspath(__file__))
-            build_dir = os.path.join(parent_dir, "frontend/build")
+            build_dir = os.path.join(parent_dir, "streamlit-frontend/build")
             _component_func = components.declare_component("idendro", path=build_dir)
 
         self.component_func = _component_func
