@@ -31,24 +31,24 @@ plugins:
 
 
 nav:
-  - Getting Started: 
-    - IDendro 101: index.ipynb      
-    - Clustering library integration: guides/clustering-library-integration.ipynb
-    - Visualization library integration: guides/visualization-library-integration.ipynb
+  - Home: 
+    - IDendro: index.ipynb
+    - Getting started: getting-started.ipynb
+    - Case studies:
+      - Signal anomaly detection: case-studies/signal-demo.ipynb    
   - Customizing looks:
     - guides/custom-colors.ipynb
     - guides/custom-labels.ipynb
     - guides/custom-attributes.ipynb
     - guides/rotating.ipynb
-  - Using in Streamlit: streamlit.md
+  - Streamlit usage: streamlit.ipynb
   - API Reference:
     - Creating dendrogram objects: reference/reference.md
     - Plotting dendrograms: reference/dendrogram.md
     - Callback functions for formatting: reference/callbacks.md
     - Clustering Info Container: reference/cluster-info-container.md
     - Data Containers: reference/data_containers.md
-  - Case studies:
-    - Signal anomaly detection: case-studies/signal-demo.ipynb
+  
     
 
 watch:
