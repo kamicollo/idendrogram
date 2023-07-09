@@ -24,7 +24,7 @@ plugins:
   - search:
       separator: '[\s\-,:!=\[\]()"/]+|(?!\b)(?=[A-Z][a-z])|\.(?!\d)|&[lg]t;'
   - mkdocs-jupyter:     
-      execute: true      
+      execute: false      
       remove_tag_config:
         remove_input_tags:
           - remove
