@@ -212,7 +212,7 @@ class ScikitLearnClusteringData(ClusteringData):
 
         super().__init__(linkage_matrix, model.labels_.astype('int32'))
 
-    def get_model(self):
+    def get_model(self)-> sklearn.cluster.AgglomerativeClustering:
         return self.model
 
 class HDBSCANClusteringData(ClusteringData):
@@ -227,5 +227,5 @@ class HDBSCANClusteringData(ClusteringData):
 
         super().__init__(linkage_matrix=linkage_matrix, cluster_assignments=flat_clusters)
 
-    def get_model(self):
+    def get_model(self) -> hdbscan.HDBSCAN:
         return self.model
