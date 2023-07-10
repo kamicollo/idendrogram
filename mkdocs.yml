@@ -35,6 +35,7 @@ nav:
     - IDendro: index.ipynb
     - Getting started: getting-started.ipynb
     - Case studies:
+      - Spatial clustering: case-studies/spatial-clustering.ipynb
       - Signal anomaly detection: case-studies/signal-demo.ipynb    
   - Customizing looks:
     - guides/custom-colors.ipynb
