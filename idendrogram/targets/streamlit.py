@@ -2,7 +2,7 @@ from typing import Optional
 from idendrogram.containers import ClusterNode, Dendrogram
 from .common import _check_nodes, _check_orientation, _check_scale
 import importlib
-idendrogram_streamlit = importlib.import_module("idendrogram-streamlit")
+idendrogram_streamlit = importlib.import_module("idendrogram-streamlit-component")
 
 
 def to_streamlit(
