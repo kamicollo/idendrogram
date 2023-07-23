@@ -38,24 +38,24 @@ cluster_assignments = sch.fcluster(model, threshold, criterion='distance')
 
 from dataclasses import dataclass, field
 from typing import List
-import idendro
+import idendrogram
 import importlib as imp
 
-from idendro.callbacks import cluster_labeller
-imp.reload(idendro)
+from idendrogram.callbacks import cluster_labeller
+imp.reload(idendrogram)
 
 @dataclass
-class MyAxisLabel(idendro.AxisLabel):
+class MyAxisLabel(idendrogram.AxisLabel):
     labelAngle: float = 90
 
 @dataclass
-class MyLink(idendro.ClusterLink):
+class MyLink(idendrogram.ClusterLink):
     strokewidth: float = 2
     strokedash: List = field(default_factory= lambda: [10, 5, 10, 10])
     strokeopacity: float = 0.5
 
 @dataclass
-class MyNode(idendro.ClusterNode):
+class MyNode(idendrogram.ClusterNode):
     radius: float = 8
     _default_leaf_radius: float = 2
     labelsize: float = 10
@@ -63,9 +63,9 @@ class MyNode(idendro.ClusterNode):
     pass
 
 
-cdata = idendro.ClusteringData(linkage_matrix=model, cluster_assignments=cluster_assignments)
+cdata = idendrogram.ClusteringData(linkage_matrix=model, cluster_assignments=cluster_assignments)
 
-dd = idendro.IDendro(
+dd = idendrogram.idendrogram(
     link_factory=lambda x: MyLink(**x), 
     node_factory=lambda x: MyNode(**x), 
     axis_label_factory=lambda x: MyAxisLabel(**x)

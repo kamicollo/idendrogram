@@ -1,22 +1,22 @@
-::: idendro.Dendrogram
+::: idendrogram.Dendrogram
     handler: python
     options:      
       show_root_heading: true
       show_source: true 
 
-::: idendro.AxisLabel
+::: idendrogram.AxisLabel
     handler: python
     options:      
       show_root_heading: true
       show_source: true 
 
-::: idendro.ClusterLink
+::: idendrogram.ClusterLink
     handler: python
     options:      
       show_root_heading: true
       show_source: true 
 
-::: idendro.ClusterNode
+::: idendrogram.ClusterNode
     handler: python
     options:      
       show_root_heading: true

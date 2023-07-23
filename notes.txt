@@ -1,2 +1,2 @@
-mypy idendro --disallow-untyped-defs
+mypy idendrogram --disallow-untyped-defs
 mkdocs serve

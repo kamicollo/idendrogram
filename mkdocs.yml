@@ -1,4 +1,4 @@
-site_name: IDendro
+site_name: idendrogram
 theme:
   name: "material"
   custom_dir: docs/overrides
@@ -15,9 +15,9 @@ theme:
     - navigation.tabs.sticky
     - navigation.sections
 
-repo_url: https://github.com/kamicollo/idendro
+repo_url: https://github.com/kamicollo/idendrogram
 edit_uri: edit/main/docs/
-repo_name: kamicollo/idendro
+repo_name: kamicollo/idendrogram
 
 plugins:
   - mkdocstrings
@@ -32,7 +32,7 @@ plugins:
 
 nav:
   - Home: 
-    - IDendro: index.ipynb
+    - idendrogram: index.ipynb
     - Getting started: getting-started.ipynb
     - Case studies:
       - Spatial clustering: case-studies/spatial-clustering.ipynb
@@ -53,7 +53,7 @@ nav:
     
 
 watch:
-  - idendro
+  - idendrogram
 
 hooks:
   - docs/plotly_fix.py

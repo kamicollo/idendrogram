@@ -1,4 +1,4 @@
-::: idendro.ClusteringData
+::: idendrogram.ClusteringData
     handler: python
     options:      
       show_root_heading: true
