@@ -1,0 +1,34 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "idendrogram"
+authors = [
+  { name = "Aurimas Racas"},
+]
+keywords = ['dendrogram', 'hierarchical clustering', 'clustering']
+license = { file = "LICENSE" }
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.8"
+dependencies = [
+  "scipy >= 1.8.0",
+  "numpy >= 1.22.0"
+]
+dynamic = ["version", "description"]
+
+[project.optional-dependencies]
+full = ['matplotlib', 'altair>=1.4.2', 'plotly', 'hdbscan', 'scikit-learn', "pandas"]
+streamlit = ['streamlit']
+
+[project.urls]
+"Home" = "https://github.com/kamicollo/idendrogram"
+"Documentation" = "https://github.com/kamicollo/idendrogram"
+
+[tool.flit.sdist]
+exclude = ["docs/", ".vscode/", "mkdocs.yml", ".ipynb_checkpoints", ".mypy_cache"]

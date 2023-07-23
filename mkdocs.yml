@@ -1,0 +1,64 @@
+site_name: idendrogram
+theme:
+  name: "material"
+  custom_dir: docs/overrides
+  highlightjs: true
+  pygments: true
+  icon:
+    admonition:
+      tip: octicons/squirrel-16
+  hljs_languages:
+    - python
+  features:
+    - content.action.edit
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+
+repo_url: https://github.com/kamicollo/idendrogram
+edit_uri: edit/main/docs/
+repo_name: kamicollo/idendrogram
+
+plugins:
+  - mkdocstrings
+  - search:
+      separator: '[\s\-,:!=\[\]()"/]+|(?!\b)(?=[A-Z][a-z])|\.(?!\d)|&[lg]t;'
+  - mkdocs-jupyter:     
+      execute: true      
+      remove_tag_config:
+        remove_input_tags:
+          - remove
+
+
+nav:
+  - Home: 
+    - idendrogram: index.ipynb
+    - Getting started: getting-started.ipynb
+    - Case studies:
+      - Spatial clustering: case-studies/spatial-clustering.ipynb
+      - Signal anomaly detection: case-studies/signal-demo.ipynb    
+  - Customizing looks:
+    - guides/custom-colors.ipynb
+    - guides/custom-labels.ipynb
+    - guides/custom-attributes.ipynb
+    - guides/rotating.ipynb
+  - Streamlit usage: streamlit.ipynb
+  - API Reference:
+    - Creating dendrogram objects: reference/reference.md
+    - Plotting dendrograms: reference/dendrogram.md
+    - Callback functions for formatting: reference/callbacks.md
+    - Clustering Info Container: reference/cluster-info-container.md
+    - Data Containers: reference/data_containers.md
+  
+    
+
+watch:
+  - idendrogram
+
+hooks:
+  - docs/plotly_fix.py
+
+extra:
+  social:
+    - icon: fontawesome/solid/signature
+      link: https://aurimas.eu
