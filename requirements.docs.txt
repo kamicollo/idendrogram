@@ -14,5 +14,7 @@ mypy
 mkdocstrings-python
 geopandas
 networkx
-idendrogram @ 
+tqdm
+pywavelets
+idendrogram @ git+https://github.com/kamicollo/idendrogram
 idendrogram-streamlit-component @ git+https://github.com/kamicollo/idendrogram-streamlit
