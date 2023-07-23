@@ -1,5 +1,8 @@
-DEV = True
+"""Interactive dendrograms compatible with scipy, scikit-learn and hdbscan"""
 
+DEV = False
+__version__ = "0.1.0"
+__description__ = "Interactive dendrograms compatible with scipy, scikit-learn and hdbscan"
 
 if DEV:
     import importlib as imp
