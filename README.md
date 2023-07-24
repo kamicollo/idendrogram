@@ -45,4 +45,4 @@ dendrogram = idd.create_dendrogram(truncate_mode='level', p=10)
 to_altair(dendrogram=dendrogram, height=200, width=629)
 ```
 
-For more, see docs at (https://kamicollo.github.io/idendrogram/)
+For more, see docs at https://kamicollo.github.io/idendrogram/
