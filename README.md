@@ -5,6 +5,7 @@ idendrogram helps you create nicer, interactive visualizations of hierarchical c
 It also supports bi-directional Streamlit integration via a custom D3-powered component.
 
 <img src='docs/gallery/custom-radii.png' width=500>
+<img src='docs/gallery/streamlit-integration.gif' width=500>
 
 ## Installation
 
