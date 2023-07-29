@@ -1,0 +1,2804 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../cluster-info-container/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.19">
+    
+    
+      
+        <title>Data Containers - idendrogram</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.eebd395e.min.css">
+      
+      
+  
+  
+    
+    
+  
+  
+  <style>:root{--md-admonition-icon--tip:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.499.75a.75.75 0 0 1 1.5 0v.996C5.9 2.903 6.793 3.65 7.662 4.376l.24.202c-.036-.694.055-1.422.426-2.163C9.1.873 10.794-.045 12.622.26 14.408.558 16 1.94 16 4.25c0 1.278-.954 2.575-2.44 2.734l.146.508.065.22c.203.701.412 1.455.476 2.226.142 1.707-.4 3.03-1.487 3.898C11.714 14.671 10.27 15 8.75 15h-6a.75.75 0 0 1 0-1.5h1.376a4.484 4.484 0 0 1-.563-1.191 3.835 3.835 0 0 1-.05-2.063 4.647 4.647 0 0 1-2.025-.293.75.75 0 0 1 .525-1.406c1.357.507 2.376-.006 2.698-.318l.009-.01a.747.747 0 0 1 1.06 0 .748.748 0 0 1-.012 1.074c-.912.92-.992 1.835-.768 2.586.221.74.745 1.337 1.196 1.621H8.75c1.343 0 2.398-.296 3.074-.836.635-.507 1.036-1.31.928-2.602-.05-.603-.216-1.224-.422-1.93l-.064-.221c-.12-.407-.246-.84-.353-1.29a2.425 2.425 0 0 1-.507-.441 3.075 3.075 0 0 1-.633-1.248.75.75 0 0 1 1.455-.364c.046.185.144.436.31.627.146.168.353.305.712.305.738 0 1.25-.615 1.25-1.25 0-1.47-.95-2.315-2.123-2.51-1.172-.196-2.227.387-2.706 1.345-.46.92-.27 1.774.019 3.062l.042.19a.884.884 0 0 1 .01.05c.348.443.666.949.94 1.553a.75.75 0 1 1-1.365.62c-.553-1.217-1.32-1.94-2.3-2.768L6.7 5.527c-.814-.68-1.75-1.462-2.692-2.619a3.737 3.737 0 0 0-1.023.88c-.406.495-.663 1.036-.722 1.508.116.122.306.21.591.239.388.038.797-.06 1.032-.19a.75.75 0 0 1 .728 1.31c-.515.287-1.23.439-1.906.373-.682-.067-1.473-.38-1.879-1.193L.75 5.677V5.5c0-.984.48-1.94 1.077-2.664.46-.559 1.05-1.055 1.673-1.353V.75Z"/></svg>');}</style>
+
+
+    
+    
+  <!-- Add scripts that need to run before here -->
+  
+  <!-- Add scripts that need to run afterwards here -->
+    <script src="https://cdn.plot.ly/plotly-2.14.0.min.js"></script>
+  <!-- Hiding input/output prompts -->
+    <style>
+    /* hide jupyter notebooks input/output numbers */
+        .jp-InputPrompt {
+            display: none !important;
+        }
+        
+        .jp-OutputPrompt {
+            display: none !important;
+        }
+    </style>
+
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#idendrogram.Dendrogram" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="idendrogram" class="md-header__button md-logo" aria-label="idendrogram" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            idendrogram
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Data Containers
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/kamicollo/idendrogram" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    kamicollo/idendrogram
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        Home
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../guides/custom-colors/" class="md-tabs__link">
+        Customizing looks
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../../streamlit/" class="md-tabs__link">
+      Streamlit usage
+    </a>
+  </li>
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../reference/" class="md-tabs__link md-tabs__link--active">
+        API Reference
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="idendrogram" class="md-nav__button md-logo" aria-label="idendrogram" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    idendrogram
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/kamicollo/idendrogram" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    kamicollo/idendrogram
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+          Home
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          Home
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        idendrogram
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        Getting started
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1_3" id="__nav_1_3_label" tabindex="0">
+          Case studies
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_1_3">
+          <span class="md-nav__icon md-icon"></span>
+          Case studies
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../case-studies/spatial-clustering/" class="md-nav__link">
+        Spatial hierarchical clustering
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../case-studies/signal-demo/" class="md-nav__link">
+        Identifying root causes of signal anomalies in a network
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          Customizing looks
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Customizing looks
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/custom-colors/" class="md-nav__link">
+        Customizing colors
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/custom-labels/" class="md-nav__link">
+        Customizing labels
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/custom-attributes/" class="md-nav__link">
+        Customizing other attributes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/rotating/" class="md-nav__link">
+        Rotating dendrograms
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../streamlit/" class="md-nav__link">
+        Streamlit usage
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          API Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          API Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/" class="md-nav__link">
+        Creating dendrogram objects
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dendrogram/" class="md-nav__link">
+        Plotting dendrograms
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../callbacks/" class="md-nav__link">
+        Callback functions for formatting
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cluster-info-container/" class="md-nav__link">
+        Clustering Info Container
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Data Containers
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Data Containers
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#idendrogram.Dendrogram" class="md-nav__link">
+    Dendrogram
+  </a>
+  
+    <nav class="md-nav" aria-label="Dendrogram">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.Dendrogram.axis_labels" class="md-nav__link">
+    axis_labels
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.Dendrogram.computed_nodes" class="md-nav__link">
+    computed_nodes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.Dendrogram.links" class="md-nav__link">
+    links
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.Dendrogram.nodes" class="md-nav__link">
+    nodes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.Dendrogram.x_domain" class="md-nav__link">
+    x_domain
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.Dendrogram.y_domain" class="md-nav__link">
+    y_domain
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.Dendrogram.plot" class="md-nav__link">
+    plot()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.Dendrogram.to_json" class="md-nav__link">
+    to_json()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#idendrogram.AxisLabel" class="md-nav__link">
+    AxisLabel
+  </a>
+  
+    <nav class="md-nav" aria-label="AxisLabel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.AxisLabel.label" class="md-nav__link">
+    label
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.AxisLabel.labelAngle" class="md-nav__link">
+    labelAngle
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.AxisLabel.x" class="md-nav__link">
+    x
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#idendrogram.ClusterLink" class="md-nav__link">
+    ClusterLink
+  </a>
+  
+    <nav class="md-nav" aria-label="ClusterLink">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterLink.children_id" class="md-nav__link">
+    children_id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterLink.cluster_id" class="md-nav__link">
+    cluster_id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterLink.fillcolor" class="md-nav__link">
+    fillcolor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterLink.id" class="md-nav__link">
+    id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterLink.strokedash" class="md-nav__link">
+    strokedash
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterLink.strokeopacity" class="md-nav__link">
+    strokeopacity
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterLink.strokewidth" class="md-nav__link">
+    strokewidth
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterLink.x" class="md-nav__link">
+    x
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterLink.y" class="md-nav__link">
+    y
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#idendrogram.ClusterNode" class="md-nav__link">
+    ClusterNode
+  </a>
+  
+    <nav class="md-nav" aria-label="ClusterNode">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterNode.cluster_id" class="md-nav__link">
+    cluster_id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterNode.edgecolor" class="md-nav__link">
+    edgecolor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterNode.fillcolor" class="md-nav__link">
+    fillcolor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterNode.hovertext" class="md-nav__link">
+    hovertext
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterNode.id" class="md-nav__link">
+    id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterNode.label" class="md-nav__link">
+    label
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterNode.labelcolor" class="md-nav__link">
+    labelcolor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterNode.labelsize" class="md-nav__link">
+    labelsize
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterNode.opacity" class="md-nav__link">
+    opacity
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterNode.radius" class="md-nav__link">
+    radius
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterNode.type" class="md-nav__link">
+    type
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterNode.x" class="md-nav__link">
+    x
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterNode.y" class="md-nav__link">
+    y
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#idendrogram.Dendrogram" class="md-nav__link">
+    Dendrogram
+  </a>
+  
+    <nav class="md-nav" aria-label="Dendrogram">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.Dendrogram.axis_labels" class="md-nav__link">
+    axis_labels
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.Dendrogram.computed_nodes" class="md-nav__link">
+    computed_nodes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.Dendrogram.links" class="md-nav__link">
+    links
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.Dendrogram.nodes" class="md-nav__link">
+    nodes
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.Dendrogram.x_domain" class="md-nav__link">
+    x_domain
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.Dendrogram.y_domain" class="md-nav__link">
+    y_domain
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.Dendrogram.plot" class="md-nav__link">
+    plot()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.Dendrogram.to_json" class="md-nav__link">
+    to_json()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#idendrogram.AxisLabel" class="md-nav__link">
+    AxisLabel
+  </a>
+  
+    <nav class="md-nav" aria-label="AxisLabel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.AxisLabel.label" class="md-nav__link">
+    label
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.AxisLabel.labelAngle" class="md-nav__link">
+    labelAngle
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.AxisLabel.x" class="md-nav__link">
+    x
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#idendrogram.ClusterLink" class="md-nav__link">
+    ClusterLink
+  </a>
+  
+    <nav class="md-nav" aria-label="ClusterLink">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterLink.children_id" class="md-nav__link">
+    children_id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterLink.cluster_id" class="md-nav__link">
+    cluster_id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterLink.fillcolor" class="md-nav__link">
+    fillcolor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterLink.id" class="md-nav__link">
+    id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterLink.strokedash" class="md-nav__link">
+    strokedash
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterLink.strokeopacity" class="md-nav__link">
+    strokeopacity
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterLink.strokewidth" class="md-nav__link">
+    strokewidth
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterLink.x" class="md-nav__link">
+    x
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterLink.y" class="md-nav__link">
+    y
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#idendrogram.ClusterNode" class="md-nav__link">
+    ClusterNode
+  </a>
+  
+    <nav class="md-nav" aria-label="ClusterNode">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterNode.cluster_id" class="md-nav__link">
+    cluster_id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterNode.edgecolor" class="md-nav__link">
+    edgecolor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterNode.fillcolor" class="md-nav__link">
+    fillcolor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterNode.hovertext" class="md-nav__link">
+    hovertext
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterNode.id" class="md-nav__link">
+    id
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterNode.label" class="md-nav__link">
+    label
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterNode.labelcolor" class="md-nav__link">
+    labelcolor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterNode.labelsize" class="md-nav__link">
+    labelsize
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterNode.opacity" class="md-nav__link">
+    opacity
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterNode.radius" class="md-nav__link">
+    radius
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterNode.type" class="md-nav__link">
+    type
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterNode.x" class="md-nav__link">
+    x
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idendrogram.containers.ClusterNode.y" class="md-nav__link">
+    y
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/kamicollo/idendrogram/edit/main/docs/reference/data_containers.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
+    </a>
+  
+  
+
+
+  <h1>Data Containers</h1>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="idendrogram.Dendrogram" class="doc doc-heading">
+          <code>idendrogram.Dendrogram</code>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents first">
+
+  
+      <p>Dataclass representing the idendrogram dendrogram object.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>idendrogram/containers.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 95</span>
+<span class="normal"> 96</span>
+<span class="normal"> 97</span>
+<span class="normal"> 98</span>
+<span class="normal"> 99</span>
+<span class="normal">100</span>
+<span class="normal">101</span>
+<span class="normal">102</span>
+<span class="normal">103</span>
+<span class="normal">104</span>
+<span class="normal">105</span>
+<span class="normal">106</span>
+<span class="normal">107</span>
+<span class="normal">108</span>
+<span class="normal">109</span>
+<span class="normal">110</span>
+<span class="normal">111</span>
+<span class="normal">112</span>
+<span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Dendrogram</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dataclass representing the idendrogram dendrogram object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">axis_labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">AxisLabel</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;axis_labels: list of AxisLabel objects&quot;&quot;&quot;</span>
+    <span class="n">links</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">ClusterLink</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;links: list of ClusterLink objects&quot;&quot;&quot;</span>
+    <span class="n">nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">ClusterNode</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;nodes: list of ClusterNode objects&quot;&quot;&quot;</span>
+    <span class="n">computed_nodes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;computed_nodes: boolean indicating if Cluster Nodes were computed at creation time&quot;&quot;&quot;</span>
+    <span class="n">x_domain</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;x_domain: the value domain of the label axis&quot;&quot;&quot;</span>
+    <span class="n">y_domain</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;y_domain: the value domain of the value axis&quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">backend</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;altair&quot;</span><span class="p">,</span>
+        <span class="n">orientation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;top&quot;</span><span class="p">,</span>
+        <span class="n">show_nodes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">height</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">400</span><span class="p">,</span>
+        <span class="n">width</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">400</span><span class="p">,</span>
+        <span class="n">scale</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Plot the dendrogram using one of the supported backends. This is a convenience function,</span>
+<span class="sd">            you can also use `to_*()` functions from appropriate target backends at `idendrogram.targets.[backend].to_[backend]()`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            backend (str, optional): Backend to use, one of &#39;altair&#39;, &#39;streamlit&#39;, &#39;plotly&#39;, &#39;matplotlib&#39;. </span>
+<span class="sd">            orientation (str, optional): Position of dendrogram&#39;s root node. One of &quot;top&quot;, &quot;bottom&quot;, &quot;left&quot;, &quot;right&quot;. </span>
+<span class="sd">            show_nodes (bool, optional): Whether to draw nodes. </span>
+<span class="sd">            height (float, optional): Height of the dendrogram. </span>
+<span class="sd">            width (float, optional): Width of the dendrogram. </span>
+<span class="sd">            scale (str, optional): Scale used for the value axis. One of &quot;linear&quot;, &quot;symlog&quot;, &quot;log&quot;. </span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: Parameters supplied did not comform to allowed values.  </span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Any: </span>
+
+<span class="sd">                Varies by backend: </span>
+
+<span class="sd">                - Altair: `altair.Layered` chart object</span>
+<span class="sd">                - Plotly: `plotly.graph_objs.Figure` figure object</span>
+<span class="sd">                - Matplotlib: `matplotlib.pyplot.ax` axes object</span>
+<span class="sd">                - Streamlit: [idendrogram.ClusterNode][] object that was clicked on (None if no clicks took place)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">backend</span> <span class="o">==</span> <span class="s1">&#39;altair&#39;</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">.targets.altair</span> <span class="kn">import</span> <span class="n">to_altair</span>
+            <span class="k">return</span> <span class="n">to_altair</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="n">orientation</span><span class="p">,</span> <span class="n">show_nodes</span><span class="o">=</span><span class="n">show_nodes</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">backend</span> <span class="o">==</span> <span class="s1">&#39;matplotlib&#39;</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">.targets.matplotlib</span> <span class="kn">import</span> <span class="n">to_matplotlib</span>
+            <span class="k">return</span> <span class="n">to_matplotlib</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="n">orientation</span><span class="p">,</span> <span class="n">show_nodes</span><span class="o">=</span><span class="n">show_nodes</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">backend</span> <span class="o">==</span> <span class="s1">&#39;plotly&#39;</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">.targets.plotly</span> <span class="kn">import</span> <span class="n">to_plotly</span>
+            <span class="k">return</span> <span class="n">to_plotly</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="n">orientation</span><span class="p">,</span> <span class="n">show_nodes</span><span class="o">=</span><span class="n">show_nodes</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">backend</span> <span class="o">==</span> <span class="s1">&#39;streamlit&#39;</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">.targets.streamlit</span> <span class="kn">import</span> <span class="n">to_streamlit</span>
+            <span class="k">return</span> <span class="n">to_streamlit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="n">orientation</span><span class="p">,</span> <span class="n">show_nodes</span><span class="o">=</span><span class="n">show_nodes</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported backend &#39;</span><span class="si">{</span><span class="n">backend</span><span class="si">}</span><span class="s2">&#39;, should be one of &#39;plotly&#39;, &#39;matplotlib&#39;, &#39;altair&#39;, &#39;streamlit&#39;&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Converts dendrogram to JSON representation.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: JSON-formatted dendrogram</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">.targets.json</span> <span class="kn">import</span> <span class="n">to_json</span>
+        <span class="k">return</span> <span class="n">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="idendrogram.containers.Dendrogram.axis_labels" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">axis_labels</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">AxisLabel</span><span class="p">]</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>axis_labels: list of AxisLabel objects</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="idendrogram.containers.Dendrogram.computed_nodes" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">computed_nodes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>computed_nodes: boolean indicating if Cluster Nodes were computed at creation time</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="idendrogram.containers.Dendrogram.links" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">links</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">ClusterLink</span><span class="p">]</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>links: list of ClusterLink objects</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="idendrogram.containers.Dendrogram.nodes" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">nodes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">ClusterNode</span><span class="p">]</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>nodes: list of ClusterNode objects</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="idendrogram.containers.Dendrogram.x_domain" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">x_domain</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>x_domain: the value domain of the label axis</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="idendrogram.containers.Dendrogram.y_domain" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">y_domain</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>y_domain: the value domain of the value axis</p>
+  </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="idendrogram.containers.Dendrogram.plot" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">plot</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s1">&#39;altair&#39;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">,</span> <span class="n">show_nodes</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">)</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Plot the dendrogram using one of the supported backends. This is a convenience function,
+    you can also use <code>to_*()</code> functions from appropriate target backends at <code>idendrogram.targets.[backend].to_[backend]()</code>.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>backend</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Backend to use, one of 'altair', 'streamlit', 'plotly', 'matplotlib'. </p>
+            </div>
+          </td>
+          <td>
+                <code>&#39;altair&#39;</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>orientation</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Position of dendrogram's root node. One of "top", "bottom", "left", "right". </p>
+            </div>
+          </td>
+          <td>
+                <code>&#39;top&#39;</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>show_nodes</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Whether to draw nodes. </p>
+            </div>
+          </td>
+          <td>
+                <code>True</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>height</code></td>
+          <td>
+                <code>float</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Height of the dendrogram. </p>
+            </div>
+          </td>
+          <td>
+                <code>400</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>width</code></td>
+          <td>
+                <code>float</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Width of the dendrogram. </p>
+            </div>
+          </td>
+          <td>
+                <code>400</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>scale</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Scale used for the value axis. One of "linear", "symlog", "log". </p>
+            </div>
+          </td>
+          <td>
+                <code>&#39;linear&#39;</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Raises:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>ValueError</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Parameters supplied did not comform to allowed values.  </p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+<td><code>Any</code></td>          <td>
+                <code><span title="typing.Any">Any</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Varies by backend: </p>
+<ul>
+<li>Altair: <code>altair.Layered</code> chart object</li>
+<li>Plotly: <code>plotly.graph_objs.Figure</code> figure object</li>
+<li>Matplotlib: <code>matplotlib.pyplot.ax</code> axes object</li>
+<li>Streamlit: <a class="autorefs autorefs-internal" href="#idendrogram.ClusterNode">idendrogram.ClusterNode</a> object that was clicked on (None if no clicks took place)</li>
+</ul>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+          <details class="quote">
+            <summary>Source code in <code>idendrogram/containers.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">backend</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;altair&quot;</span><span class="p">,</span>
+    <span class="n">orientation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;top&quot;</span><span class="p">,</span>
+    <span class="n">show_nodes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">height</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">400</span><span class="p">,</span>
+    <span class="n">width</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">400</span><span class="p">,</span>
+    <span class="n">scale</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plot the dendrogram using one of the supported backends. This is a convenience function,</span>
+<span class="sd">        you can also use `to_*()` functions from appropriate target backends at `idendrogram.targets.[backend].to_[backend]()`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        backend (str, optional): Backend to use, one of &#39;altair&#39;, &#39;streamlit&#39;, &#39;plotly&#39;, &#39;matplotlib&#39;. </span>
+<span class="sd">        orientation (str, optional): Position of dendrogram&#39;s root node. One of &quot;top&quot;, &quot;bottom&quot;, &quot;left&quot;, &quot;right&quot;. </span>
+<span class="sd">        show_nodes (bool, optional): Whether to draw nodes. </span>
+<span class="sd">        height (float, optional): Height of the dendrogram. </span>
+<span class="sd">        width (float, optional): Width of the dendrogram. </span>
+<span class="sd">        scale (str, optional): Scale used for the value axis. One of &quot;linear&quot;, &quot;symlog&quot;, &quot;log&quot;. </span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: Parameters supplied did not comform to allowed values.  </span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Any: </span>
+
+<span class="sd">            Varies by backend: </span>
+
+<span class="sd">            - Altair: `altair.Layered` chart object</span>
+<span class="sd">            - Plotly: `plotly.graph_objs.Figure` figure object</span>
+<span class="sd">            - Matplotlib: `matplotlib.pyplot.ax` axes object</span>
+<span class="sd">            - Streamlit: [idendrogram.ClusterNode][] object that was clicked on (None if no clicks took place)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">backend</span> <span class="o">==</span> <span class="s1">&#39;altair&#39;</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">.targets.altair</span> <span class="kn">import</span> <span class="n">to_altair</span>
+        <span class="k">return</span> <span class="n">to_altair</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="n">orientation</span><span class="p">,</span> <span class="n">show_nodes</span><span class="o">=</span><span class="n">show_nodes</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">backend</span> <span class="o">==</span> <span class="s1">&#39;matplotlib&#39;</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">.targets.matplotlib</span> <span class="kn">import</span> <span class="n">to_matplotlib</span>
+        <span class="k">return</span> <span class="n">to_matplotlib</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="n">orientation</span><span class="p">,</span> <span class="n">show_nodes</span><span class="o">=</span><span class="n">show_nodes</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">backend</span> <span class="o">==</span> <span class="s1">&#39;plotly&#39;</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">.targets.plotly</span> <span class="kn">import</span> <span class="n">to_plotly</span>
+        <span class="k">return</span> <span class="n">to_plotly</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="n">orientation</span><span class="p">,</span> <span class="n">show_nodes</span><span class="o">=</span><span class="n">show_nodes</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">backend</span> <span class="o">==</span> <span class="s1">&#39;streamlit&#39;</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">.targets.streamlit</span> <span class="kn">import</span> <span class="n">to_streamlit</span>
+        <span class="k">return</span> <span class="n">to_streamlit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="n">orientation</span><span class="p">,</span> <span class="n">show_nodes</span><span class="o">=</span><span class="n">show_nodes</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported backend &#39;</span><span class="si">{</span><span class="n">backend</span><span class="si">}</span><span class="s2">&#39;, should be one of &#39;plotly&#39;, &#39;matplotlib&#39;, &#39;altair&#39;, &#39;streamlit&#39;&quot;</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="idendrogram.containers.Dendrogram.to_json" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">to_json</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Converts dendrogram to JSON representation.</p>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+<td><code>str</code></td>          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>JSON-formatted dendrogram</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+          <details class="quote">
+            <summary>Source code in <code>idendrogram/containers.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Converts dendrogram to JSON representation.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: JSON-formatted dendrogram</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">.targets.json</span> <span class="kn">import</span> <span class="n">to_json</span>
+    <span class="k">return</span> <span class="n">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="idendrogram.AxisLabel" class="doc doc-heading">
+          <code>idendrogram.AxisLabel</code>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents first">
+
+  
+      <p>Dataclass storing information on axis labels.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>idendrogram/containers.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span>
+<span class="normal">89</span>
+<span class="normal">90</span>
+<span class="normal">91</span>
+<span class="normal">92</span>
+<span class="normal">93</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">AxisLabel</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dataclass storing information on axis labels.&quot;&quot;&quot;</span>
+
+    <span class="n">x</span><span class="p">:</span> <span class="nb">float</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;x-coordinate of the label&quot;&quot;&quot;</span>
+    <span class="n">label</span><span class="p">:</span> <span class="nb">str</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;label text&quot;&quot;&quot;</span>
+    <span class="n">labelAngle</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;rotation of the text label (in degrees)&quot;&quot;&quot;</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="idendrogram.containers.AxisLabel.label" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">label</span><span class="p">:</span> <span class="nb">str</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>label text</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="idendrogram.containers.AxisLabel.labelAngle" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">labelAngle</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>rotation of the text label (in degrees)</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="idendrogram.containers.AxisLabel.x" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">x</span><span class="p">:</span> <span class="nb">float</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>x-coordinate of the label</p>
+  </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="idendrogram.ClusterLink" class="doc doc-heading">
+          <code>idendrogram.ClusterLink</code>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents first">
+
+  
+      <p>Dataclass storing information about links.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>idendrogram/containers.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span>
+<span class="normal">70</span>
+<span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ClusterLink</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dataclass storing information about links.&quot;&quot;&quot;</span>
+
+    <span class="n">x</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;x: 4 coordinates of the link on the x-axis&quot;&quot;&quot;</span>
+    <span class="n">y</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;y: 4 coordinates of the link on the y-axis&quot;&quot;&quot;</span>
+    <span class="n">fillcolor</span><span class="p">:</span> <span class="nb">str</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;fillcolor: line color used for the link&quot;&quot;&quot;</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;id: the linkage ID represented by the link&quot;&quot;&quot;</span>
+    <span class="n">children_id</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;children_id: a tuple of 2 linkage IDs representing the 2 immediate clusters that got merged into this cluster&quot;&quot;&quot;</span>
+    <span class="n">cluster_id</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;cluster_id: flat cluster assignment ID if this link represents a flat cluster; otherwise empty&quot;&quot;&quot;</span>
+    <span class="n">strokewidth</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;strokewidth: the line width of the link&quot;&quot;&quot;</span>
+    <span class="n">strokedash</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;strokedash: the dash pattern used for the link&quot;&quot;&quot;</span>
+    <span class="n">strokeopacity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;strokeopacity: the opacity level used for the link&quot;&quot;&quot;</span>
+    <span class="n">_order_helper</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="idendrogram.containers.ClusterLink.children_id" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">children_id</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>children_id: a tuple of 2 linkage IDs representing the 2 immediate clusters that got merged into this cluster</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="idendrogram.containers.ClusterLink.cluster_id" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">cluster_id</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>cluster_id: flat cluster assignment ID if this link represents a flat cluster; otherwise empty</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="idendrogram.containers.ClusterLink.fillcolor" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">fillcolor</span><span class="p">:</span> <span class="nb">str</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>fillcolor: line color used for the link</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="idendrogram.containers.ClusterLink.id" class="doc doc-heading">
+<code class="highlight language-python"><span class="nb">id</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>id: the linkage ID represented by the link</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="idendrogram.containers.ClusterLink.strokedash" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">strokedash</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="k">lambda</span> <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>strokedash: the dash pattern used for the link</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="idendrogram.containers.ClusterLink.strokeopacity" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">strokeopacity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>strokeopacity: the opacity level used for the link</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="idendrogram.containers.ClusterLink.strokewidth" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">strokewidth</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>strokewidth: the line width of the link</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="idendrogram.containers.ClusterLink.x" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">x</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>x: 4 coordinates of the link on the x-axis</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="idendrogram.containers.ClusterLink.y" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">y</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>y: 4 coordinates of the link on the y-axis</p>
+  </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="idendrogram.ClusterNode" class="doc doc-heading">
+          <code>idendrogram.ClusterNode</code>
+
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-dataclass"><code>dataclass</code></small>
+  </span>
+
+</h2>
+
+
+  <div class="doc doc-contents first">
+
+  
+      <p>Data class storing node-level information.</p>
+
+            <details class="quote">
+              <summary>Source code in <code>idendrogram/containers.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ClusterNode</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Data class storing node-level information.&quot;&quot;&quot;</span>
+
+    <span class="n">x</span><span class="p">:</span> <span class="nb">float</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;X-coordinate of the node&quot;&quot;&quot;</span>
+    <span class="n">y</span><span class="p">:</span> <span class="nb">float</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Y-coordinate of the node&quot;&quot;&quot;</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Type of the node. One of `leaf`, `subcluster`, `cluster`, `supercluster` &quot;&quot;&quot;</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Linkage ID the node represents&quot;&quot;&quot;</span>
+    <span class="n">cluster_id</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;flat cluster assignment ID if this link represents a flat cluster; otherwise empty&quot;&quot;&quot;</span>
+    <span class="n">edgecolor</span><span class="p">:</span> <span class="nb">str</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;color used for the edge of the node&quot;&quot;&quot;</span>
+    <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;text label displayed on the node&quot;&quot;&quot;</span>
+    <span class="n">hovertext</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Information displayed on a tooltip, in dictionary form (key: values)&quot;&quot;&quot;</span>
+    <span class="n">fillcolor</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;#fff&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;colors used to fill the node&quot;&quot;&quot;</span>
+    <span class="n">radius</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">7.0</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;radius of the node&quot;&quot;&quot;</span>
+    <span class="n">opacity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;opacity level of the node&quot;&quot;&quot;</span>
+    <span class="n">labelsize</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">10.0</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;size of the text label displayed&quot;&quot;&quot;</span>
+    <span class="n">labelcolor</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;#fff&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;color of the text label displayed&quot;&quot;&quot;</span>
+    <span class="n">_default_leaf_radius</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">4.0</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;size of the radius of the leaf nodes&quot;&quot;&quot;</span>
+    <span class="n">_default_leaf_radius_if_cluster</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">7.0</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;size of the radius of the leaf nodes&quot;&quot;&quot;</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="idendrogram.containers.ClusterNode.cluster_id" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">cluster_id</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>flat cluster assignment ID if this link represents a flat cluster; otherwise empty</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="idendrogram.containers.ClusterNode.edgecolor" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">edgecolor</span><span class="p">:</span> <span class="nb">str</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>color used for the edge of the node</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="idendrogram.containers.ClusterNode.fillcolor" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">fillcolor</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;#fff&#39;</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>colors used to fill the node</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="idendrogram.containers.ClusterNode.hovertext" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">hovertext</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Information displayed on a tooltip, in dictionary form (key: values)</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="idendrogram.containers.ClusterNode.id" class="doc doc-heading">
+<code class="highlight language-python"><span class="nb">id</span><span class="p">:</span> <span class="nb">int</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Linkage ID the node represents</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="idendrogram.containers.ClusterNode.label" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>text label displayed on the node</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="idendrogram.containers.ClusterNode.labelcolor" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">labelcolor</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;#fff&#39;</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>color of the text label displayed</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="idendrogram.containers.ClusterNode.labelsize" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">labelsize</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">10.0</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>size of the text label displayed</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="idendrogram.containers.ClusterNode.opacity" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">opacity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>opacity level of the node</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="idendrogram.containers.ClusterNode.radius" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">radius</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">7.0</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>radius of the node</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="idendrogram.containers.ClusterNode.type" class="doc doc-heading">
+<code class="highlight language-python"><span class="nb">type</span><span class="p">:</span> <span class="nb">str</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Type of the node. One of <code>leaf</code>, <code>subcluster</code>, <code>cluster</code>, <code>supercluster</code></p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="idendrogram.containers.ClusterNode.x" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">x</span><span class="p">:</span> <span class="nb">float</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>X-coordinate of the node</p>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h3 id="idendrogram.containers.ClusterNode.y" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">y</span><span class="p">:</span> <span class="nb">float</span></code>
+  
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Y-coordinate of the node</p>
+  </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+  </div>
+
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://aurimas.eu" target="_blank" rel="noopener" title="aurimas.eu" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M192 128c0-17.7 14.3-32 32-32s32 14.3 32 32v7.8c0 27.7-2.4 55.3-7.1 82.5l-84.4 25.3c-40.6 12.2-68.4 49.6-68.4 92v71.9c0 40 32.5 72.5 72.5 72.5 26 0 50-13.9 62.9-36.5l13.9-24.3c26.8-47 46.5-97.7 58.4-150.5l94.4-28.3-12.5 37.5c-3.3 9.8-1.6 20.5 4.4 28.8s15.7 13.3 26 13.3H544c17.7 0 32-14.3 32-32s-14.3-32-32-32h-83.6l18-53.9c3.8-11.3.9-23.8-7.4-32.4s-20.7-11.8-32.2-8.4l-122.4 36.8c2.4-20.7 3.6-41.4 3.6-62.3V128c0-53-43-96-96-96s-96 43-96 96v32c0 17.7 14.3 32 32 32s32-14.3 32-32v-32zm-9.2 177 49-14.7c-10.4 33.8-24.5 66.4-42.1 97.2l-13.9 24.3c-1.5 2.6-4.3 4.3-7.4 4.3-4.7 0-8.5-3.8-8.5-8.5v-72c0-14.1 9.3-26.6 22.8-30.7zM24 368c-13.3 0-24 10.7-24 24s10.7 24 24 24h40.3c-.2-2.8-.3-5.6-.3-8.5V368H24zm592 48c13.3 0 24-10.7 24-24s-10.7-24-24-24H305.9c-6.7 16.3-14.2 32.3-22.3 48H616z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.action.edit", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections"], "search": "../../assets/javascripts/workers/search.74e28a9f.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.220ee61c.min.js"></script>
+      
+    
+  </body>
+</html>

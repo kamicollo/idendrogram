@@ -1,0 +1,2109 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../reference/">
+      
+      
+        <link rel="next" href="../callbacks/">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.19">
+    
+    
+      
+        <title>Plotting dendrograms - idendrogram</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.eebd395e.min.css">
+      
+      
+  
+  
+    
+    
+  
+  
+  <style>:root{--md-admonition-icon--tip:url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M3.499.75a.75.75 0 0 1 1.5 0v.996C5.9 2.903 6.793 3.65 7.662 4.376l.24.202c-.036-.694.055-1.422.426-2.163C9.1.873 10.794-.045 12.622.26 14.408.558 16 1.94 16 4.25c0 1.278-.954 2.575-2.44 2.734l.146.508.065.22c.203.701.412 1.455.476 2.226.142 1.707-.4 3.03-1.487 3.898C11.714 14.671 10.27 15 8.75 15h-6a.75.75 0 0 1 0-1.5h1.376a4.484 4.484 0 0 1-.563-1.191 3.835 3.835 0 0 1-.05-2.063 4.647 4.647 0 0 1-2.025-.293.75.75 0 0 1 .525-1.406c1.357.507 2.376-.006 2.698-.318l.009-.01a.747.747 0 0 1 1.06 0 .748.748 0 0 1-.012 1.074c-.912.92-.992 1.835-.768 2.586.221.74.745 1.337 1.196 1.621H8.75c1.343 0 2.398-.296 3.074-.836.635-.507 1.036-1.31.928-2.602-.05-.603-.216-1.224-.422-1.93l-.064-.221c-.12-.407-.246-.84-.353-1.29a2.425 2.425 0 0 1-.507-.441 3.075 3.075 0 0 1-.633-1.248.75.75 0 0 1 1.455-.364c.046.185.144.436.31.627.146.168.353.305.712.305.738 0 1.25-.615 1.25-1.25 0-1.47-.95-2.315-2.123-2.51-1.172-.196-2.227.387-2.706 1.345-.46.92-.27 1.774.019 3.062l.042.19a.884.884 0 0 1 .01.05c.348.443.666.949.94 1.553a.75.75 0 1 1-1.365.62c-.553-1.217-1.32-1.94-2.3-2.768L6.7 5.527c-.814-.68-1.75-1.462-2.692-2.619a3.737 3.737 0 0 0-1.023.88c-.406.495-.663 1.036-.722 1.508.116.122.306.21.591.239.388.038.797-.06 1.032-.19a.75.75 0 0 1 .728 1.31c-.515.287-1.23.439-1.906.373-.682-.067-1.473-.38-1.879-1.193L.75 5.677V5.5c0-.984.48-1.94 1.077-2.664.46-.559 1.05-1.055 1.673-1.353V.75Z"/></svg>');}</style>
+
+
+    
+    
+  <!-- Add scripts that need to run before here -->
+  
+  <!-- Add scripts that need to run afterwards here -->
+    <script src="https://cdn.plot.ly/plotly-2.14.0.min.js"></script>
+  <!-- Hiding input/output prompts -->
+    <style>
+    /* hide jupyter notebooks input/output numbers */
+        .jp-InputPrompt {
+            display: none !important;
+        }
+        
+        .jp-OutputPrompt {
+            display: none !important;
+        }
+    </style>
+
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#convenience-wrapper" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="idendrogram" class="md-header__button md-logo" aria-label="idendrogram" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            idendrogram
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Plotting dendrograms
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/kamicollo/idendrogram" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    kamicollo/idendrogram
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        Home
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../guides/custom-colors/" class="md-tabs__link">
+        Customizing looks
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../../streamlit/" class="md-tabs__link">
+      Streamlit usage
+    </a>
+  </li>
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../reference/" class="md-tabs__link md-tabs__link--active">
+        API Reference
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="idendrogram" class="md-nav__button md-logo" aria-label="idendrogram" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    idendrogram
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/kamicollo/idendrogram" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    kamicollo/idendrogram
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="0">
+          Home
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_1">
+          <span class="md-nav__icon md-icon"></span>
+          Home
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        idendrogram
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        Getting started
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1_3" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_1_3" id="__nav_1_3_label" tabindex="0">
+          Case studies
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_1_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_1_3">
+          <span class="md-nav__icon md-icon"></span>
+          Case studies
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../case-studies/spatial-clustering/" class="md-nav__link">
+        Spatial hierarchical clustering
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../case-studies/signal-demo/" class="md-nav__link">
+        Identifying root causes of signal anomalies in a network
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          Customizing looks
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Customizing looks
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/custom-colors/" class="md-nav__link">
+        Customizing colors
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/custom-labels/" class="md-nav__link">
+        Customizing labels
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/custom-attributes/" class="md-nav__link">
+        Customizing other attributes
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guides/rotating/" class="md-nav__link">
+        Rotating dendrograms
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../streamlit/" class="md-nav__link">
+        Streamlit usage
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          API Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          API Reference
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/" class="md-nav__link">
+        Creating dendrogram objects
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Plotting dendrograms
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Plotting dendrograms
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#convenience-wrapper" class="md-nav__link">
+    Convenience wrapper
+  </a>
+  
+    <nav class="md-nav" aria-label="Convenience wrapper">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#idendrogramdendrogramplot" class="md-nav__link">
+    idendrogram.Dendrogram.plot(...)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#idendrogram.containers.Dendrogram.plot" class="md-nav__link">
+    idendrogram.containers.Dendrogram.plot
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backend-specific-functions" class="md-nav__link">
+    Backend-specific functions
+  </a>
+  
+    <nav class="md-nav" aria-label="Backend-specific functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#idendrogramtargetsaltairto_altair" class="md-nav__link">
+    idendrogram.targets.altair.to_altair(...)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#idendrogram.targets.altair.to_altair" class="md-nav__link">
+    idendrogram.targets.altair.to_altair
+  </a>
+  
+    <nav class="md-nav" aria-label="idendrogram.targets.altair.to_altair">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#idendrogramtargetsaltairto_plotly" class="md-nav__link">
+    idendrogram.targets.altair.to_plotly(...)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#idendrogram.targets.plotly.to_plotly" class="md-nav__link">
+    idendrogram.targets.plotly.to_plotly
+  </a>
+  
+    <nav class="md-nav" aria-label="idendrogram.targets.plotly.to_plotly">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#idendrogramtargetsaltairto_matplotlib" class="md-nav__link">
+    idendrogram.targets.altair.to_matplotlib(...)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#idendrogram.targets.matplotlib.to_matplotlib" class="md-nav__link">
+    idendrogram.targets.matplotlib.to_matplotlib
+  </a>
+  
+    <nav class="md-nav" aria-label="idendrogram.targets.matplotlib.to_matplotlib">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#idendrogramtargetsaltairto_streamlit" class="md-nav__link">
+    idendrogram.targets.altair.to_streamlit(...)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#idendrogram.targets.streamlit.to_streamlit" class="md-nav__link">
+    idendrogram.targets.streamlit.to_streamlit
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../callbacks/" class="md-nav__link">
+        Callback functions for formatting
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cluster-info-container/" class="md-nav__link">
+        Clustering Info Container
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data_containers/" class="md-nav__link">
+        Data Containers
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#convenience-wrapper" class="md-nav__link">
+    Convenience wrapper
+  </a>
+  
+    <nav class="md-nav" aria-label="Convenience wrapper">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#idendrogramdendrogramplot" class="md-nav__link">
+    idendrogram.Dendrogram.plot(...)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#idendrogram.containers.Dendrogram.plot" class="md-nav__link">
+    idendrogram.containers.Dendrogram.plot
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backend-specific-functions" class="md-nav__link">
+    Backend-specific functions
+  </a>
+  
+    <nav class="md-nav" aria-label="Backend-specific functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#idendrogramtargetsaltairto_altair" class="md-nav__link">
+    idendrogram.targets.altair.to_altair(...)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#idendrogram.targets.altair.to_altair" class="md-nav__link">
+    idendrogram.targets.altair.to_altair
+  </a>
+  
+    <nav class="md-nav" aria-label="idendrogram.targets.altair.to_altair">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#idendrogramtargetsaltairto_plotly" class="md-nav__link">
+    idendrogram.targets.altair.to_plotly(...)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#idendrogram.targets.plotly.to_plotly" class="md-nav__link">
+    idendrogram.targets.plotly.to_plotly
+  </a>
+  
+    <nav class="md-nav" aria-label="idendrogram.targets.plotly.to_plotly">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#idendrogramtargetsaltairto_matplotlib" class="md-nav__link">
+    idendrogram.targets.altair.to_matplotlib(...)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#idendrogram.targets.matplotlib.to_matplotlib" class="md-nav__link">
+    idendrogram.targets.matplotlib.to_matplotlib
+  </a>
+  
+    <nav class="md-nav" aria-label="idendrogram.targets.matplotlib.to_matplotlib">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#idendrogramtargetsaltairto_streamlit" class="md-nav__link">
+    idendrogram.targets.altair.to_streamlit(...)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#idendrogram.targets.streamlit.to_streamlit" class="md-nav__link">
+    idendrogram.targets.streamlit.to_streamlit
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/kamicollo/idendrogram/edit/main/docs/reference/dendrogram.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4v-2m10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1 2.1 2.1Z"/></svg>
+    </a>
+  
+  
+
+
+  <h1>Plotting dendrograms</h1>
+
+<h2 id="convenience-wrapper">Convenience wrapper</h2>
+<h3 id="idendrogramdendrogramplot"><code>idendrogram.Dendrogram.plot(...)</code></h3>
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<a id="idendrogram.containers.Dendrogram.plot"></a>
+  <div class="doc doc-contents first">
+  
+      <p>Plot the dendrogram using one of the supported backends. This is a convenience function,
+    you can also use <code>to_*()</code> functions from appropriate target backends at <code>idendrogram.targets.[backend].to_[backend]()</code>.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>backend</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Backend to use, one of 'altair', 'streamlit', 'plotly', 'matplotlib'. </p>
+            </div>
+          </td>
+          <td>
+                <code>&#39;altair&#39;</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>orientation</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Position of dendrogram's root node. One of "top", "bottom", "left", "right". </p>
+            </div>
+          </td>
+          <td>
+                <code>&#39;top&#39;</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>show_nodes</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Whether to draw nodes. </p>
+            </div>
+          </td>
+          <td>
+                <code>True</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>height</code></td>
+          <td>
+                <code>float</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Height of the dendrogram. </p>
+            </div>
+          </td>
+          <td>
+                <code>400</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>width</code></td>
+          <td>
+                <code>float</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Width of the dendrogram. </p>
+            </div>
+          </td>
+          <td>
+                <code>400</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>scale</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Scale used for the value axis. One of "linear", "symlog", "log". </p>
+            </div>
+          </td>
+          <td>
+                <code>&#39;linear&#39;</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Raises:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>ValueError</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Parameters supplied did not comform to allowed values.  </p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+<td><code>Any</code></td>          <td>
+                <code><span title="typing.Any">Any</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Varies by backend: </p>
+<ul>
+<li>Altair: <code>altair.Layered</code> chart object</li>
+<li>Plotly: <code>plotly.graph_objs.Figure</code> figure object</li>
+<li>Matplotlib: <code>matplotlib.pyplot.ax</code> axes object</li>
+<li>Streamlit: <a class="autorefs autorefs-internal" href="../data_containers/#idendrogram.ClusterNode">idendrogram.ClusterNode</a> object that was clicked on (None if no clicks took place)</li>
+</ul>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+          <details class="quote">
+            <summary>Source code in <code>idendrogram/containers.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">113</span>
+<span class="normal">114</span>
+<span class="normal">115</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">plot</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">backend</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;altair&quot;</span><span class="p">,</span>
+    <span class="n">orientation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;top&quot;</span><span class="p">,</span>
+    <span class="n">show_nodes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">height</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">400</span><span class="p">,</span>
+    <span class="n">width</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">400</span><span class="p">,</span>
+    <span class="n">scale</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plot the dendrogram using one of the supported backends. This is a convenience function,</span>
+<span class="sd">        you can also use `to_*()` functions from appropriate target backends at `idendrogram.targets.[backend].to_[backend]()`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        backend (str, optional): Backend to use, one of &#39;altair&#39;, &#39;streamlit&#39;, &#39;plotly&#39;, &#39;matplotlib&#39;. </span>
+<span class="sd">        orientation (str, optional): Position of dendrogram&#39;s root node. One of &quot;top&quot;, &quot;bottom&quot;, &quot;left&quot;, &quot;right&quot;. </span>
+<span class="sd">        show_nodes (bool, optional): Whether to draw nodes. </span>
+<span class="sd">        height (float, optional): Height of the dendrogram. </span>
+<span class="sd">        width (float, optional): Width of the dendrogram. </span>
+<span class="sd">        scale (str, optional): Scale used for the value axis. One of &quot;linear&quot;, &quot;symlog&quot;, &quot;log&quot;. </span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: Parameters supplied did not comform to allowed values.  </span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Any: </span>
+
+<span class="sd">            Varies by backend: </span>
+
+<span class="sd">            - Altair: `altair.Layered` chart object</span>
+<span class="sd">            - Plotly: `plotly.graph_objs.Figure` figure object</span>
+<span class="sd">            - Matplotlib: `matplotlib.pyplot.ax` axes object</span>
+<span class="sd">            - Streamlit: [idendrogram.ClusterNode][] object that was clicked on (None if no clicks took place)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">backend</span> <span class="o">==</span> <span class="s1">&#39;altair&#39;</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">.targets.altair</span> <span class="kn">import</span> <span class="n">to_altair</span>
+        <span class="k">return</span> <span class="n">to_altair</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="n">orientation</span><span class="p">,</span> <span class="n">show_nodes</span><span class="o">=</span><span class="n">show_nodes</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">backend</span> <span class="o">==</span> <span class="s1">&#39;matplotlib&#39;</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">.targets.matplotlib</span> <span class="kn">import</span> <span class="n">to_matplotlib</span>
+        <span class="k">return</span> <span class="n">to_matplotlib</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="n">orientation</span><span class="p">,</span> <span class="n">show_nodes</span><span class="o">=</span><span class="n">show_nodes</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">backend</span> <span class="o">==</span> <span class="s1">&#39;plotly&#39;</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">.targets.plotly</span> <span class="kn">import</span> <span class="n">to_plotly</span>
+        <span class="k">return</span> <span class="n">to_plotly</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="n">orientation</span><span class="p">,</span> <span class="n">show_nodes</span><span class="o">=</span><span class="n">show_nodes</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">backend</span> <span class="o">==</span> <span class="s1">&#39;streamlit&#39;</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">.targets.streamlit</span> <span class="kn">import</span> <span class="n">to_streamlit</span>
+        <span class="k">return</span> <span class="n">to_streamlit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="n">orientation</span><span class="p">,</span> <span class="n">show_nodes</span><span class="o">=</span><span class="n">show_nodes</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported backend &#39;</span><span class="si">{</span><span class="n">backend</span><span class="si">}</span><span class="s2">&#39;, should be one of &#39;plotly&#39;, &#39;matplotlib&#39;, &#39;altair&#39;, &#39;streamlit&#39;&quot;</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div><h2 id="backend-specific-functions">Backend-specific functions</h2>
+<h3 id="idendrogramtargetsaltairto_altair"><code>idendrogram.targets.altair.to_altair(...)</code></h3>
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<a id="idendrogram.targets.altair.to_altair"></a>
+  <div class="doc doc-contents first">
+  
+      <p>Converts a dendrogram object into Altair chart.</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>dendrogram</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="idendrogram.containers.Dendrogram" href="../data_containers/#idendrogram.Dendrogram">Dendrogram</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>idendrogram dendrogram object</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>orientation</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Position of dendrogram's root node. One of "top", "bottom", "left", "right". Defaults to "top".</p>
+            </div>
+          </td>
+          <td>
+                <code>&#39;top&#39;</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>show_nodes</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Whether to draw nodes. Defaults to True.</p>
+            </div>
+          </td>
+          <td>
+                <code>True</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>height</code></td>
+          <td>
+                <code>float</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Height of the dendrogram. Defaults to 400.</p>
+            </div>
+          </td>
+          <td>
+                <code>400</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>width</code></td>
+          <td>
+                <code>float</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Width of the dendrogram. Defaults to 400.</p>
+            </div>
+          </td>
+          <td>
+                <code>400</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>scale</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Scale used for the value axis. One of "linear", "symlog", "log". Defaults to 'linear'.</p>
+            </div>
+          </td>
+          <td>
+                <code>&#39;linear&#39;</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="altair">alt</span>.<span title="altair.LayerChart">LayerChart</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Altair chart object</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+          <details class="quote">
+            <summary>Source code in <code>idendrogram/targets/altair.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">to_altair</span><span class="p">(</span>
+    <span class="n">dendrogram</span><span class="p">:</span> <span class="n">Dendrogram</span><span class="p">,</span>
+    <span class="n">orientation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;top&quot;</span><span class="p">,</span>
+    <span class="n">show_nodes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">height</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">400</span><span class="p">,</span>
+    <span class="n">width</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">400</span><span class="p">,</span>
+    <span class="n">scale</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">alt</span><span class="o">.</span><span class="n">LayerChart</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Converts a dendrogram object into Altair chart.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        dendrogram (Dendrogram): idendrogram dendrogram object</span>
+<span class="sd">        orientation (str, optional): Position of dendrogram&#39;s root node. One of &quot;top&quot;, &quot;bottom&quot;, &quot;left&quot;, &quot;right&quot;. Defaults to &quot;top&quot;.</span>
+<span class="sd">        show_nodes (bool, optional): Whether to draw nodes. Defaults to True.</span>
+<span class="sd">        height (float, optional): Height of the dendrogram. Defaults to 400.</span>
+<span class="sd">        width (float, optional): Width of the dendrogram. Defaults to 400.</span>
+<span class="sd">        scale (str, optional): Scale used for the value axis. One of &quot;linear&quot;, &quot;symlog&quot;, &quot;log&quot;. Defaults to &#39;linear&#39;.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Altair chart object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_check_orientation</span><span class="p">(</span><span class="n">dendrogram</span><span class="p">,</span> <span class="n">orientation</span><span class="p">)</span>
+    <span class="n">_check_scale</span><span class="p">(</span><span class="n">dendrogram</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
+    <span class="n">_check_nodes</span><span class="p">(</span><span class="n">dendrogram</span><span class="p">,</span> <span class="n">show_nodes</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">AltairConverter</span><span class="p">()</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span>
+        <span class="n">dendrogram</span><span class="o">=</span><span class="n">dendrogram</span><span class="p">,</span>
+        <span class="n">orientation</span><span class="o">=</span><span class="n">orientation</span><span class="p">,</span>
+        <span class="n">show_nodes</span><span class="o">=</span><span class="n">show_nodes</span><span class="p">,</span>
+        <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span>
+        <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span>
+        <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div><h3 id="idendrogramtargetsaltairto_plotly"><code>idendrogram.targets.altair.to_plotly(...)</code></h3>
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<a id="idendrogram.targets.plotly.to_plotly"></a>
+  <div class="doc doc-contents first">
+  
+      <p>Converts a dendrogram object into Plotly chart</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>dendrogram</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="idendrogram.containers.Dendrogram" href="../data_containers/#idendrogram.Dendrogram">Dendrogram</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>idendrogram dendrogram object</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>orientation</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Position of dendrogram's root node. One of "top", "bottom", "left", "right". Defaults to "top".</p>
+            </div>
+          </td>
+          <td>
+                <code>&#39;top&#39;</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>show_nodes</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Whether to draw nodes. Defaults to True.</p>
+            </div>
+          </td>
+          <td>
+                <code>True</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>height</code></td>
+          <td>
+                <code>float</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Height of the dendrogram. Defaults to 400.</p>
+            </div>
+          </td>
+          <td>
+                <code>400</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>width</code></td>
+          <td>
+                <code>float</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Width of the dendrogram. Defaults to 400.</p>
+            </div>
+          </td>
+          <td>
+                <code>400</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>scale</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Scale used for the value axis. One of "linear", "log". "symlog" is not supported by Plotly. Defaults to 'linear'.</p>
+            </div>
+          </td>
+          <td>
+                <code>&#39;linear&#39;</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.Any">Any</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>plotly.graph_objs.Figure: Plotly figure object</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+          <details class="quote">
+            <summary>Source code in <code>idendrogram/targets/plotly.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">to_plotly</span><span class="p">(</span>
+        <span class="n">dendrogram</span><span class="p">:</span> <span class="n">Dendrogram</span><span class="p">,</span>
+        <span class="n">orientation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;top&quot;</span><span class="p">,</span>
+        <span class="n">show_nodes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">height</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">400</span><span class="p">,</span>
+        <span class="n">width</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">400</span><span class="p">,</span>
+        <span class="n">scale</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Converts a dendrogram object into Plotly chart</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dendrogram (Dendrogram): idendrogram dendrogram object</span>
+<span class="sd">            orientation (str, optional): Position of dendrogram&#39;s root node. One of &quot;top&quot;, &quot;bottom&quot;, &quot;left&quot;, &quot;right&quot;. Defaults to &quot;top&quot;.</span>
+<span class="sd">            show_nodes (bool, optional): Whether to draw nodes. Defaults to True.</span>
+<span class="sd">            height (float, optional): Height of the dendrogram. Defaults to 400.</span>
+<span class="sd">            width (float, optional): Width of the dendrogram. Defaults to 400.</span>
+<span class="sd">            scale (str, optional): Scale used for the value axis. One of &quot;linear&quot;, &quot;log&quot;. &quot;symlog&quot; is not supported by Plotly. Defaults to &#39;linear&#39;.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            plotly.graph_objs.Figure: Plotly figure object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_check_orientation</span><span class="p">(</span><span class="n">dendrogram</span><span class="p">,</span> <span class="n">orientation</span><span class="p">)</span>
+        <span class="n">_check_scale</span><span class="p">(</span><span class="n">dendrogram</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">supported</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span> <span class="s2">&quot;log&quot;</span><span class="p">])</span>
+        <span class="n">_check_nodes</span><span class="p">(</span><span class="n">dendrogram</span><span class="p">,</span> <span class="n">show_nodes</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">PlotlyConverter</span><span class="p">()</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span>
+            <span class="n">dendrogram</span><span class="o">=</span><span class="n">dendrogram</span><span class="p">,</span>
+            <span class="n">orientation</span><span class="o">=</span><span class="n">orientation</span><span class="p">,</span>
+            <span class="n">show_nodes</span><span class="o">=</span><span class="n">show_nodes</span><span class="p">,</span>
+            <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span>
+            <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span>
+            <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">,</span>
+        <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div><h3 id="idendrogramtargetsaltairto_matplotlib"><code>idendrogram.targets.altair.to_matplotlib(...)</code></h3>
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<a id="idendrogram.targets.matplotlib.to_matplotlib"></a>
+  <div class="doc doc-contents first">
+  
+      <p>Converts a dendrogram object into matplotlib chart</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>dendrogram</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="idendrogram.containers.Dendrogram" href="../data_containers/#idendrogram.Dendrogram">Dendrogram</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>idendrogram dendrogram object</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>orientation</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Position of dendrogram's root node. One of "top", "bottom", "left", "right". Defaults to "top".</p>
+            </div>
+          </td>
+          <td>
+                <code>&#39;top&#39;</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>show_nodes</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Whether to draw nodes. Defaults to True.</p>
+            </div>
+          </td>
+          <td>
+                <code>True</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>height</code></td>
+          <td>
+                <code>float</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Height of the dendrogram. Defaults to 400.</p>
+            </div>
+          </td>
+          <td>
+                <code>400</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>width</code></td>
+          <td>
+                <code>float</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Width of the dendrogram. Defaults to 400.</p>
+            </div>
+          </td>
+          <td>
+                <code>400</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>scale</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Scale used for the value axis. One of "linear", "symlog", "log". Defaults to 'linear'.</p>
+            </div>
+          </td>
+          <td>
+                <code>&#39;linear&#39;</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="matplotlib.axes.Axes">Axes</span></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>matplotlib.pyplot.ax: matplotlib axes object</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+          <details class="quote">
+            <summary>Source code in <code>idendrogram/targets/matplotlib.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">to_matplotlib</span><span class="p">(</span>
+        <span class="n">dendrogram</span><span class="p">:</span> <span class="n">Dendrogram</span><span class="p">,</span>
+        <span class="n">orientation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;top&quot;</span><span class="p">,</span>
+        <span class="n">show_nodes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">height</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">400</span><span class="p">,</span>
+        <span class="n">width</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">400</span><span class="p">,</span>
+        <span class="n">scale</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Axes</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Converts a dendrogram object into matplotlib chart</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dendrogram (Dendrogram): idendrogram dendrogram object</span>
+<span class="sd">            orientation (str, optional): Position of dendrogram&#39;s root node. One of &quot;top&quot;, &quot;bottom&quot;, &quot;left&quot;, &quot;right&quot;. Defaults to &quot;top&quot;.</span>
+<span class="sd">            show_nodes (bool, optional): Whether to draw nodes. Defaults to True.</span>
+<span class="sd">            height (float, optional): Height of the dendrogram. Defaults to 400.</span>
+<span class="sd">            width (float, optional): Width of the dendrogram. Defaults to 400.</span>
+<span class="sd">            scale (str, optional): Scale used for the value axis. One of &quot;linear&quot;, &quot;symlog&quot;, &quot;log&quot;. Defaults to &#39;linear&#39;.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            matplotlib.pyplot.ax: matplotlib axes object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_check_orientation</span><span class="p">(</span><span class="n">dendrogram</span><span class="p">,</span> <span class="n">orientation</span><span class="p">)</span>
+        <span class="n">_check_scale</span><span class="p">(</span><span class="n">dendrogram</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
+        <span class="n">_check_nodes</span><span class="p">(</span><span class="n">dendrogram</span><span class="p">,</span> <span class="n">show_nodes</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">matplotlibConverter</span><span class="p">()</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span>
+            <span class="n">dendrogram</span><span class="o">=</span><span class="n">dendrogram</span><span class="p">,</span>
+            <span class="n">orientation</span><span class="o">=</span><span class="n">orientation</span><span class="p">,</span>
+            <span class="n">show_nodes</span><span class="o">=</span><span class="n">show_nodes</span><span class="p">,</span>
+            <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span>
+            <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span>
+            <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">,</span>
+        <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div><h3 id="idendrogramtargetsaltairto_streamlit"><code>idendrogram.targets.altair.to_streamlit(...)</code></h3>
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<a id="idendrogram.targets.streamlit.to_streamlit"></a>
+  <div class="doc doc-contents first">
+  
+      <p>Renders dendrogram object as a custom bi-directional Streamlit component</p>
+
+
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>dendrogram</code></td>
+          <td>
+                <code><a class="autorefs autorefs-internal" title="idendrogram.containers.Dendrogram" href="../data_containers/#idendrogram.Dendrogram">Dendrogram</a></code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>idendrogram dendrogram object</p>
+            </div>
+          </td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>orientation</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Position of dendrogram's root node. One of "top", "bottom", "left", "right". Defaults to "top".</p>
+            </div>
+          </td>
+          <td>
+                <code>&#39;top&#39;</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>show_nodes</code></td>
+          <td>
+                <code>bool</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Whether to draw nodes. Defaults to True.</p>
+            </div>
+          </td>
+          <td>
+                <code>True</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>height</code></td>
+          <td>
+                <code>float</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Height of the dendrogram. Defaults to 400.</p>
+            </div>
+          </td>
+          <td>
+                <code>400</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>width</code></td>
+          <td>
+                <code>float</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Width of the dendrogram. Defaults to 400.</p>
+            </div>
+          </td>
+          <td>
+                <code>400</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>scale</code></td>
+          <td>
+                <code>str</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Scale used for the value axis. One of "linear", "symlog", "log". Defaults to 'linear'.</p>
+            </div>
+          </td>
+          <td>
+                <code>&#39;linear&#39;</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><span title="typing.Optional">Optional</span>[<a class="autorefs autorefs-internal" title="idendrogram.containers.ClusterNode" href="../data_containers/#idendrogram.ClusterNode">ClusterNode</a>]</code>
+          </td>
+          <td>
+            <div class="doc-md-description">
+              <p>Optional[ClusterNode]: A ClusterNode object that was clicked on (None if no clicks took place)</p>
+            </div>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+          <details class="quote">
+            <summary>Source code in <code>idendrogram/targets/streamlit.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">to_streamlit</span><span class="p">(</span>
+    <span class="n">dendrogram</span><span class="p">:</span> <span class="n">Dendrogram</span><span class="p">,</span>
+    <span class="n">orientation</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;top&quot;</span><span class="p">,</span>
+    <span class="n">show_nodes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">height</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">400</span><span class="p">,</span>
+    <span class="n">width</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">400</span><span class="p">,</span>
+    <span class="n">scale</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ClusterNode</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Renders dendrogram object as a custom bi-directional Streamlit component</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        dendrogram (Dendrogram): idendrogram dendrogram object</span>
+<span class="sd">        orientation (str, optional): Position of dendrogram&#39;s root node. One of &quot;top&quot;, &quot;bottom&quot;, &quot;left&quot;, &quot;right&quot;. Defaults to &quot;top&quot;.</span>
+<span class="sd">        show_nodes (bool, optional): Whether to draw nodes. Defaults to True.</span>
+<span class="sd">        height (float, optional): Height of the dendrogram. Defaults to 400.</span>
+<span class="sd">        width (float, optional): Width of the dendrogram. Defaults to 400.</span>
+<span class="sd">        scale (str, optional): Scale used for the value axis. One of &quot;linear&quot;, &quot;symlog&quot;, &quot;log&quot;. Defaults to &#39;linear&#39;.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Optional[ClusterNode]: A ClusterNode object that was clicked on (None if no clicks took place)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_check_orientation</span><span class="p">(</span><span class="n">dendrogram</span><span class="p">,</span> <span class="n">orientation</span><span class="p">)</span>
+    <span class="n">_check_scale</span><span class="p">(</span><span class="n">dendrogram</span><span class="p">,</span> <span class="n">scale</span><span class="p">)</span>
+    <span class="n">_check_nodes</span><span class="p">(</span><span class="n">dendrogram</span><span class="p">,</span> <span class="n">show_nodes</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">idendrogram_streamlit</span><span class="o">.</span><span class="n">StreamlitConverter</span><span class="p">(</span><span class="n">release</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span>
+        <span class="n">dendrogram</span><span class="o">=</span><span class="n">dendrogram</span><span class="p">,</span>
+        <span class="n">orientation</span><span class="o">=</span><span class="n">orientation</span><span class="p">,</span>
+        <span class="n">show_nodes</span><span class="o">=</span><span class="n">show_nodes</span><span class="p">,</span>
+        <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span>
+        <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span>
+        <span class="n">key</span><span class="o">=</span><span class="s2">&quot;idendrogram&quot;</span><span class="p">,</span>
+        <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://aurimas.eu" target="_blank" rel="noopener" title="aurimas.eu" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M192 128c0-17.7 14.3-32 32-32s32 14.3 32 32v7.8c0 27.7-2.4 55.3-7.1 82.5l-84.4 25.3c-40.6 12.2-68.4 49.6-68.4 92v71.9c0 40 32.5 72.5 72.5 72.5 26 0 50-13.9 62.9-36.5l13.9-24.3c26.8-47 46.5-97.7 58.4-150.5l94.4-28.3-12.5 37.5c-3.3 9.8-1.6 20.5 4.4 28.8s15.7 13.3 26 13.3H544c17.7 0 32-14.3 32-32s-14.3-32-32-32h-83.6l18-53.9c3.8-11.3.9-23.8-7.4-32.4s-20.7-11.8-32.2-8.4l-122.4 36.8c2.4-20.7 3.6-41.4 3.6-62.3V128c0-53-43-96-96-96s-96 43-96 96v32c0 17.7 14.3 32 32 32s32-14.3 32-32v-32zm-9.2 177 49-14.7c-10.4 33.8-24.5 66.4-42.1 97.2l-13.9 24.3c-1.5 2.6-4.3 4.3-7.4 4.3-4.7 0-8.5-3.8-8.5-8.5v-72c0-14.1 9.3-26.6 22.8-30.7zM24 368c-13.3 0-24 10.7-24 24s10.7 24 24 24h40.3c-.2-2.8-.3-5.6-.3-8.5V368H24zm592 48c13.3 0 24-10.7 24-24s-10.7-24-24-24H305.9c-6.7 16.3-14.2 32.3-22.3 48H616z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["content.action.edit", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections"], "search": "../../assets/javascripts/workers/search.74e28a9f.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.220ee61c.min.js"></script>
+      
+    
+  </body>
+</html>
