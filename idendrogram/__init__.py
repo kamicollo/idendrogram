@@ -1,8 +1,8 @@
 """Interactive dendrograms compatible with scipy, scikit-learn and hdbscan"""
 
 DEV = False
-__version__ = "0.1.2"
-__description__ = "Interactive dendrograms compatible with scipy, scikit-learn and hdbscan"
+__version__ = "0.2.0"
+__description__ = "Interactive dendrograms in Plotly, Altair and Streamlit, compatible with scipy, scikit-learn and hdbscan"
 
 if DEV:
     import importlib as imp
