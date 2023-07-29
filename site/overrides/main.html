@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block libs %}
+  <!-- Add scripts that need to run before here -->
+  {{ super() }}
+  <!-- Add scripts that need to run afterwards here -->
+    <script src="https://cdn.plot.ly/plotly-2.14.0.min.js"></script>
+  <!-- Hiding input/output prompts -->
+    <style>
+    /* hide jupyter notebooks input/output numbers */
+        .jp-InputPrompt {
+            display: none !important;
+        }
+        
+        .jp-OutputPrompt {
+            display: none !important;
+        }
+    </style>
+{% endblock %}
